@@ -17,7 +17,7 @@ Not needing to develop from scratch.
 Project Documentation
 -----------------------
 Complete manual in pdf format
-
+https://github.com/MarceloMaurin/robotinics/blob/master/docs/Projetos%20IOT%20com%20Arduino%20e%20Raspberry-rev10.pdf.zip
 
 Project website
 ---------------
@@ -42,7 +42,7 @@ No necesita desarrollarse desde cero.
 Documentación del proyecto
 -----------------------
 Manual completo en formato pdf
-
+https://github.com/MarceloMaurin/robotinics/blob/master/docs/Projetos%20IOT%20com%20Arduino%20e%20Raspberry-rev10.pdf.zip
 
 Sitio web del proyecto
 ---------------
@@ -66,6 +66,7 @@ Não necessitando desenvolver a partir do zero.
 Documentação do Projeto
 -----------------------
 Manual completo em formato pdf
+https://github.com/MarceloMaurin/robotinics/blob/master/docs/Projetos%20IOT%20com%20Arduino%20e%20Raspberry-rev10.pdf.zip
 
 
 Site do projeto
