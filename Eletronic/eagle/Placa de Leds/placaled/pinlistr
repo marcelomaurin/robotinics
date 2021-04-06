@@ -1,0 +1,68 @@
+Pinlist
+
+Exported from placaled.brd at 20/05/2015 09:56
+
+EAGLE Version 7.3.0 Copyright (c) 1988-2015 CadSoft
+
+Part     Pad      Net
+
+LED1     A        N$10
+         K        N$17
+
+LED2     A        N$9
+         K        N$16
+
+LED3     A        N$8
+         K        N$15
+
+LED4     A        N$7
+         K        N$14
+
+LED5     A        N$6
+         K        N$13
+
+LED6     A        N$5
+         K        N$12
+
+LED7     A        N$4
+         K        N$11
+
+LED8     A        N$1
+         K        N$2
+
+R1       1        N$17
+         2        N$3
+
+R2       1        N$16
+         2        N$3
+
+R3       1        N$15
+         2        N$3
+
+R4       1        N$14
+         2        N$3
+
+R5       1        N$13
+         2        N$3
+
+R6       1        N$12
+         2        N$3
+
+R7       1        N$11
+         2        N$3
+
+R8       1        N$2
+         2        N$3
+
+X1       1        N$10
+         2        N$9
+         3        N$8
+         4        N$7
+         5        N$6
+         6        N$5
+         7        N$4
+         8        N$1
+
+X2       1        N$3
+         2        N$3
+

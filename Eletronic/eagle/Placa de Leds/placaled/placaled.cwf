@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clsRules xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Rules>
+    <clsRule>
+      <RuleType>TOP</RuleType>
+      <RuleArgument />
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+    <clsRule>
+      <RuleType>BOTTOM</RuleType>
+      <RuleArgument />
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+    <clsRule>
+      <RuleType>MISC_1</RuleType>
+      <RuleArgument />
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+    <clsRule>
+      <RuleType>MISC_2</RuleType>
+      <RuleArgument />
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+    <clsRule>
+      <RuleType>MCAD</RuleType>
+      <RuleArgument />
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+    <clsRule>
+      <RuleType>ECAD</RuleType>
+      <RuleArgument />
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+    <clsRule>
+      <RuleType>SMALL</RuleType>
+      <RuleArgument>0</RuleArgument>
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+    <clsRule>
+      <RuleType>BIG</RuleType>
+      <RuleArgument>0</RuleArgument>
+      <Enabled>true</Enabled>
+      <RuleGeometry>ctELEC_COMP</RuleGeometry>
+    </clsRule>
+  </Rules>
+  <nRules>8</nRules>
+</clsRules>

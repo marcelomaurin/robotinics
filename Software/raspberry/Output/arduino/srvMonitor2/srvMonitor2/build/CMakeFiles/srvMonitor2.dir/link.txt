@@ -1,0 +1,1 @@
+/usr/bin/c++   -g    CMakeFiles/srvMonitor2.dir/main.cpp.o  -o srvMonitor2 -rdynamic -lQtCore 

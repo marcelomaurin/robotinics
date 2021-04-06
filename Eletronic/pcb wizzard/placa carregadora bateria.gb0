@@ -1,0 +1,15 @@
+G04 Image Parameters ***
+%FSDAX23Y23*%
+%MOIN*%
+G04 Aperture Table ***
+%ADD10C,,020*%
+G04*
+G04 New Layer ***
+%LPD*%
+D10*
+X00100Y02200D02*
+X03300D01*
+Y00100D01*
+X00100D01*
+Y02200D01*
+M02*

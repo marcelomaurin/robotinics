@@ -1,0 +1,90 @@
+Determining if the Q_WS_WIN exist failed with the following output:
+Change Dir: /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec955347075/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec955347075.dir/build.make CMakeFiles/cmTryCompileExec955347075.dir/build
+make[1]: Entering directory `/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec955347075.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec955347075.dir/CheckSymbolExists.cxx.o -c /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function 'int main(int, char**)':
+/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: 'Q_WS_WIN' was not declared in this scope
+make[1]: Leaving directory `/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec955347075.dir/CheckSymbolExists.cxx.o] Error 1
+make: *** [cmTryCompileExec955347075/fast] Error 2
+
+File /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_WIN
+  return ((int*)(&Q_WS_WIN))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the Q_WS_QWS exist failed with the following output:
+Change Dir: /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec1822511697/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec1822511697.dir/build.make CMakeFiles/cmTryCompileExec1822511697.dir/build
+make[1]: Entering directory `/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec1822511697.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec1822511697.dir/CheckSymbolExists.cxx.o -c /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function 'int main(int, char**)':
+/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: 'Q_WS_QWS' was not declared in this scope
+make[1]: Leaving directory `/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec1822511697.dir/CheckSymbolExists.cxx.o] Error 1
+make: *** [cmTryCompileExec1822511697/fast] Error 2
+
+File /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_QWS
+  return ((int*)(&Q_WS_QWS))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the Q_WS_MAC exist failed with the following output:
+Change Dir: /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec501883058/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec501883058.dir/build.make CMakeFiles/cmTryCompileExec501883058.dir/build
+make[1]: Entering directory `/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec501883058.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -I/usr/include/qt4    -o CMakeFiles/cmTryCompileExec501883058.dir/CheckSymbolExists.cxx.o -c /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function 'int main(int, char**)':
+/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: 'Q_WS_MAC' was not declared in this scope
+make[1]: Leaving directory `/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec501883058.dir/CheckSymbolExists.cxx.o] Error 1
+make: *** [cmTryCompileExec501883058/fast] Error 2
+
+File /projetos/robotinics/linux/srvMonitor2/srvMonitor2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_MAC
+  return ((int*)(&Q_WS_MAC))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+

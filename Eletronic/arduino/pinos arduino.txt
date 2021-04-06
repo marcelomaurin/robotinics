@@ -1,0 +1,18 @@
+azul 6
+cinza 7
+amarelo 8
+verde 9
+marron 10
+roxo 11
+vermelho 12
+branco 44
+laranja 45
+cinza 46
+
+
+motor
+26,28,30,32,34,36
+
+rf tx,rx 25,27
+
+lcd serial serial 20,21

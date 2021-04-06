@@ -1,0 +1,27 @@
+
+PCB Wizard 3 NC-Drill Export
+----------------------------
+
+Created : 14/05/2015 06:42:27
+Source  : PCB Wizard 3.50 (28 Oct 2004)
+Design  : C:\Users\mmm\Documents\projetos\robotinics\pcb wizzard\placa carregadora bateria.pcb
+Title   : 
+Author  : 
+Company : 
+
+2.3 format, inches, absolute.
+No zero supression.
+
+----
+
+File: "C:\Users\mmm\Documents\projetos\robotinics\pcb wizzard\placa carregadora bateria.drl"
+
+  Drill hole layer
+
+  T-Code   Size
+  T01      ,020
+  T02      ,040
+
+----
+
+End of report.

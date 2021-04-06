@@ -1,0 +1,67 @@
+Netlist
+
+Exported from placaled.brd at 20/05/2015 09:56
+
+EAGLE Version 7.3.0 Copyright (c) 1988-2015 CadSoft
+
+Net      Part     Pad
+
+N$1      LED8     A
+         X1       8
+
+N$2      LED8     K
+         R8       1
+
+N$3      R1       2
+         R2       2
+         R3       2
+         R4       2
+         R5       2
+         R6       2
+         R7       2
+         R8       2
+         X2       1
+         X2       2
+
+N$4      LED7     A
+         X1       7
+
+N$5      LED6     A
+         X1       6
+
+N$6      LED5     A
+         X1       5
+
+N$7      LED4     A
+         X1       4
+
+N$8      LED3     A
+         X1       3
+
+N$9      LED2     A
+         X1       2
+
+N$10     LED1     A
+         X1       1
+
+N$11     LED7     K
+         R7       1
+
+N$12     LED6     K
+         R6       1
+
+N$13     LED5     K
+         R5       1
+
+N$14     LED4     K
+         R4       1
+
+N$15     LED3     K
+         R3       1
+
+N$16     LED2     K
+         R2       1
+
+N$17     LED1     K
+         R1       1
+

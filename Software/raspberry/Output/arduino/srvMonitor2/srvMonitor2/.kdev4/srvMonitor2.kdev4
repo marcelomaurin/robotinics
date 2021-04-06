@@ -1,0 +1,22 @@
+[CMake]
+BuildDirs=/projetos/robotinics/linux/srvMonitor2/srvMonitor2/build
+CMakeDir=/usr/share/cmake-2.8/Modules
+Current CMake Binary=file:///usr/bin/cmake
+CurrentBuildDir=file:///projetos/robotinics/linux/srvMonitor2/srvMonitor2/build
+CurrentBuildType=Debug
+CurrentInstallDir=file:///usr/local
+Environment Profile=default
+Extra Arguments=
+ProjectRootRelative=./
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=Nova Configuração de Aplicativo nativo
+Type=Native Application
+
+[MakeBuilder]
+Number Of Jobs=1

@@ -1,0 +1,183 @@
+
+#Corpo{
+	height: 1100px;
+	width:850px;	
+	background:white;
+	margin:auto;	
+}
+
+#Titulo{
+	height:200px;
+	width:850px;
+	background-image: url("../img/logo.jpg");	
+}
+#Logo{
+	margin-top:15px;
+	margin-left:15px;
+	padding-left:20px;
+	padding-top:20px;
+	float:left;
+	width:400px;
+	height:100px;
+	//background:#993333;
+	font-family:"Times New Roman", Times, serif;
+	font-size:44px;
+	color:#003399;
+}
+#FPesquisa{
+	padding-top:30px;
+	margin-top:15px;
+	padding-right:60px;
+	float: right;	
+}
+
+#lbpesquisa{
+	float: right;
+	width:170px;
+}
+
+#pesquisa{
+	padding-left:680px;
+	padding:0px;
+}
+
+#Idiomas{
+	margin-top:25px;
+	float:right;
+	padding-right:60px;
+	width:auto;
+	text-decoration:none;	
+}
+
+#ItensOpcao{
+	margin-top:20px;
+	margin-left:20px;
+	width:150px;
+	//background:#00CCCC;
+}
+
+.ItemOpcao{
+	margin-top:20px;
+	text-align:center;
+	color:#000000;	
+}
+
+.ItemOpcao a:hover{
+	color:#FFFFFF;	
+}
+
+
+div#Idiomas a:hover{
+	text-decoration:none;
+	color:#000000
+}
+
+div#Idiomas a:hover{
+	text-decoration:none;
+	color:#003399;
+}
+
+#Idioma1{
+	float:left;	
+	text-decoration:none;
+}
+
+
+#Idioma2{
+	float:left;
+	padding-left:5px;	
+	text-decoration:none;
+}
+
+#Idioma3{
+	float:left;
+	padding-left:5px;	
+	text-decoration:none;	
+}
+
+
+
+div#Menu{
+	height:40px;
+	margin-top:10px;
+	width: 850px;
+	background:#0066CC;
+}
+
+div#Menu ul{
+	width: 800px;
+    padding:10px;
+	margin-top:10px;
+
+}
+
+div#Menu ul li {
+	display:inline;
+	width: 800px;
+	margin-left: 20px;
+	padding-left:20px;
+	color:#000000;
+}
+
+div#Menu ul li a {
+	display:inline;
+	width: 800px;
+	margin-left: 20px;
+	padding-left:20px;
+	color:#000000;
+	text-decoration:none;
+}
+
+div#Menu ul li a:hover{
+	display:inline;
+	width: 800px;
+	margin-left: 20px;
+	padding-left:20px;
+	//background:#666666;
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+#Geral{
+	height:670px;
+	width: 850px;
+	margin-top:10px;
+}
+#Caixa{
+	height:670px;
+	width: 200px;
+	float:left;
+}
+#Opcoes{
+	height:394px;
+	width: 194px;
+	float:left;
+	background:#999999;
+	border: double;
+}
+
+#Info2{
+	height:260px;
+	width: 194px;
+	float:left;
+	margin-top:10px;
+	background:#999999;
+    border: double;
+}	
+
+#Info{
+	height:670px;
+	width:630px;
+	margin-left:10px;
+	float:left;
+	background:#FFFFFF;	
+	border:double;
+}	
+
+#Button{
+	height:100px;
+	margin-top:10px;
+	width:850px;
+	float:left;
+	background:#999999;	
+}	

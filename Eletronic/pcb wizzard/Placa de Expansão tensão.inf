@@ -1,0 +1,28 @@
+
+PCB Wizard 3 NC-Drill Export
+----------------------------
+
+Created : 13/05/2015 14:24:22
+Source  : PCB Wizard 3.50 (28 Oct 2004)
+Design  : C:\Users\mmm\Documents\projetos\robotinics\pcb wizzard\Placa de Expansão tensão.pcb
+Title   : 
+Author  : 
+Company : 
+
+2.3 format, millimetres, absolute.
+No zero supression.
+
+----
+
+File: "C:\Users\mmm\Documents\projetos\robotinics\pcb wizzard\Placa de Expansão tensão.drl"
+
+  Drill hole layer
+
+  T-Code   Size
+  T01      ,508
+  T02      1,016
+  T03      2,000
+
+----
+
+End of report.
