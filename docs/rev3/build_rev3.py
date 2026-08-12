@@ -32,6 +32,7 @@ ROOT = Path(__file__).resolve().parent
 MANUSCRIPT = ROOT / "manuscrito_rev3.md"
 ASSETS = ROOT / "assets"
 GENERATED = ROOT / "generated"
+DOC_LANGUAGE = "pt-BR"
 
 BLUE_DARK = "123B5D"
 BLUE = "176B9B"
@@ -49,7 +50,7 @@ WHITE = "FFFFFF"
 TABLE_WIDTH_DXA = 9411  # A4 minus 2.2 cm margins on each side.
 
 
-FIGURES = {
+FIGURES_PT = {
     "architecture": {
         "caption": "Arquitetura em camadas da terceira edição.",
         "alt": "Fluxo em camadas entre interface humana, TCHATGPT, validação, Raspberry Pi, Arduino e hardware.",
@@ -99,6 +100,63 @@ FIGURES = {
         "width_cm": 13.5,
     },
 }
+
+FIGURES_EN = {
+    "architecture": {
+        "caption": "Layered architecture of the third edition.",
+        "alt": "Layered flow among the human interface, TCHATGPT, validation, Raspberry Pi, Arduino, and hardware.",
+        "source": "Created by the author.",
+        "width_cm": 16.1,
+    },
+    "command_pipeline": {
+        "caption": "Supervised path of a physical command.",
+        "alt": "Pipeline from intent through a structured command, validation, execution, and telemetry.",
+        "source": "Created by the author.",
+        "width_cm": 16.1,
+    },
+    "safety_states": {
+        "caption": "Robotinics Rev. 3 operating-state machine.",
+        "alt": "DISARMED, ARMED, EXECUTING, and FAULT states with safe transitions.",
+        "source": "Created by the author.",
+        "width_cm": 15.5,
+    },
+    "robot_cad": {
+        "caption": "CAD model of the Robotinics assembly preserved from the original archive.",
+        "alt": "Front CAD rendering of the Robotinics robot with head, torso, arms, and mobile base.",
+        "source": "Robotinics project archive.",
+        "width_cm": 10.2,
+    },
+    "arm_cad": {
+        "caption": "Mechanical assembly of the arm and gripper.",
+        "alt": "Side CAD rendering of the articulated arm and Robotinics gripper.",
+        "source": "Robotinics project archive.",
+        "width_cm": 15.8,
+    },
+    "power_architecture": {
+        "caption": "Power distribution with protection and separate rails.",
+        "alt": "Protected 3S battery pack feeding separate traction, servo, and logic rails.",
+        "source": "Created by the author.",
+        "width_cm": 16.0,
+    },
+    "vision_pipeline": {
+        "caption": "Vision pipeline separated from motion control.",
+        "alt": "Camera, capture, perception, structured event, and safety policy in sequence.",
+        "source": "Created by the author.",
+        "width_cm": 15.0,
+    },
+    "test_pyramid": {
+        "caption": "Validation pyramid: many inexpensive tests support a few complete trials.",
+        "alt": "Pyramid with unit, integration, bench, and floor-operation tests.",
+        "source": "Created by the author.",
+        "width_cm": 13.5,
+    },
+}
+
+FIGURES = FIGURES_PT
+
+
+def tr(portuguese: str, english: str) -> str:
+    return english if DOC_LANGUAGE.lower().startswith("en") else portuguese
 
 
 def normalize(text: str) -> str:
@@ -246,12 +304,12 @@ def diagram_architecture() -> Path:
     im, d = canvas(1800, 1320)
     xs = (490, 1310)
     boxes = [
-        ((560, 70, 1240, 205), "Pessoa e interface", ORANGE, "Texto, voz, visão e confirmação"),
-        ((560, 280, 1240, 425), "TCHATGPT", BLUE_LIGHT, "Intenção, contexto, agentes, RAG"),
-        ((490, 500, 1310, 655), "Contrato + segurança", GREEN_LIGHT, "JSON, catálogo MAN, limites e política"),
-        ((560, 735, 1240, 870), "Raspberry Pi", BLUE_LIGHT, "Gateway, serviços e supervisão"),
-        ((560, 945, 1240, 1080), "Arduino", BLUE_LIGHT, "Tempo real, watchdog e limites locais"),
-        ((490, 1150, 1310, 1270), "Sensores e atuadores", GRAY_LIGHT, "Motores, servos, ultrassom e telemetria"),
+        ((560, 70, 1240, 205), tr("Pessoa e interface", "Person and interface"), ORANGE, tr("Texto, voz, visão e confirmação", "Text, voice, vision, and confirmation")),
+        ((560, 280, 1240, 425), "TCHATGPT", BLUE_LIGHT, tr("Intenção, contexto, agentes, RAG", "Intent, context, agents, and RAG")),
+        ((490, 500, 1310, 655), tr("Contrato + segurança", "Contract + safety"), GREEN_LIGHT, tr("JSON, catálogo MAN, limites e política", "JSON, MAN catalog, limits, and policy")),
+        ((560, 735, 1240, 870), "Raspberry Pi", BLUE_LIGHT, tr("Gateway, serviços e supervisão", "Gateway, services, and supervision")),
+        ((560, 945, 1240, 1080), "Arduino", BLUE_LIGHT, tr("Tempo real, watchdog e limites locais", "Real time, watchdog, and local limits")),
+        ((490, 1150, 1310, 1270), tr("Sensores e atuadores", "Sensors and actuators"), GRAY_LIGHT, tr("Motores, servos, ultrassom e telemetria", "Motors, servos, ultrasound, and telemetry")),
     ]
     for xy, title, fill, sub in boxes:
         rounded_box(d, xy, title, fill=fill, subtitle=sub)
@@ -264,11 +322,11 @@ def diagram_command_pipeline() -> Path:
     im, d = canvas(1800, 780)
     x_positions = [55, 405, 755, 1105, 1455]
     titles = [
-        ("Intenção", "fala ou texto"),
-        ("Contrato", "JSON estrito"),
-        ("Validação", "MAN, estado, limites"),
-        ("Execução", "firmware + watchdog"),
-        ("Verificação", "telemetria e resultado"),
+        (tr("Intenção", "Intent"), tr("fala ou texto", "speech or text")),
+        (tr("Contrato", "Contract"), tr("JSON estrito", "strict JSON")),
+        (tr("Validação", "Validation"), tr("MAN, estado, limites", "MAN, state, limits")),
+        (tr("Execução", "Execution"), tr("firmware + watchdog", "firmware + watchdog")),
+        (tr("Verificação", "Verification"), tr("telemetria e resultado", "telemetry and result")),
     ]
     fills = ["FFF3E6", BLUE_LIGHT, GREEN_LIGHT, BLUE_LIGHT, GRAY_LIGHT]
     for i, (title, sub) in enumerate(titles):
@@ -277,7 +335,7 @@ def diagram_command_pipeline() -> Path:
         if i < len(titles) - 1:
             arrow(d, (x + 290, 380), (x_positions[i + 1] - 15, 380))
     label_font = ImageFont.truetype(font_path(bold=True), 34)
-    d.text((900, 105), "Nenhuma etapa probabilística aciona o hardware diretamente", fill=hexrgb(BLUE_DARK), font=label_font, anchor="ma")
+    d.text((900, 105), tr("Nenhuma etapa probabilística aciona o hardware diretamente", "No probabilistic stage directly drives hardware"), fill=hexrgb(BLUE_DARK), font=label_font, anchor="ma")
     return save_diagram(im, "command_pipeline")
 
 
@@ -289,38 +347,38 @@ def diagram_safety_states() -> Path:
         "EXECUTING": (1160, 650, 1710, 870),
         "FAULT": (90, 650, 640, 870),
     }
-    rounded_box(d, coords["DISARMED"], "DISARMED", fill=GRAY_LIGHT, subtitle="movimento bloqueado")
-    rounded_box(d, coords["ARMED"], "ARMED", fill=GREEN_LIGHT, outline=GREEN, subtitle="pronto dentro dos limites")
-    rounded_box(d, coords["EXECUTING"], "EXECUTING", fill=BLUE_LIGHT, subtitle="uma ação limitada")
-    rounded_box(d, coords["FAULT"], "FAULT", fill=RED_LIGHT, outline=RED, text_fill=RED, subtitle="saída segura e diagnóstico")
+    rounded_box(d, coords["DISARMED"], "DISARMED", fill=GRAY_LIGHT, subtitle=tr("movimento bloqueado", "motion blocked"))
+    rounded_box(d, coords["ARMED"], "ARMED", fill=GREEN_LIGHT, outline=GREEN, subtitle=tr("pronto dentro dos limites", "ready within limits"))
+    rounded_box(d, coords["EXECUTING"], "EXECUTING", fill=BLUE_LIGHT, subtitle=tr("uma ação limitada", "one bounded action"))
+    rounded_box(d, coords["FAULT"], "FAULT", fill=RED_LIGHT, outline=RED, text_fill=RED, subtitle=tr("saída segura e diagnóstico", "safe output and diagnostics"))
     arrow(d, (640, 240), (1160, 240), GREEN)
     arrow(d, (1435, 350), (1435, 650), BLUE_DARK)
     arrow(d, (1160, 760), (640, 760), RED)
     arrow(d, (365, 650), (365, 350), GRAY)
     f = ImageFont.truetype(font_path(bold=True), 29)
-    d.text((900, 190), "autoteste + confirmação", fill=hexrgb(GREEN), font=f, anchor="mm")
-    d.text((1515, 500), "ação autorizada", fill=hexrgb(BLUE_DARK), font=f, anchor="mm")
-    d.text((900, 710), "falha, timeout ou emergência", fill=hexrgb(RED), font=f, anchor="mm")
-    d.text((440, 500), "correção + reset", fill=hexrgb(GRAY), font=f, anchor="mm")
-    d.text((900, 940), "STOP e DISARM permanecem disponíveis em qualquer estado", fill=hexrgb(BLUE_DARK), font=f, anchor="mm")
+    d.text((900, 190), tr("autoteste + confirmação", "self-test + confirmation"), fill=hexrgb(GREEN), font=f, anchor="mm")
+    d.text((1515, 500), tr("ação autorizada", "authorized action"), fill=hexrgb(BLUE_DARK), font=f, anchor="mm")
+    d.text((900, 710), tr("falha, timeout ou emergência", "fault, timeout, or emergency"), fill=hexrgb(RED), font=f, anchor="mm")
+    d.text((440, 500), tr("correção + reset", "correction + reset"), fill=hexrgb(GRAY), font=f, anchor="mm")
+    d.text((900, 940), tr("STOP e DISARM permanecem disponíveis em qualquer estado", "STOP and DISARM remain available in every state"), fill=hexrgb(BLUE_DARK), font=f, anchor="mm")
     return save_diagram(im, "safety_states")
 
 
 def diagram_power() -> Path:
     im, d = canvas(1800, 1020)
-    rounded_box(d, (70, 365, 450, 650), "Pack 3S", fill="FFF3E6", outline=ORANGE, subtitle="11,1 V nominal\n12,6 V máximo")
-    rounded_box(d, (560, 350, 1050, 665), "Proteção e corte", fill=RED_LIGHT, outline=RED, subtitle="BMS + fusível + chave\n+ emergência")
+    rounded_box(d, (70, 365, 450, 650), tr("Pack 3S", "3S pack"), fill="FFF3E6", outline=ORANGE, subtitle=tr("11,1 V nominal\n12,6 V máximo", "11.1 V nominal\n12.6 V maximum"))
+    rounded_box(d, (560, 350, 1050, 665), tr("Proteção e corte", "Protection and cutoff"), fill=RED_LIGHT, outline=RED, subtitle=tr("BMS + fusível + chave\n+ emergência", "BMS + fuse + switch\n+ emergency stop"))
     arrow(d, (450, 507), (560, 507), ORANGE)
     rails = [
-        ((1250, 80, 1725, 310), "Tração", "driver e motores", BLUE_LIGHT),
-        ((1250, 395, 1725, 625), "Servos", "regulador dedicado", GREEN_LIGHT),
-        ((1250, 710, 1725, 940), "Lógica", "5 V estáveis", GRAY_LIGHT),
+        ((1250, 80, 1725, 310), tr("Tração", "Traction"), tr("driver e motores", "driver and motors"), BLUE_LIGHT),
+        ((1250, 395, 1725, 625), tr("Servos", "Servos"), tr("regulador dedicado", "dedicated regulator"), GREEN_LIGHT),
+        ((1250, 710, 1725, 940), tr("Lógica", "Logic"), tr("5 V estáveis", "stable 5 V"), GRAY_LIGHT),
     ]
     for xy, title, sub, fill in rails:
         rounded_box(d, xy, title, fill=fill, subtitle=sub)
         arrow(d, (1050, 507), (xy[0], (xy[1] + xy[3]) // 2), BLUE_DARK)
     f = ImageFont.truetype(font_path(bold=True), 28)
-    d.text((900, 965), "Terra comum controlado; retorno de potência roteado para reduzir ruído", fill=hexrgb(BLUE_DARK), font=f, anchor="mm")
+    d.text((900, 965), tr("Terra comum controlado; retorno de potência roteado para reduzir ruído", "Controlled common ground; power return routed to reduce noise"), fill=hexrgb(BLUE_DARK), font=f, anchor="mm")
     return save_diagram(im, "power_architecture")
 
 
@@ -328,11 +386,11 @@ def diagram_vision() -> Path:
     im, d = canvas(1800, 780)
     x_positions = [55, 405, 755, 1105, 1455]
     labels = [
-        ("Câmera", "frame com timestamp"),
-        ("Captura", "resolução e fila"),
-        ("Percepção", "detecção/classificação"),
-        ("Evento", "classe, confiança, posição"),
-        ("Política", "telemetria ou ação validada"),
+        (tr("Câmera", "Camera"), tr("frame com timestamp", "timestamped frame")),
+        (tr("Captura", "Capture"), tr("resolução e fila", "resolution and queue")),
+        (tr("Percepção", "Perception"), tr("detecção/classificação", "detection/classification")),
+        (tr("Evento", "Event"), tr("classe, confiança, posição", "class, confidence, position")),
+        (tr("Política", "Policy"), tr("telemetria ou ação validada", "telemetry or validated action")),
     ]
     fills = [GRAY_LIGHT, BLUE_LIGHT, BLUE_LIGHT, GREEN_LIGHT, "FFF3E6"]
     for i, (title, sub) in enumerate(labels):
@@ -341,17 +399,17 @@ def diagram_vision() -> Path:
         if i < 4:
             arrow(d, (x + 290, 380), (x_positions[i + 1] - 15, 380))
     f = ImageFont.truetype(font_path(bold=True), 34)
-    d.text((900, 110), "Percepção informa; a política decide", fill=hexrgb(BLUE_DARK), font=f, anchor="ma")
+    d.text((900, 110), tr("Percepção informa; a política decide", "Perception informs; policy decides"), fill=hexrgb(BLUE_DARK), font=f, anchor="ma")
     return save_diagram(im, "vision_pipeline")
 
 
 def diagram_tests() -> Path:
     im, d = canvas(1600, 1120)
     levels = [
-        ((625, 95, 975, 275), "Operação no piso", ORANGE),
-        ((470, 320, 1130, 520), "Sistema em bancada", BLUE),
-        ((310, 565, 1290, 775), "Integração entre módulos", CYAN),
-        ((150, 820, 1450, 1035), "Testes unitários e simulação", GREEN),
+        ((625, 95, 975, 275), tr("Operação no piso", "Floor test"), ORANGE),
+        ((470, 320, 1130, 520), tr("Sistema em bancada", "Bench system"), BLUE),
+        ((310, 565, 1290, 775), tr("Integração entre módulos", "Module integration"), CYAN),
+        ((150, 820, 1450, 1035), tr("Testes unitários e simulação", "Unit tests and simulation"), GREEN),
     ]
     f = ImageFont.truetype(font_path(bold=True), 38)
     for xy, label, color in levels:
@@ -493,7 +551,8 @@ def set_paragraph_border_and_shading(paragraph, color: str, fill: str) -> None:
     spacing.set(qn("w:after"), "120")
 
 
-def set_language(element, language: str = "pt-BR") -> None:
+def set_language(element, language: str | None = None) -> None:
+    language = language or DOC_LANGUAGE
     r_pr = element.get_or_add_rPr() if hasattr(element, "get_or_add_rPr") else element
     lang = r_pr.find(qn("w:lang"))
     if lang is None:
@@ -818,8 +877,8 @@ def apply_numbering(paragraph, num_id: int) -> None:
     num_id_el.set(qn("w:val"), str(num_id))
     num_pr.extend([ilvl, num_id_el])
     p_pr.append(num_pr)
-    paragraph.paragraph_format.space_after = Pt(4)
-    paragraph.paragraph_format.line_spacing = 1.25
+    paragraph.paragraph_format.space_after = Pt(3 if DOC_LANGUAGE.lower().startswith("en") else 4)
+    paragraph.paragraph_format.line_spacing = 1.22 if DOC_LANGUAGE.lower().startswith("en") else 1.25
 
 
 def widths_for_table(rows: list[list[str]]) -> list[int]:
@@ -882,16 +941,16 @@ def add_figure(doc: Document, key: str, path: Path, number: int) -> None:
     run = p.add_run()
     inline = run.add_picture(str(path), width=Cm(float(info["width_cm"])))
     inline._inline.docPr.set("descr", str(info["alt"]))
-    inline._inline.docPr.set("title", f"Figura {number}")
+    inline._inline.docPr.set("title", f"{tr('Figura', 'Figure')} {number}")
     caption = doc.add_paragraph(style="Caption")
-    caption.add_run(f"Figura {number} - ").bold = True
+    caption.add_run(f"{tr('Figura', 'Figure')} {number} - ").bold = True
     caption.add_run(str(info["caption"]))
-    caption.add_run(f"\nFonte: {info['source']}")
+    caption.add_run(f"\n{tr('Fonte', 'Source')}: {info['source']}")
     add_bookmark(caption, f"fig{number}", 1000 + number)
 
 
 def add_callout(doc: Document, kind: str, body: str) -> None:
-    labels = {"WARNING": "ATENÇÃO", "DANGER": "PERIGO", "NOTE": "NOTA"}
+    labels = {"WARNING": tr("ATENÇÃO", "WARNING"), "DANGER": tr("PERIGO", "DANGER"), "NOTE": tr("NOTA", "NOTE")}
     colors = {"WARNING": ORANGE, "DANGER": RED, "NOTE": BLUE}
     fills = {"WARNING": "FFF5E8", "DANGER": RED_LIGHT, "NOTE": BLUE_LIGHT}
     p = doc.add_paragraph()
@@ -921,7 +980,7 @@ def add_code_block(doc: Document, code: str, language: str) -> None:
 
 
 def add_cover(doc: Document, meta: dict[str, str], robot_path: Path) -> None:
-    p = doc.add_paragraph("TERCEIRA EDIÇÃO REVISTA E AMPLIADA", style="Eyebrow")
+    p = doc.add_paragraph(tr("TERCEIRA EDIÇÃO REVISTA E AMPLIADA", "THIRD REVISED AND EXPANDED EDITION"), style="Eyebrow")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = doc.add_paragraph(meta["title"], style="Title")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -939,7 +998,7 @@ def add_cover(doc: Document, meta: dict[str, str], robot_path: Path) -> None:
     p.paragraph_format.space_after = Pt(8)
     inline = p.add_run().add_picture(str(robot_path), width=Cm(13.8))
     inline._inline.docPr.set("descr", FIGURES["robot_cad"]["alt"])
-    inline._inline.docPr.set("title", "Robotinics - modelo CAD")
+    inline._inline.docPr.set("title", tr("Robotinics - modelo CAD", "Robotinics - CAD model"))
     p = doc.add_paragraph(meta["author"])
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     for run in p.runs:
@@ -955,17 +1014,17 @@ def add_cover(doc: Document, meta: dict[str, str], robot_path: Path) -> None:
 
 
 def add_imprint(doc: Document, meta: dict[str, str]) -> None:
-    p = doc.add_paragraph("FICHA DA EDIÇÃO", style="Eyebrow")
+    p = doc.add_paragraph(tr("FICHA DA EDIÇÃO", "EDITION INFORMATION"), style="Eyebrow")
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     p = doc.add_paragraph(meta["title"], style="Heading 1")
     p.paragraph_format.page_break_before = False
     p = doc.add_paragraph()
     add_inline(p, f"{meta['subtitle']}\n")
-    p.add_run(f"Autor e responsável pelo projeto: {meta['author']}\n").bold = True
+    p.add_run(f"{tr('Autor e responsável pelo projeto', 'Author and project lead')}: {meta['author']}\n").bold = True
     p.add_run(f"{meta['edition']}, {meta['date']}.\n")
-    p.add_run("Idioma: português do Brasil.")
+    p.add_run(tr("Idioma: português do Brasil.", "Language: English (United States)."))
     rows = [
-        ["Projeto", "Snapshot editorial"],
+        [tr("Projeto", "Project"), tr("Snapshot editorial", "Editorial snapshot")],
         ["Robotinics", "61d2a19d10e6701e27e46181e1a6c740b8ee4e30"],
         ["TCHATGPT", "15d5e1a7780088701716896cfe9fb3afe0e7b71a"],
     ]
@@ -973,16 +1032,21 @@ def add_imprint(doc: Document, meta: dict[str, str]) -> None:
     add_callout(
         doc,
         "WARNING",
-        "Projeto educacional e experimental. Baterias de íons de lítio, ferramentas, soldagem, motores e partes móveis exigem proteção, supervisão e componentes adequados. A IA nunca substitui as barreiras determinísticas de segurança.",
+        tr(
+            "Projeto educacional e experimental. Baterias de íons de lítio, ferramentas, soldagem, motores e partes móveis exigem proteção, supervisão e componentes adequados. A IA nunca substitui as barreiras determinísticas de segurança.",
+            "Educational and experimental project. Lithium-ion batteries, tools, soldering, motors, and moving parts require suitable protection, supervision, and components. AI never replaces deterministic safety barriers.",
+        ),
     )
-    p = doc.add_paragraph("Fontes do projeto: ")
-    add_external_hyperlink(p, "repositório Robotinics", "https://github.com/marcelomaurin/robotinics")
-    p.add_run(" e ")
-    add_external_hyperlink(p, "repositório TCHATGPT", "https://github.com/marcelomaurin/CHATGPT")
+    p = doc.add_paragraph(tr("Fontes do projeto: ", "Project sources: "))
+    add_external_hyperlink(p, tr("repositório Robotinics", "Robotinics repository"), "https://github.com/marcelomaurin/robotinics")
+    p.add_run(tr(" e ", " and "))
+    add_external_hyperlink(p, tr("repositório TCHATGPT", "TCHATGPT repository"), "https://github.com/marcelomaurin/CHATGPT")
     p.add_run(".")
     p = doc.add_paragraph(
-        "Nota editorial: o snapshot analisado do Robotinics não contém uma licença formal. "
-        "A publicação pública desta edição deve ser acompanhada pela licença escolhida pelo autor."
+        tr(
+            "Nota editorial: o snapshot analisado do Robotinics não contém uma licença formal. A publicação pública desta edição deve ser acompanhada pela licença escolhida pelo autor.",
+            "Editorial note: the examined Robotinics snapshot contains no formal license. Public release of this edition should be accompanied by the license chosen by the author.",
+        )
     )
 
 
@@ -991,7 +1055,7 @@ def add_dedication(doc: Document, meta: dict[str, str]) -> None:
     p.paragraph_format.space_before = Pt(185)
     p.paragraph_format.space_after = Pt(18)
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    text = meta.get("dedication", "À minha querida esposa, Daniela Machado. Amor eterno.")
+    text = meta.get("dedication", tr("À minha querida esposa, Daniela Machado. Amor eterno.", "To my beloved wife, Daniela Machado. Eternal love."))
     first, _, closing = text.partition(". ")
     r = p.add_run(first + ".")
     r.font.name = "Calibri"
@@ -1008,9 +1072,9 @@ def add_dedication(doc: Document, meta: dict[str, str]) -> None:
 
 
 def add_toc(doc: Document, headings: list[dict[str, object]], page_map: dict[str, int]) -> None:
-    p = doc.add_paragraph("Sumário", style="TOC Heading")
+    p = doc.add_paragraph(tr("Sumário", "Contents"), style="TOC Heading")
     add_bookmark(p, "TOC", 900)
-    intro = doc.add_paragraph("Clique em uma entrada para navegar no documento.")
+    intro = doc.add_paragraph(tr("Clique em uma entrada para navegar no documento.", "Click an entry to navigate within the document."))
     intro.paragraph_format.space_after = Pt(8)
     for record in headings:
         level = int(record["level"])
@@ -1057,7 +1121,7 @@ def add_content(
         if record:
             level = int(record["level"])
             title = str(record["title"])
-            if level == 1 and title.startswith("Parte "):
+            if level == 1 and (title.startswith("Parte ") or title.startswith("Part ")):
                 p = doc.add_paragraph(title, style="Part Title")
                 p.alignment = WD_ALIGN_PARAGRAPH.LEFT
                 deco = doc.add_paragraph("ROBOTINICS REV. 3")
@@ -1152,8 +1216,11 @@ def build_docx(output: Path, page_map_path: Path | None = None) -> None:
     doc.core_properties.title = meta["title"]
     doc.core_properties.subject = meta["subtitle"]
     doc.core_properties.author = meta["author"]
-    doc.core_properties.keywords = "Robotinics, robótica, Arduino, Raspberry Pi, TCHATGPT, inteligência artificial"
-    doc.core_properties.comments = "Terceira edição revista e ampliada."
+    doc.core_properties.keywords = tr(
+        "Robotinics, robótica, Arduino, Raspberry Pi, TCHATGPT, inteligência artificial",
+        "Robotinics, robotics, Arduino, Raspberry Pi, TCHATGPT, artificial intelligence",
+    )
+    doc.core_properties.comments = tr("Terceira edição revista e ampliada.", "Third revised and expanded edition.")
     doc.core_properties.created = datetime(2026, 8, 11, tzinfo=timezone.utc)
     doc.core_properties.modified = datetime(2026, 8, 11, tzinfo=timezone.utc)
 
@@ -1196,7 +1263,12 @@ def extract_page_map(pdf_path: Path, output: Path) -> None:
     records = heading_records(lines)
     reader = PdfReader(str(pdf_path))
     pages = [normalize(page.extract_text() or "") for page in reader.pages]
-    marker = normalize("O Robotinics nasceu como um projeto multidisciplinar")
+    marker = normalize(
+        tr(
+            "O Robotinics nasceu como um projeto multidisciplinar",
+            "Robotinics began as a multidisciplinary project",
+        )
+    )
     body_start = next((idx for idx, text in enumerate(pages) if marker in text), None)
     if body_start is None:
         raise RuntimeError("Could not locate the beginning of the manuscript in the PDF")
@@ -1221,7 +1293,10 @@ def extract_page_map(pdf_path: Path, output: Path) -> None:
 
 
 def main() -> None:
+    global MANUSCRIPT, DOC_LANGUAGE, FIGURES
     parser = argparse.ArgumentParser()
+    parser.add_argument("--manuscript", type=Path, default=MANUSCRIPT)
+    parser.add_argument("--language", default=None)
     sub = parser.add_subparsers(dest="command", required=True)
     build = sub.add_parser("build")
     build.add_argument("--output", type=Path, required=True)
@@ -1230,6 +1305,13 @@ def main() -> None:
     mapping.add_argument("--pdf", type=Path, required=True)
     mapping.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    MANUSCRIPT = args.manuscript.resolve()
+    if args.language:
+        DOC_LANGUAGE = args.language
+    else:
+        meta, _lines = parse_source(MANUSCRIPT)
+        DOC_LANGUAGE = meta.get("language", "pt-BR")
+    FIGURES = FIGURES_EN if DOC_LANGUAGE.lower().startswith("en") else FIGURES_PT
     if args.command == "build":
         build_docx(args.output, args.page_map)
     else:

@@ -4,10 +4,13 @@ Terceira edição revista e ampliada do livro Robotinics, por Marcelo Maurin Mar
 
 ## Arquivos
 
-- `Robotinics_Rev3.pdf`: edição final para leitura e distribuição;
-- `Robotinics_Rev3.docx`: edição final editável;
-- `manuscrito_rev3.md`: fonte textual principal;
-- `build_rev3.py`: gerador do DOCX e dos diagramas técnicos;
+- `Robotinics_Rev3.pdf`: edição final em português para leitura e distribuição;
+- `Robotinics_Rev3.docx`: edição final editável em português;
+- `manuscrito_rev3.md`: fonte textual principal em português;
+- `Robotinics_Rev3_EN.pdf`: edição final em inglês para leitura e distribuição;
+- `Robotinics_Rev3_EN.docx`: edição final editável em inglês;
+- `manuscript_rev3_en.md`: fonte textual principal em inglês;
+- `build_rev3.py`: gerador bilíngue do DOCX e dos diagramas técnicos;
 - `assets/`: imagens CAD preservadas do acervo Robotinics.
 
 ## Referências congeladas
@@ -23,11 +26,29 @@ Requer Python 3, `python-docx`, `Pillow` e `pypdf`.
 python3 build_rev3.py build --output Robotinics_Rev3.docx
 ```
 
+Para reconstruir a edição inglesa, selecione seu manuscrito. O idioma também
+pode ser informado explicitamente com `--language en-US`, mas normalmente é
+lido dos metadados do próprio arquivo.
+
+```bash
+python3 build_rev3.py --manuscript manuscript_rev3_en.md \
+  build --output Robotinics_Rev3_EN.docx
+```
+
 Para gerar o PDF, abra o DOCX em um editor compatível ou use o LibreOffice em modo headless. O sumário final utiliza uma segunda passagem: renderize uma primeira prova em PDF, extraia o mapa de páginas e reconstrua o DOCX.
 
 ```bash
 python3 build_rev3.py map --pdf Robotinics_Rev3.pdf --output page_map.json
 python3 build_rev3.py build --output Robotinics_Rev3.docx --page-map page_map.json
+```
+
+Na edição inglesa:
+
+```bash
+python3 build_rev3.py --manuscript manuscript_rev3_en.md \
+  map --pdf Robotinics_Rev3_EN.pdf --output page_map_en.json
+python3 build_rev3.py --manuscript manuscript_rev3_en.md \
+  build --output Robotinics_Rev3_EN.docx --page-map page_map_en.json
 ```
 
 ## Conteúdo da revisão
