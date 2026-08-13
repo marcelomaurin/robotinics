@@ -10,15 +10,15 @@ dedication: "À minha querida esposa, Daniela Machado. Amor eterno."
 
 # Apresentação da terceira edição
 
-O Robotinics nasceu como um projeto multidisciplinar: um robô terrestre, aberto à experimentação, construído com peças impressas em 3D, eletrônica acessível, Arduino, Raspberry Pi e software livre. A primeira edição documentou uma jornada real de pesquisa e construção. Esta terceira edição preserva esse valor histórico, mas reorganiza o material para que ele volte a funcionar como manual técnico.
+O Robotinics nasceu como um projeto multidisciplinar: um robô terrestre, aberto à experimentação, construído com peças impressas em 3D, eletrônica acessível, Arduino, Raspberry Pi e software livre. A primeira edição documentou uma jornada real de pesquisa e construção. Esta terceira edição recupera essa identidade: é um livro do tipo **faça você mesmo**, no qual um projeto já concluído é reconstruído diante do leitor, etapa por etapa, com os conceitos usados para tomar cada decisão.
 
-A mudança principal não é apenas trocar versões de programas. A arquitetura foi revista para separar responsabilidades, corrigir cálculos e incorporar inteligência artificial sem entregar a um modelo de linguagem o controle irrestrito do robô. O Arduino continua responsável por tarefas determinísticas e de tempo real. O Raspberry Pi coordena serviços, sensores e comunicação. O projeto TCHATGPT fornece a camada de modelos de linguagem, agentes, voz, visão, memória, RAG e observabilidade. Entre a decisão da IA e qualquer atuador existe uma camada obrigatória de validação e segurança.
+A mudança principal não é apenas trocar versões de programas. A didática cronológica da edição original foi combinada às correções técnicas e à arquitetura segura da Rev. 3. O leitor primeiro constrói a mecânica, depois monta e mede a eletrônica e, por fim, instala o software. Em cada parte aparecem objetivo, conhecimentos necessários, materiais, procedimento, teste antes de avançar e resultado esperado. O Arduino continua responsável por tarefas determinísticas e de tempo real. O Raspberry Pi coordena serviços, sensores e comunicação. O TCHATGPT fornece modelos de linguagem, agentes, voz, visão, memória, RAG e observabilidade. Entre a decisão da IA e qualquer atuador existe uma camada obrigatória de validação e segurança.
 
 Esta edição foi construída sobre duas referências congeladas:
 
 | Projeto | Referência editorial | Finalidade |
 |---|---|---|
-| Robotinics | commit `61d2a19d10e6701e27e46181e1a6c740b8ee4e30` | Mecânica, eletrônica, firmware e acervo histórico |
+| Robotinics | commit `39c1b4610f1b51883a2d9fcdbccba2c672dafad3` | Base da revisão editorial, mecânica, eletrônica, firmware e acervo histórico |
 | TCHATGPT | commit `15d5e1a7780088701716896cfe9fb3afe0e7b71a` | Componentes Lazarus/Free Pascal para IA e integração |
 
 O congelamento das referências não impede evolução. Ele apenas garante que o leitor consiga relacionar texto e código. Novas versões podem ser adotadas depois que as diferenças forem verificadas.
@@ -49,9 +49,17 @@ Uma matriz detalhada aparece no Apêndice C.
 
 ## Como usar este livro
 
-O projeto é dividido em cinco partes. A primeira define requisitos, arquitetura e segurança. A segunda trata de mecânica, alimentação e eletrônica. A terceira apresenta firmware, Linux e comunicação. A quarta integra o TCHATGPT. A quinta orienta montagem, testes e evolução.
+Após uma preparação curta sobre arquitetura, segurança e método, o projeto é dividido em **três partes**, como na proposta didática original:
+
+1. **Mecânica:** dimensionar esforços e redução, fabricar as peças, montar base, corpo, braços, garra e cabeça, e verificar alinhamento e estabilidade.
+2. **Eletrônica:** montar alimentação e proteções, instalar a shield com conectores polarizados, fabricar chicotes, ligar motores, servos e sensores e medir cada trilho.
+3. **Software:** preparar Arduino e Raspberry Pi atuais, configurar comunicação, visão computacional, voz, LLMs, agentes e RAG e comissionar o sistema integrado.
+
+[FIGURE:diy_roadmap]
 
 O leitor não precisa instalar todas as ferramentas para montar o robô. Quem deseja apenas reproduzir o protótipo pode usar os arquivos prontos. Quem pretende alterar peças, placas ou software deve trabalhar com as fontes versionadas. Em ambos os casos, cada etapa termina com critérios de aceitação: não avance enquanto o subsistema atual não estiver estável.
+
+Os capítulos de construção usam sempre a mesma sequência: **entender**, **separar**, **montar**, **inspecionar**, **testar** e **registrar**. Fotografias mostram componentes e montagens reais; diagramas elétricos e tabelas de pinos são a referência de ligação. Uma fotografia nunca substitui o esquema nem a ficha técnica.
 
 ## Convenções
 
@@ -67,7 +75,7 @@ Esta obra resulta de anos de estudo, construção e colaboração. Permanecem os
 
 Também são reconhecidas as comunidades de Arduino, Raspberry Pi, Free Pascal, Lazarus e software livre, cujo trabalho torna possível construir e compartilhar projetos como o Robotinics.
 
-# Parte I - Projeto, arquitetura e segurança
+# Preparação do projeto - Arquitetura, segurança e método
 
 # 1. O Robotinics como plataforma de aprendizagem
 
@@ -252,7 +260,25 @@ Dados de câmera, microfone, telemetria e conversas podem conter informações p
 
 O Robotinics não é equipamento médico, industrial certificado, veículo para transporte de pessoas nem plataforma de segurança crítica. O uso em outro contexto exige análise de risco, normas aplicáveis e validação profissional. Componentes baratos e clones podem ter especificações diferentes; sempre meça o exemplar real.
 
-# Parte II - Mecânica, energia e eletrônica
+## 3.7 Caderno de construção
+
+Mantenha um caderno físico ou digital ao lado da bancada. Para cada etapa, anote a revisão dos arquivos, os componentes efetivamente usados, alterações realizadas, medidas, fotografias e resultado do teste. Esse registro transforma uma montagem que “funcionou uma vez” em um projeto que pode ser repetido e mantido.
+
+Use uma página por subsistema com seis campos:
+
+| Campo | Pergunta que deve ser respondida |
+|---|---|
+| Objetivo | O que ficará pronto ao final? |
+| Conhecimento | Qual conceito explica esta decisão? |
+| Materiais | Quais peças, ferramentas e documentos serão usados? |
+| Montagem | Qual foi a ordem real das operações? |
+| Teste | Como comprovar que o resultado está correto? |
+| Evidência | Qual medida, fotografia, log ou arquivo registra a aprovação? |
+
+> [!NOTE]
+> Quando o exemplar montado divergir deste livro, registre a alteração antes de continuar. O livro explica a referência; o caderno descreve o seu robô.
+
+# Parte I - Mecânica
 
 # 4. Dimensionamento mecânico
 
@@ -311,7 +337,42 @@ Mesmo um motor forte não move o robô se a roda patinar. A força máxima trans
 
 Faça um ensaio de rampa com incrementos pequenos. Registre inclinação, corrente dos motores, velocidade, temperatura e ocorrência de patinação. Esse ensaio valida simultaneamente o cálculo mecânico e o orçamento elétrico.
 
-## 4.5 Torque dos braços
+## 4.5 Redução: trocar velocidade por torque
+
+Uma redução mecânica permite que um motor gire mais rápido e com menor torque enquanto o eixo de saída gira mais devagar e com torque maior. Em um par de engrenagens, a relação ideal é:
+
+```text
+i = Z_saída / Z_motora
+velocidade_saída = velocidade_motor / i
+torque_saída_ideal = torque_motor × i
+```
+
+Se a engrenagem motora possui 12 dentes e a movida possui 36, `i = 36/12 = 3`. Idealmente, a saída gira a um terço da velocidade e oferece três vezes o torque. Na prática, atrito, flexão, desalinhamento e folga reduzem o ganho; use a eficiência informada pelo fabricante ou meça o conjunto.
+
+[FIGURE:gear_reduction]
+
+No Robotinics, a redução pode estar integrada ao motoredutor da tração ou adicionada a uma articulação. Antes de escolher, verifique:
+
+- torque contínuo e torque de pico, não apenas o torque de travamento;
+- rotação desejada na roda ou articulação;
+- diâmetro da roda e velocidade linear resultante;
+- folga entre dentes e efeito sobre posicionamento;
+- esforços radiais nos eixos e apoio por rolamentos;
+- possibilidade de retorno da carga e necessidade de freio;
+- corrente do motor na pior condição.
+
+### Exercício de bancada da redução
+
+1. Marque um dente ou o eixo de entrada e outro no eixo de saída.
+2. Gire manualmente a entrada e conte quantas voltas produzem uma volta na saída.
+3. Compare a relação medida com a relação nominal.
+4. Verifique pontos duros, ruído, folga e desalinhamento.
+5. Com o motor alimentado por fonte limitada, meça rotação e corrente sem carga.
+6. Aplique carga crescente dentro do limite e registre queda de rotação e aquecimento.
+
+**Teste antes de avançar:** a transmissão gira livre, não salta dentes, não força a estrutura e atende à rotação e ao torque previstos com margem.
+
+## 4.6 Torque dos braços
 
 Para uma articulação, some o momento produzido por cada massa em relação ao eixo:
 
@@ -335,13 +396,19 @@ Esse é apenas o torque estático. Partida, parada, folga, impacto e desalinhame
 > [!NOTE]
 > A unidade tradicional de servos é `kgf·cm`, não `kgf·cm²`. Para conversão aproximada, `1 kgf·cm = 0,0981 N·m`.
 
-## 4.6 Centro de gravidade e estabilidade
+## 4.7 Centro de gravidade e estabilidade
 
 O centro de gravidade projetado no piso deve permanecer dentro do polígono formado pelos pontos de contato. Braços estendidos deslocam o centro e podem tombar o robô. Avalie as posições extremas no CAD e faça um teste físico com o robô desenergizado.
 
 Mantenha bateria e fontes na região inferior. Limite por software combinações de pose que aproximem o centro de gravidade da borda. A IA pode escolher uma tarefa, mas um planejador determinístico deve rejeitar poses fora do envelope validado.
 
 # 5. Estrutura e montagem mecânica
+
+**O que você vai construir:** uma estrutura mecânica completa, ainda sem energia, com base móvel, suportes internos, corpo, braços, garras e cabeça.
+
+**Conhecimentos necessários:** leitura de desenho, escala, tolerância, orientação de impressão, torque, redução, centro de gravidade, fixação e roteamento de cabos.
+
+**Materiais e ferramentas:** arquivos STL/CAD da revisão escolhida, impressora 3D ou peças fabricadas por terceiro, parafusos e insertos compatíveis, chaves, paquímetro, esquadro, lixas, trava-rosca adequada, motores, rodas e massas de teste equivalentes à bateria e às placas.
 
 ## 5.1 Acervo mecânico
 
@@ -377,7 +444,11 @@ A base deve ser montada e validada antes do corpo. A sequência recomendada é:
 6. Instalar canaletas, prensa-cabos e pontos de aterramento lógico.
 7. Fazer teste de rolagem manual.
 
+[FIGURE:base_cad]
+
 Rodas desalinhadas aumentam corrente e prejudicam odometria. Meça distância entre eixos em ambos os lados e verifique se a base não está torcida. Rodízios devem apoiar sem elevar uma roda motriz.
+
+**Resultado esperado:** a base rola por impulso em linha aproximadamente reta, as rodas não raspam, os motoredutores permanecem firmes e os compartimentos da bateria e das placas podem ser acessados sem desmontar a tração.
 
 ## 5.4 Corpo, braços e cabeça
 
@@ -396,6 +467,19 @@ Para cada articulação, registre:
 | Carga máxima | condição validada, não apenas anunciada |
 | Sentido positivo | convenção usada pelo firmware |
 
+### Passo a passo de uma articulação
+
+1. Monte a peça fixa, o eixo e o apoio sem instalar o braço do servo.
+2. Mova a articulação à mão e identifique colisões, pontos de pinçamento e curso útil.
+3. Ligue somente o servo em bancada, sem carga, e comande a posição central definida para aquele modelo.
+4. Desenergize, instale o braço do servo no zero mecânico e aperte a fixação.
+5. Reenergize com limite de corrente e teste deslocamentos pequenos para ambos os lados.
+6. Aumente gradualmente o curso, grave limites seguros e repita com o elo instalado.
+7. Meça corrente em vazio e com a carga de projeto; interrompa se houver travamento ou aquecimento anormal.
+
+> [!WARNING]
+> Nunca reposicione manualmente um servo energizado. Mantenha dedos, cabos e ferramentas fora da trajetória da articulação.
+
 ## 5.5 Alternativas à impressão 3D
 
 O conceito original permite construir volumes com materiais acessíveis, como chapas, perfis e elementos esféricos revestidos. Qualquer substituição deve preservar fixação, rigidez, acesso e proteção. Isopor não deve ficar exposto a produtos que o dissolvam; revestimentos e adesivos devem ser testados em amostra.
@@ -410,7 +494,17 @@ O conceito original permite construir volumes com materiais acessíveis, como ch
 - Proteção contra contato acidental com partes móveis.
 - Acesso à bateria, fusível e emergência sem desmontagem extensa.
 
+**Entrega da Parte I:** fotografe a estrutura pelos quatro lados, registre massas e dimensões, anote limites das articulações e guarde o relatório de rolagem. Somente então comece a instalação elétrica.
+
+# Parte II - Eletrônica
+
 # 6. Alimentação, bateria e distribuição
+
+**O que você vai construir:** a distribuição elétrica protegida do robô, com trilhos separados para tração, servos e lógica, pronta para receber as placas e os sensores.
+
+**Conhecimentos necessários:** tensão, corrente, potência, energia, polaridade, queda de tensão, fusível, BMS, conversores e medição com multímetro.
+
+**Materiais e instrumentos:** pack e carregador compatíveis, BMS, fusível e porta-fusível, chave geral e emergência, conversores, bornes, fios dimensionados, etiquetas, multímetro e, preferencialmente, fonte de bancada com limitação de corrente.
 
 ## 6.1 Grandezas fundamentais
 
@@ -521,11 +615,106 @@ Antes de medir:
 
 # 7. Eletrônica, sensores e atuadores
 
+**O que você vai construir:** o painel eletrônico e os chicotes removíveis que ligam Arduino Mega, shield, driver, servos e sensores sem depender de jumpers soltos.
+
+**Conhecimentos necessários:** níveis lógicos, entrada e saída digital, ADC, PWM, UART, I²C, ponte H, corrente de partida, desacoplamento, crimpagem e continuidade.
+
+**Materiais e ferramentas:** Arduino Mega 2560, shield com conectores carenados e polarizados, terminais e carcaças compatíveis, alicate de crimpagem adequado, driver de motores, sensores, servos, fios, etiquetas, multímetro e fonte limitada em corrente.
+
 ## 7.1 Arduino e níveis lógicos
 
 O firmware histórico foi desenvolvido para Arduino Mega, cuja lógica é normalmente 5 V. Raspberry Pi usa GPIO de 3,3 V e não tolera 5 V diretamente. Toda ligação entre placas deve considerar nível, direção, corrente e estado durante inicialização. Use conversor de nível quando necessário; nunca confie apenas em uma coincidência observada em bancada.
 
-## 7.2 Driver de motores
+O Mega 2560 foi mantido porque oferece 54 pinos digitais, 16 entradas analógicas e quatro portas seriais de hardware, recursos coerentes com o número de periféricos do projeto. A ligação ao Raspberry Pi é preferencialmente feita por USB, que também facilita diagnóstico e evita expor GPIO de 3,3 V a sinais de 5 V.
+
+## 7.2 Shield com conectores carenados e polarizados
+
+A shield aberta usada na edição anterior expunha fileiras de pinos nas quais um conector de servo podia ser deslocado ou invertido. Nesta revisão ela é substituída por uma shield para Arduino Mega com conectores plásticos carenados, chanfro de orientação e retenção por atrito. A referência visual fornecida pelo autor aparece a seguir.
+
+[FIGURE:shield_keyed]
+
+O [DS1069-4MVW da Connfly](https://www.acheicomponentes.com.br/conector/conector-kk-4-vias-macho-90-2-5mm-branco-ds1069-4mvw) é um exemplo de conector macho de quatro vias no passo nominal de 2,5 mm. Famílias comerciais semelhantes são anunciadas como KK, KF2510, JST-XH ou “2,54 mm”, mas **não são automaticamente intercambiáveis**. Geometria da trava, passo, terminal, corrente e ordem dos pinos precisam corresponder à shield e à carcaça adquiridas.
+
+Conectores da família KK utilizam recursos de polarização e retenção para reduzir encaixe incorreto, mas essa proteção é mecânica. Ela não determina se a sequência é `GND-VCC-SINAL`, `SINAL-VCC-GND` ou outra. A serigrafia da placa e o esquema do fornecedor prevalecem.
+
+[FIGURE:keyed_connector]
+
+### Especificação de compra
+
+Antes de encomendar a shield e os terminais, confirme:
+
+| Item | O que conferir |
+|---|---|
+| Placa | compatibilidade física e elétrica com Arduino Mega 2560 |
+| Passo | valor real entre centros, por exemplo 2,50 ou 2,54 mm |
+| Carcaça | número de vias, orientação e trava compatíveis com o cabeçalho |
+| Terminal | bitola do fio, material e ferramenta de crimpagem recomendada |
+| Corrente | limite por contato e limite do barramento da própria shield |
+| Serigrafia | posição de sinal, VCC e GND em cada grupo |
+| Barramentos | se VCC de servos pode ser isolado da lógica e alimentado externamente |
+
+> [!WARNING]
+> A shield distribui sinais e facilita manutenção; ela não deve transportar a corrente total de vários servos sem confirmação de trilhas, conectores e fabricante. Use alimentação dedicada aos servos, com proteção própria e terra comum controlado. Nunca una saídas de fontes diferentes.
+
+### Fabricação do chicote
+
+1. Desenhe uma tabela de ponta a ponta antes de cortar fios.
+2. Escolha cores consistentes: preto para GND, vermelho para alimentação e outras cores para sinais.
+3. Corte o fio com folga para manutenção, sem deixar laços alcançarem rodas ou articulações.
+4. Decape somente o comprimento indicado pelo terminal.
+5. Crimpe primeiro as abas do condutor e depois as abas do isolamento.
+6. Faça teste leve de tração em cada terminal.
+7. Insira o terminal na carcaça até a lingueta travar e confira a posição 1.
+8. Meça continuidade ponta a ponta e confirme ausência de curto entre vias adjacentes.
+9. Etiquete as duas extremidades com função e destino, por exemplo `US-FRONT`.
+10. Conecte o chicote à placa ainda desenergizada e faça nova conferência visual.
+
+**Teste antes de avançar:** com Arduino, bateria e sensores desconectados, cada via apresenta continuidade apenas até o destino previsto; GND, VCC e sinal estão na mesma ordem da shield.
+
+## 7.3 Mapa de pinos derivado do firmware
+
+O mapa a seguir foi extraído de `Software/arduino/robotinics/robotinics.ino`. Ele documenta o protótipo histórico e deve ser comparado à revisão do firmware carregada. Comentários antigos nem sempre correspondem ao identificador; a tabela usa as declarações efetivas do arquivo.
+
+[FIGURE:mega_wiring]
+
+| Grupo | Função no código | Pino do Mega | Conector recomendado |
+|---|---|---:|---|
+| Servo | cabeça | D6 | 3 vias: sinal, Vservo, GND |
+| Servo | braço direito | D44 | 3 vias: sinal, Vservo, GND |
+| Servo | mão direita | D8 | 3 vias: sinal, Vservo, GND |
+| Servo | braço esquerdo | D9 | 3 vias: sinal, Vservo, GND |
+| Servo | garra esquerda | D10 | 3 vias: sinal, Vservo, GND |
+| Servo | garra direita | D11 | 3 vias: sinal, Vservo, GND |
+| Servo | pé esquerdo | D46 | 3 vias: sinal, Vservo, GND |
+| Analógico | corrente | A0 | 3 vias: OUT, VCC, GND |
+| Analógico | acelerômetro X/Y/Z | A1/A2/A3 | conector multipolar conforme módulo |
+| Analógico | gás | A4 | 3 vias: OUT, VCC, GND |
+| Analógico | tensão da bateria | A6 | divisor protegido; nunca ligar pack direto |
+| Ultrassom | traseiro TRIG/ECHO | D2/D3 | 4 vias: VCC, TRIG, ECHO, GND |
+| Ultrassom | dianteiro TRIG/ECHO | D40/D35 | 4 vias: VCC, TRIG, ECHO, GND |
+| Ultrassom | cabeça TRIG/ECHO | D41/D42 | 4 vias: VCC, TRIG, ECHO, GND |
+| Tração | ENA/IN1/IN2/IN3/IN4/ENB | D26/D28/D30/D34/D32/D36 | chicote de controle separado da potência |
+| Bluetooth | Serial1 RX1/TX1 | D19/D18 | 4 vias: GND, VCC, TX, RX, com cruzamento |
+| Rádio histórico | RX/TX declarados | D17/D16 | confirmar módulo e firmware antes de usar |
+| GPS | Serial3 RX3/TX3 | D15/D14 | 4 vias; ajustar nível e cruzar TX/RX |
+| I²C | SDA/SCL e LCD `0x20` | D20/D21 | 4 vias: GND, VCC, SDA, SCL |
+| Controlador auxiliar | SoftwareSerial | D37/D38 | confirmar sentido TX/RX no sketch revisado |
+
+> [!NOTE]
+> O arquivo histórico contém macros de GPS inválidas e uma porta analógica A5 configurada como entrada apesar do nome `analogOutGas`. Esses pontos permanecem na matriz de correções e devem ser corrigidos na versão de firmware usada na montagem.
+
+### Ordem prática de ligação
+
+1. Instale o Mega e a shield sem conectar periféricos.
+2. Verifique continuidade entre os pinos do Mega e os contatos correspondentes da shield.
+3. Alimente apenas a lógica por USB e confirme que nenhum barramento de servo recebe tensão indevida.
+4. Conecte I²C e interfaces seriais, uma por vez, e execute testes de identificação.
+5. Conecte sensores analógicos e ultrassônicos e confira valores em repouso.
+6. Conecte o driver sem motores; teste níveis de controle com o robô desarmado.
+7. Conecte um servo por vez à fonte dedicada e aplique os limites mecânicos registrados.
+8. Somente depois instale motores, com as rodas suspensas e a fonte limitada em corrente.
+
+## 7.4 Driver de motores
 
 O L298N é uma ponte H dupla baseada em transistores bipolares. Ele permite controle de direção e velocidade por PWM aplicado aos pinos de enable. Não fornece isolamento galvânico e apresenta queda de tensão e dissipação relevantes, especialmente em baixa tensão de motor.
 
@@ -533,11 +722,15 @@ Se o projeto for mantido por compatibilidade, meça tensão no motor e temperatu
 
 O motor aparece com tensões diferentes em trechos históricos. A Rev. 3 não assume 12 V: identifique o modelo instalado e respeite sua ficha técnica. Uma tensão de bateria de 11,1/12,6 V não autoriza ligar diretamente um motor de 3-6 V.
 
-## 7.3 Relés
+[FIGURE:driver_l298n]
+
+No firmware histórico, `ENA`, `IN1`, `IN2`, `IN3`, `IN4` e `ENB` foram atribuídos a D26, D28, D30, D34, D32 e D36. O chicote de controle leva apenas sinais e referência. Os cabos de bateria e motores seguem diretamente pelo circuito de potência, com bitola e conectores dimensionados para a corrente de partida.
+
+## 7.5 Relés
 
 Contato normalmente aberto (NA/NO) permanece aberto com a bobina desenergizada e fecha quando acionada. Contato normalmente fechado (NF/NC) permanece fechado em repouso e abre quando acionado. Verifique o diagrama do componente, tensão da bobina, corrente dos contatos e necessidade de diodo de roda livre.
 
-## 7.4 LEDs
+## 7.6 LEDs
 
 `0,02 A` corresponde a 20 mA, não 200 mA. O resistor é calculado por:
 
@@ -547,7 +740,7 @@ R = (V_fonte - V_LED) / I_LED
 
 Para fonte de 5 V, LED vermelho com queda aproximada de 2 V e corrente desejada de 9 mA, `R ≈ 333 Ω`; 330 Ω é um valor comercial adequado no exemplo. Calcule a potência do resistor por `P = I² × R` e confirme a especificação real do LED.
 
-## 7.5 Sensor ultrassônico
+## 7.7 Sensor ultrassônico
 
 O HC-SR04 utiliza pulsos ultrassônicos em torno de 40 kHz, não 40 Hz. O microcontrolador envia pulso de trigger e mede a duração do echo. A distância aproximada é obtida considerando ida e volta do som:
 
@@ -559,25 +752,43 @@ Faça leituras independentes, descarte timeouts e aplique filtragem. Repetir tr�
 
 O sinal echo de muitos módulos é 5 V. Para Raspberry Pi, use adaptação de nível. Temperatura, ângulo, material e interferência entre sensores afetam o resultado; o ultrassom é auxílio, não única barreira de segurança.
 
-## 7.6 Servos
+[FIGURE:sensor_ultrasound]
+
+[FIGURE:ultrasound_principle]
+
+### Ligação e teste de cada HC-SR04
+
+1. Com a alimentação desligada, ligue `VCC` e `GND` e depois `TRIG` e `ECHO` conforme a tabela de pinos.
+2. Confirme no multímetro que não existe curto entre VCC e GND.
+3. Energize apenas Arduino e sensor e execute um sketch mínimo com timeout.
+4. Posicione uma superfície plana a distâncias conhecidas, por exemplo 10, 30 e 60 cm.
+5. Compare a mediana de várias leituras com a régua e registre erro e dispersão.
+6. Repita com os três sensores individualmente antes de habilitá-los em sequência.
+7. Defina intervalo entre disparos para reduzir interferência cruzada.
+
+## 7.8 Servos
 
 A biblioteca `Servo` do Arduino usa temporizadores e pode controlar servos em diversos pinos digitais; não é correto afirmar que somente pinos marcados como PWM servem. Entretanto, o uso de temporizadores pode interferir em outras funções, e o número de canais depende da placa e da biblioteca.
 
 Alimente servos por fonte separada e una a referência de sinal de forma planejada. Defina limites mecânicos individuais. Na inicialização, não envie abruptamente uma posição que faça a articulação colidir; carregue calibração, valide e mova com rampa.
 
-## 7.7 Sensores analógicos
+[FIGURE:servo_pcb]
+
+## 7.9 Sensores analógicos
 
 Entradas de tensão e corrente devem permanecer dentro da faixa do ADC. Divisores resistivos precisam considerar tolerância e impedância; sensores de corrente precisam de calibração de zero, ganho e ruído. Para calcular média ou RMS, zere acumuladores no início da janela e use amostras distintas.
 
 Um alarme de sobrecorrente deve existir abaixo do nível que danifica fios, driver ou bateria. A resposta rápida pode ficar no firmware; o Raspberry registra e explica o evento.
 
-## 7.8 Desacoplamento e compatibilidade eletromagnética
+[FIGURE:sensor_current]
+
+## 7.10 Desacoplamento e compatibilidade eletromagnética
 
 Instale capacitores de desacoplamento próximos aos circuitos, mantenha loops de corrente pequenos e separe cabos de potência de sinais. Motores com escovas podem exigir supressão no próprio motor. Trance pares de alimentação e retorno quando apropriado e evite usar cabos/conectores de dados sem verificar corrente, queda de tensão e pinagem.
 
 Conector RJ45 pode ser usado como conector físico interno, mas isso não transforma o circuito em Ethernet. Identifique claramente para impedir conexão acidental a uma rede.
 
-## 7.9 Checklist eletrônico
+## 7.11 Checklist eletrônico
 
 - Tensão e corrente nominal de cada componente confirmadas.
 - Níveis de 3,3 V e 5 V compatibilizados.
@@ -589,11 +800,35 @@ Conector RJ45 pode ser usado como conector físico interno, mas isso não transf
 - Cabos etiquetados, presos e livres de partes móveis.
 - Teste de ruído executado com motores e servos em movimento.
 
-# Parte III - Firmware, Linux e comunicação
+**Entrega da Parte II:** salve o diagrama elétrico, a tabela de chicotes, fotografias das duas extremidades de cada conexão e a planilha de tensões e correntes. O software somente será integrado quando cada carga funcionar separadamente e o desligamento de emergência tiver sido testado.
+
+# Parte III - Software e inteligência artificial
 
 # 8. Firmware Robotinics Rev. 3
 
-## 8.1 Por que reorganizar
+**O que você vai construir:** o firmware determinístico que inicializa o robô desarmado, lê sensores, controla atuadores dentro de limites, publica o catálogo de comandos e para com segurança quando a comunicação falha.
+
+**Conhecimentos necessários:** Arduino IDE, C/C++, entradas e saídas, temporização sem bloqueio, buffers, parser, máquina de estados, watchdog e teste serial.
+
+**Materiais:** Arduino Mega com a eletrônica da Parte II ainda sem cargas perigosas, cabo USB, computador com Arduino IDE 2 atual, cópia versionada de `Software/arduino/robotinics` e terminal serial.
+
+## 8.1 Preparar, compilar e gravar
+
+1. Instale a versão atual da Arduino IDE 2 pela documentação oficial.
+2. Abra `Software/arduino/robotinics/robotinics.ino` a partir de uma cópia de trabalho versionada.
+3. Selecione **Arduino Mega or Mega 2560** e o processador ATmega2560.
+4. Instale somente as bibliotecas exigidas pelo sketch e registre nome e versão: `LiquidCrystal_I2C`, `Ultrasonic`, `Servo` e `RCSwitch`, além das bibliotecas padrão.
+5. Corrija as macros inválidas de GPS e os demais itens marcados na matriz editorial antes de considerar a build aprovada.
+6. Compile sem placa conectada e salve o log completo de avisos e uso de memória.
+7. Conecte apenas Mega e shield por USB, sem motores, servos ou bateria.
+8. Grave o firmware e abra o monitor na velocidade configurada, atualmente 115200 bit/s para `Serial`.
+9. Reinicie três vezes e confirme que nenhuma saída de movimento é ativada.
+10. Registre hash do arquivo, versão exibida e mapa de pinos usado para construir o chicote.
+
+> [!WARNING]
+> O sketch histórico é a fonte que documenta o protótipo, mas contém problemas conhecidos. Compilar não basta: a revisão operacional deve incluir parser limitado, estado desarmado, watchdog e testes descritos neste capítulo.
+
+## 8.2 Por que reorganizar
 
 O sketch histórico demonstra muitos recursos, mas concentra cerca de 1.500 linhas em um único arquivo. Ele usa `String` intensivamente em um microcontrolador com pouca RAM, mistura buffers de várias portas, contém esperas bloqueantes e interpreta comandos com testes de substring. Isso torna possível que um prefixo como `ULTRA` também corresponda a `ULTRA1`, além de dificultar timeout, testes e manutenção.
 
@@ -601,7 +836,7 @@ Também existem defeitos objetivos: definições como `#define PINOGPSRX = 0;` n
 
 A Rev. 3 mantém o valor do firmware original, mas propõe uma arquitetura modular e uma interface estável.
 
-## 8.2 Módulos
+## 8.3 Módulos
 
 | Módulo | Responsabilidade |
 |---|---|
@@ -616,7 +851,7 @@ A Rev. 3 mantém o valor do firmware original, mas propõe uma arquitetura modul
 
 Em placas pequenas, os módulos podem continuar compilados em um único sketch, mas devem permanecer separados por arquivos ou funções de responsabilidade clara.
 
-## 8.3 Inicialização segura
+## 8.4 Inicialização segura
 
 Ao ligar:
 
@@ -629,7 +864,7 @@ Ao ligar:
 
 Servos devem iniciar em posição conhecida sem saltos. Quando a posição física não é conhecida, mova lentamente para uma referência segura ou exija procedimento manual.
 
-## 8.4 Entrada serial limitada
+## 8.5 Entrada serial limitada
 
 Use um buffer fixo, por exemplo 128 bytes. Cada byte recebido é anexado até `LF` ou `CRLF`. Se o limite for excedido, descarte a linha, sinalize `ERR LINE_TOO_LONG` e não execute conteúdo parcial. Cada porta deve possuir seu próprio estado de recepção.
 
@@ -642,7 +877,7 @@ PWM:      120, validado em 0..255
 Duração:  800 ms, validada em 1..2000
 ```
 
-## 8.5 Manual de comandos
+## 8.6 Manual de comandos
 
 O `TAIAgentSerial` do projeto TCHATGPT descobre o catálogo por marcadores e linhas determinísticas. O firmware Rev. 3 deve responder:
 
@@ -668,19 +903,19 @@ MAN-END
 
 O agente interpreta somente linhas `COMMAND`. Informações como versão e baud são apresentadas ao operador, mas não criam ações. Comandos desconhecidos permanecem bloqueados. Os aliases históricos `FRENTE`, `RE`, `GESQ`, `GDIR` e `PARA` podem ser mantidos para uso manual, mapeados internamente para a nova API e sujeitos aos mesmos limites.
 
-## 8.6 Watchdog e heartbeat
+## 8.7 Watchdog e heartbeat
 
 Movimento deve expirar. Mesmo quando o comando contém duração, o firmware registra o instante de início e interrompe ao atingir o limite. Se a aplicação usar movimento contínuo, ela envia heartbeat periódico; ausência por um intervalo curto, por exemplo 500 ms, conduz a `STOP` e `FAULT` ou `DISARMED`, conforme a política.
 
 O watchdog de hardware deve ser configurado para recuperar travamento do firmware. Após reset por watchdog, o robô volta desarmado e registra a causa. Reiniciar não deve retomar a ação anterior.
 
-## 8.7 Obstáculos e limites locais
+## 8.8 Obstáculos e limites locais
 
 O firmware pode bloquear avanço quando um sensor frontal válido indicar distância menor que a margem configurada. Leituras inválidas não devem ser convertidas automaticamente em “caminho livre”. Defina uma política explícita: reduzir velocidade, parar e solicitar nova leitura.
 
 Servos possuem limites por articulação. Corrente ou tempo excessivo sugere travamento e deve interromper a saída. A parada física de emergência deve retirar energia dos atuadores de modo apropriado e informar seu estado à lógica quando possível.
 
-## 8.8 Telemetria
+## 8.9 Telemetria
 
 Respostas seguem padrões simples:
 
@@ -702,11 +937,11 @@ ERR RANGE_TIMEOUT SENSOR=FRONT
 
 Inclua unidade no nome ou no contrato. `BATTERY_MV=11780` é menos ambíguo que `BATTERY=11.78` sem unidade.
 
-## 8.9 Evitar fragmentação de memória
+## 8.10 Evitar fragmentação de memória
 
 Em AVR, prefira arrays de `char`, buffers limitados e funções que não criem muitas cópias. Evite concatenar `String` indefinidamente. Conteúdo vindo da serial nunca deve aumentar sem limite. Testes de longa duração precisam observar RAM, estabilidade e recuperação de linhas inválidas.
 
-## 8.10 Testes do firmware
+## 8.11 Testes do firmware
 
 - `STOP` funciona em todos os estados.
 - Movimento é recusado em `DISARMED`.
@@ -721,15 +956,60 @@ Em AVR, prefira arrays de `char`, buffers limitados e funções que não criem m
 
 # 9. Raspberry Pi e serviços do robô
 
+**O que você vai construir:** o computador de bordo atual, responsável por câmera, áudio, rede, gateway serial, telemetria e serviços de IA, sem substituir o controle determinístico do Arduino.
+
+**Conhecimentos necessários:** Linux, imagem de sistema, usuários e permissões, USB/serial, serviços, logs, rede, armazenamento, câmera CSI e limites de temperatura e consumo.
+
+**Materiais:** Raspberry Pi 5 recomendado, fonte USB-C de 5 V/5 A compatível, resfriamento ativo, microSD de boa procedência ou SSD, câmera, cabo CSI adequado ao Pi 5, cabo USB para o Mega e rede Ethernet ou Wi-Fi.
+
 ## 9.1 Papel do Raspberry Pi
 
 O Raspberry Pi não substitui o Arduino no controle de tempo real. Ele executa tarefas de maior nível: interface de câmera e áudio, integração de rede, armazenamento, aplicação Lazarus compatível, gateway serial, telemetria e serviços de IA que caibam na plataforma.
 
 O sistema deve continuar seguro durante boot, atualização ou travamento. A linha de enable dos atuadores não pode depender de um GPIO que fique flutuando; o Arduino mantém o estado desarmado até receber sequência válida.
 
-## 9.2 Instalação do sistema
+## 9.2 Hardware atual recomendado
+
+Para uma nova montagem, use o [Raspberry Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/), com processador Cortex-A76 de quatro núcleos a 2,4 GHz, GPIO de 40 pinos e memória escolhida conforme a carga. O modelo de 8 GB oferece margem útil para visão e serviços simultâneos; 4 GB atende gateway, câmera e modelos pequenos quando o sistema é bem dimensionado. Mais memória não substitui medição de latência e temperatura.
+
+O Pi 5 requer atenção à alimentação e à refrigeração. Use fonte capaz de fornecer 5 V/5 A conforme a recomendação da plataforma, cabos curtos e confiáveis e resfriamento ativo em processamento sustentado. Servos e motores continuam em fontes separadas: o conector USB-C do Pi não é barramento de potência dos atuadores.
+
+Para uma versão embarcada ou placa própria, o [Compute Module 5](https://www.raspberrypi.com/products/compute-module-5/) é alternativa posterior. Ele oferece a mesma geração de processamento em formato de módulo, opções de eMMC e maior liberdade de integração, mas exige carrier board e projeto eletrônico adicional. Comece pelo Pi 5 convencional para reproduzir o livro.
+
+[FIGURE:pi5_stack]
+
+## 9.3 Instalação do sistema passo a passo
 
 Use o Raspberry Pi Imager e a documentação oficial atual. Configure usuário próprio, senha forte, rede e SSH durante a gravação quando suportado. Não presuma o antigo usuário `pi` com senha `raspberry`; essa prática pertence a imagens históricas.
+
+Na data editorial desta revisão, a opção corrente é o Raspberry Pi OS de 64 bits baseado em Debian Trixie; Bookworm aparece como versão legada. Como esse estado muda, confirme a página oficial antes de gravar. Use a edição Lite quando o robô não precisa de desktop local.
+
+1. Instale o Raspberry Pi Imager em outro computador.
+2. Selecione Raspberry Pi 5 e Raspberry Pi OS Lite de 64 bits.
+3. Nas opções avançadas, defina hostname, usuário exclusivo, senha forte, fuso horário, rede e chave SSH.
+4. Grave e valide o microSD ou SSD; anote versão e data da imagem.
+5. Instale o resfriamento, conecte armazenamento, rede e monitor apenas se necessário; deixe Arduino e atuadores desconectados.
+6. Ligue o Pi e acesse localmente ou por SSH.
+7. Atualize o sistema e reinicie:
+
+```bash
+sudo apt update
+sudo apt full-upgrade
+sudo reboot
+```
+
+8. Instale ferramentas básicas de diagnóstico, câmera e visão pelos repositórios da distribuição:
+
+```bash
+sudo apt install git python3-picamera2 python3-opencv rpicam-apps
+```
+
+9. Liste câmeras com `rpicam-hello --list-cameras` e faça uma prévia ou captura conforme a documentação atual.
+10. Conecte o Arduino Mega por USB, localize a porta estável em `/dev/serial/by-id/` e adicione o usuário do serviço ao grupo de acesso serial, normalmente `dialout`.
+11. Saia e entre novamente após mudar grupos; então teste `PING`, `MAN` e `STATUS?` em terminal antes de iniciar qualquer serviço automático.
+
+> [!NOTE]
+> O Pi 5 usa conectores de câmera de 22 pinos. A Camera Module 3 comum usa cabo de 15 pinos; portanto, adquira o cabo mini de 22 para 15 pinos apropriado. Não force o flat cable e confirme a orientação dos contatos.
 
 Registre:
 
@@ -742,13 +1022,13 @@ Registre:
 - versão do kernel e firmware;
 - resultado dos testes de porta serial, câmera e áudio.
 
-## 9.3 Perfil mínimo
+## 9.4 Perfil mínimo
 
 Comece pelo sistema Lite quando o robô não precisa de ambiente gráfico local. Instale apenas dependências necessárias. Interfaces gráficas, Chromium, OpenCV, voz e modelos locais aumentam consumo, armazenamento e superfície de falha.
 
 O TCHATGPT declara Linux ARM64 e ARMHF como experimentais no snapshot desta edição. Portanto, compile primeiro `openai_core` e um teste de console. Depois valide `openai_input`, `openai_voice` e `openai_vision` separadamente. Não instale toda a suíte e atribua uma falha genérica ao Raspberry.
 
-## 9.4 Serviços com systemd
+## 9.5 Serviços com systemd
 
 Aplicações de longa duração devem ser gerenciadas pelo `systemd`, com usuário sem privilégios administrativos, diretório de trabalho explícito, reinício controlado e log no journal.
 
@@ -775,23 +1055,25 @@ WantedBy=multi-user.target
 
 Adapte permissões de dispositivo serial por grupo e regras apropriadas. Não execute o serviço como root apenas para acessar `/dev/ttyUSB0`.
 
-## 9.5 Dependências e instalador
+## 9.6 Dependências e instalador
 
 Dependências externas devem ser resolvidas de forma determinística pelo instalador ou por script versionado. A documentação informa quais são obrigatórias, opcionais e específicas de plataforma. O teste do instalador precisa confirmar bibliotecas em runtime, não apenas a compilação.
 
 Para os pacotes TCHATGPT, componentes que usam Python devem passar pelo `TAIPythonRuntime`. Visão, voz e bibliotecas nativas precisam validar arquitetura. Um binário x64 não funciona em ARM64; uma biblioteca de 32 bits não satisfaz um processo de 64 bits.
 
-## 9.6 Câmera e áudio
+## 9.7 Câmera e áudio
 
 Teste captura e reprodução fora da IA. Primeiro confirme dispositivo, formato, taxa e latência. Em seguida conecte os componentes de voz ou visão. Isso separa falha de hardware, permissão e biblioteca de falha do modelo.
 
+A pilha atual do Raspberry Pi usa `rpicam-apps` e [Picamera2](https://www.raspberrypi.com/documentation/computers/camera_software.html), que substituíram a API legada Picamera. Camera Module 3 oferece sensor de 12 MP e foco automático. A [Raspberry Pi AI Camera](https://www.raspberrypi.com/documentation/accessories/ai-camera.html), baseada no Sony IMX500, pode executar parte da inferência localmente e reduzir a carga do processador; ela é opcional, não requisito para acompanhar o livro.
+
 Use nomes persistentes ou regras para dispositivos USB quando a ordem puder mudar. O serviço deve informar claramente “dispositivo ausente” e continuar seguro, em vez de travar o robô inteiro.
 
-## 9.7 Armazenamento
+## 9.8 Armazenamento
 
 Cartões microSD sofrem desgaste. Evite logs ilimitados e escrita contínua sem rotação. Use banco leve ou arquivos atômicos para configuração, com backup e validação. Dados importantes podem ser enviados a armazenamento externo quando a rede estiver disponível, sem bloquear controle local.
 
-## 9.8 Atualização e rollback
+## 9.9 Atualização e rollback
 
 Atualize aplicação e firmware como unidades versionadas. Antes de trocar:
 
@@ -802,6 +1084,8 @@ Atualize aplicação e firmware como unidades versionadas. Antes de trocar:
 5. altere o link da versão ativa;
 6. monitore o primeiro boot;
 7. retorne à versão anterior se os critérios falharem.
+
+**Teste antes de avançar:** depois de três reinicializações, o Pi inicia sem energizar atuadores, reconhece Arduino e câmera pelos mesmos identificadores, registra os serviços no journal e permanece dentro do limite térmico definido durante uma captura prolongada.
 
 # 10. Comunicação, dados e segurança de software
 
@@ -881,11 +1165,38 @@ Não registre chave de API, senha, áudio ou imagem sensível por padrão. Logs 
 - simular resposta atrasada;
 - confirmar que nenhuma falha impede o Arduino de executar `STOP`.
 
-# Parte IV - Inteligência artificial com TCHATGPT
+# Inteligência artificial aplicada ao robô
 
 # 11. Preparando o TCHATGPT
 
-## 11.1 O projeto
+## 11.1 O que é um LLM e o que ele faz no Robotinics
+
+Um **modelo de linguagem de grande porte** (LLM) é uma rede neural treinada para estimar a continuação de sequências de texto. Ele aprende relações entre palavras, código e outros padrões a partir de muitos exemplos. Isso permite resumir, classificar, conversar e transformar uma solicitação em uma estrutura, mas não garante verdade, repetibilidade nem conhecimento do estado físico atual.
+
+No Robotinics, o LLM funciona como intérprete de intenção. Ele pode converter “avance um pouco” em uma proposta como `{"action":"move_forward","pwm":90,"duration_ms":400}`. O resultado ainda passa por parser, catálogo, estado, limites, confirmação e firmware. O modelo não escreve diretamente em pinos, não escolhe tensão, não desativa watchdog e não executa comandos de sistema operacional.
+
+[FIGURE:llm_pipeline]
+
+| Termo | Significado prático no projeto |
+|---|---|
+| Token | unidade de texto processada; influencia limite, custo e latência |
+| Contexto | instruções, catálogo e observações fornecidos naquela solicitação |
+| Temperatura | controla variação; baixa temperatura ajuda formato, mas não garante correção |
+| Prompt | instrução enviada ao modelo; orienta, mas não autoriza ação física |
+| Inferência | execução do modelo para produzir uma resposta |
+| Quantização | redução da precisão numérica para diminuir memória e, às vezes, acelerar inferência |
+| Alucinação | saída plausível porém incorreta ou inventada |
+| Tool calling | proposta estruturada para outro software executar uma função validada |
+
+### Modelo remoto ou local
+
+- **Remoto:** libera recursos do Raspberry Pi, mas depende da rede, do custo e da política de dados do provedor.
+- **Local em servidor:** mantém dados na rede do laboratório e permite modelos maiores em computador x64.
+- **Local no Pi 5:** funciona sem nuvem com modelos pequenos e quantizados, mas divide CPU, RAM e energia com visão e voz.
+
+O [llama.cpp](https://github.com/ggml-org/llama.cpp) executa modelos quantizados em C/C++ e pode publicar um endpoint compatível com a API da OpenAI. Em Raspberry Pi, comece por um modelo pequeno, limite o contexto e meça tokens por segundo, memória, temperatura e tempo total. “Roda localmente” não significa “responde rápido o suficiente para controle”; movimentos urgentes permanecem no firmware.
+
+## 11.2 O projeto
 
 TCHATGPT é uma suíte de componentes visuais e não visuais para Lazarus e Free Pascal. No commit adotado, a unit `chatgpt` declara versão 1.7 e integra provedores remotos e servidores locais. A suíte é modular: não instale o antigo pacote monolítico `openai.lpk`.
 
@@ -903,7 +1214,7 @@ Para a integração básica do Robotinics, os pacotes principais são:
 
 “PASS” no relatório do projeto significa que um sample compilou. Isso não comprova automaticamente câmera, microfone, placa, modelo ou serviço externo em runtime. A Rev. 3 mantém essa distinção.
 
-## 11.2 Provedores
+## 11.3 Provedores
 
 `TCHATGPT` oferece OpenAI, OpenRouter, Cerebras, Gemini, Claude, DeepSeek, endpoint OpenAI-compatible, llama.cpp, neural-api e perfil local. O livro não obriga um provedor.
 
@@ -914,7 +1225,7 @@ Escolha conforme privacidade, latência, custo, disponibilidade e capacidade do 
 - **Local no Raspberry:** maior independência, mas modelos e visão competem por CPU/RAM; requer medição real.
 - **Híbrido:** comandos simples e segurança local; tarefas linguísticas complexas em servidor remoto ou local mais potente.
 
-## 11.3 Configuração sem segredo no código
+## 11.4 Configuração sem segredo no código
 
 O trecho abaixo usa a API real da versão congelada. `SendQuestion` retorna `Boolean`; a resposta fica em `Response`. Portanto, não trate o retorno da função como texto.
 
@@ -946,19 +1257,19 @@ end;
 
 No laboratório de Marcelo, um servidor local pode estar configurado na porta 8095. Esse valor é configuração do ambiente, não padrão universal do TCHATGPT. Defina `ROBOTINICS_LLM_URL`, por exemplo `http://127.0.0.1:8095/v1/chat/completions`, somente depois de confirmar endpoint e modelo.
 
-## 11.4 Chamadas assíncronas
+## 11.5 Chamadas assíncronas
 
 Interfaces gráficas não devem congelar durante uma requisição. `TCHATGPT` oferece `SendQuestionAsync`, streaming, eventos de estado e cancelamento. Os estados incluem `Idle`, `Connecting`, `Receiving`, `Completed`, `Cancelled` e `Error`.
 
 Use chamadas assíncronas para conversa e explicações. Controle físico requer ainda serialização: não permita duas decisões concorrentes sobre o mesmo atuador. Um coordenador mantém uma fila curta, cancela solicitações antigas e invalida resposta que chegou depois de mudança de estado.
 
-## 11.5 Prompts e contratos
+## 11.6 Prompts e contratos
 
 Um prompt não é mecanismo de autorização. Ele descreve o formato esperado, mas toda resposta deve passar por parser. Para controle, use JSON estrito, conjunto pequeno de ações e parâmetros numéricos. Defina temperatura baixa e limite de tokens; respostas longas só aumentam latência e superfície de erro.
 
 Não envie ao modelo todo o histórico, toda a telemetria ou documentos completos. Selecione contexto relevante, informe unidades e inclua o estado atual. Uma decisão feita com telemetria antiga deve expirar.
 
-## 11.6 Autoteste
+## 11.7 Autoteste
 
 Antes de associar o LLM ao agente serial:
 
@@ -1169,6 +1480,18 @@ O arquivo histórico `face.py` importa VPython/`visual` e desenha uma face anima
 
 ## 14.2 Componentes atuais
 
+Visão computacional transforma pixels em medidas ou observações. Três tarefas aparecem com frequência:
+
+| Tarefa | Pergunta respondida | Exemplo no Robotinics |
+|---|---|---|
+| Classificação | o que predomina na imagem? | “corredor” ou “bancada” |
+| Detecção | quais objetos existem e onde estão? | pessoa em uma caixa delimitadora |
+| Segmentação | quais pixels pertencem a cada região? | área livre do piso |
+
+Filtros tradicionais, como conversão para cinza, limiar e detecção de bordas, são rápidos e explicáveis. Redes neurais ajudam em variações maiores de forma e iluminação, mas exigem modelo, dados, memória e validação. A versão atual do módulo DNN do [OpenCV](https://docs.opencv.org/4.13.0/d2/d58/tutorial_table_of_content_dnn.html) oferece exemplos de classificação, detecção e segmentação; escolha a tarefa mínima necessária.
+
+Para a câmera principal, a montagem de referência usa Camera Module 3 com Picamera2. A AI Camera com IMX500 é uma alternativa para inferência local de baixa latência, mas exige modelos compatíveis e instalação própria. Uma webcam USB também funciona quando driver, identificação persistente, latência e consumo forem validados.
+
 `TAIOpenCV` possui dois backends:
 
 | Backend | Uso recomendado | Limitação |
@@ -1196,6 +1519,54 @@ O pipeline recomendado é:
 [FIGURE:vision_pipeline]
 
 Não envie a imagem inteira ao LLM quando uma detecção local simples responde à pergunta. Um detector pode produzir `PERSON confidence=0.91 x=...`; o agente recebe essa observação e decide se deve explicar, perguntar ou propor ação.
+
+### Primeiro experimento com Picamera2 e OpenCV
+
+Faça este teste antes de instalar detector ou LLM. Ele confirma câmera, formato e OpenCV e grava uma evidência sem controlar o robô.
+
+```python
+from picamera2 import Picamera2
+import cv2
+import time
+
+camera = Picamera2()
+config = camera.create_still_configuration(
+    main={"size": (1280, 720), "format": "RGB888"}
+)
+camera.configure(config)
+camera.start()
+time.sleep(1)
+
+frame = camera.capture_array()
+gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+edges = cv2.Canny(gray, 80, 160)
+
+cv2.imwrite("robotinics_frame.jpg", frame)
+cv2.imwrite("robotinics_edges.png", edges)
+camera.stop()
+```
+
+1. Execute o script com o robô desarmado.
+2. Confirme que os dois arquivos possuem 1280 × 720 pixels.
+3. Verifique orientação, foco e enquadramento da câmera instalada na cabeça.
+4. Repita sob luz forte, fraca e lateral.
+5. Registre tempo de captura, temperatura e consumo de memória.
+6. Somente depois acrescente detecção e transforme o resultado em evento estruturado.
+
+### Contrato de uma observação
+
+```json
+{
+  "schema": "robotinics.vision.v1",
+  "timestamp": "2026-08-12T14:30:00Z",
+  "class": "person",
+  "confidence": 0.91,
+  "bbox": [0.18, 0.12, 0.43, 0.82],
+  "frame_age_ms": 74
+}
+```
+
+Coordenadas normalizadas evitam dependência de resolução. `frame_age_ms` permite rejeitar percepção antiga. Classe e confiança não são ordens de movimento.
 
 ## 14.4 Desempenho no Raspberry
 
@@ -1363,7 +1734,7 @@ Uma habilidade sai de simulação para operação física quando:
 - resultados foram repetidos em hardware real;
 - a versão do código foi congelada.
 
-# Parte V - Construção, validação e evolução
+# Integração, validação e evolução
 
 # 17. Sequência de construção
 
@@ -1641,7 +2012,8 @@ Esta lista organiza categorias. Modelo e quantidade finais dependem da montagem 
 | Estrutura | peças STL/CAD, parafusos, insertos, suportes | material, revisão, carga e folga |
 | Tração | motores com redução, rodas, driver | tensão, corrente de stall, torque contínuo |
 | Controle | Arduino Mega ou placa compatível | pinos, memória, interfaces |
-| Computação | Raspberry Pi compatível, armazenamento | arquitetura, alimentação, temperatura |
+| Distribuição | shield Mega com conectores carenados, carcaças e terminais compatíveis | passo, trava, pinagem, corrente e separação de Vservo |
+| Computação | Raspberry Pi 5, fonte 5 V/5 A, resfriamento e armazenamento | ARM64, alimentação, temperatura e identificação persistente |
 | Energia | pack 3S, BMS, carregador, fusível, chave | química, corrente, certificação e montagem |
 | Conversão | trilho de tração, servos e lógica | tensão, corrente, ripple e refrigeração |
 | Servos | atuadores e suportes | torque calculado, limites e corrente |
@@ -1743,6 +2115,9 @@ Aliases não contornam estado, catálogo ou limites.
 | Aceleração | `F = m × a` | N |
 | Torque | `T = F × r` | N·m |
 | Torque de braço | `T = Σ(m_i × g × d_i)` | N·m |
+| Relação de redução | `i = Z_saída/Z_motora` | adimensional |
+| Rotação após redução | `n_saída ≈ n_motor/i` | rpm |
+| Torque após redução | `T_saída ≈ T_motor×i×η` | N·m |
 | Potência DC | `P = V × I` | W |
 | Energia | `E = P × t` ou `V × Ah` | Wh |
 | Resistor de LED | `R = (V_fonte - V_LED) / I` | Ω |
@@ -1771,7 +2146,7 @@ Não promova “provável” para “suportado” sem build e teste repetível.
 
 ## Projetos
 
-1. Marcelo Maurin Martins. **Robotinics**. [Repositório do Robotinics](https://github.com/marcelomaurin/robotinics). Snapshot editorial `61d2a19d10e6701e27e46181e1a6c740b8ee4e30`.
+1. Marcelo Maurin Martins. **Robotinics**. [Repositório do Robotinics](https://github.com/marcelomaurin/robotinics). Base editorial `39c1b4610f1b51883a2d9fcdbccba2c672dafad3`.
 2. Marcelo Maurin Martins. **TCHATGPT - AI Component Suite for Lazarus / Free Pascal**. [Repositório do TCHATGPT](https://github.com/marcelomaurin/CHATGPT). Snapshot editorial `15d5e1a7780088701716896cfe9fb3afe0e7b71a`.
 3. TCHATGPT. [Compatibilidade por plataforma](https://github.com/marcelomaurin/CHATGPT/blob/15d5e1a7780088701716896cfe9fb3afe0e7b71a/DOC/COMPATIBILIDADE.md).
 4. TCHATGPT. [Agent Serial Demo](https://github.com/marcelomaurin/CHATGPT/tree/15d5e1a7780088701716896cfe9fb3afe0e7b71a/pacote/samples/AI%20Agent/agent_serial_demo).
@@ -1786,6 +2161,16 @@ Não promova “provável” para “suportado” sem build e teste repetível.
 10. Texas Instruments. [Precise Constant Current Regulation Helps Advance Fast-charging](https://www.ti.com/document-viewer/lit/html/SSZTA38).
 11. Fluke. [Digital multimeter safety and measurement guidance](https://media.fluke.com/51012112-8f43-4aa7-a30a-b2e3016e8f2f_original%20file.pdf).
 12. Omron. [Explanation of relay terms](https://www.ia.omron.com/support/guide/36/explanation_of_terms.html).
+13. Raspberry Pi Ltd. [Raspberry Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/).
+14. Raspberry Pi Ltd. [Compute Module 5](https://www.raspberrypi.com/products/compute-module-5/).
+15. Raspberry Pi Ltd. [Camera hardware](https://www.raspberrypi.com/documentation/accessories/camera.html).
+16. Raspberry Pi Ltd. [Camera software and Picamera2](https://www.raspberrypi.com/documentation/computers/camera_software.html).
+17. Raspberry Pi Ltd. [Raspberry Pi AI Camera](https://www.raspberrypi.com/documentation/accessories/ai-camera.html).
+18. OpenCV. [Deep neural network tutorials](https://docs.opencv.org/4.13.0/d2/d58/tutorial_table_of_content_dnn.html).
+19. ggml-org. [llama.cpp](https://github.com/ggml-org/llama.cpp).
+20. Molex. [KK connectors](https://www.molex.com/en-us/products/connectors/wire-to-board-connectors/kk-connectors).
+21. Achei Componentes. [Connfly DS1069-4MVW, quatro vias, passo de 2,5 mm](https://www.acheicomponentes.com.br/conector/conector-kk-4-vias-macho-90-2-5mm-branco-ds1069-4mvw).
+22. Arduino. [Arduino Mega 2560](https://docs.arduino.cc/hardware/mega-2560/).
 
 # Apêndice G - Glossário
 
@@ -1799,6 +2184,9 @@ Não promova “provável” para “suportado” sem build e teste repetível.
 | GPIO | entrada/saída de propósito geral |
 | Heartbeat | mensagem periódica de presença/saúde |
 | LLM | modelo de linguagem de grande porte |
+| Conector carenado | conector com paredes que guiam e protegem o encaixe |
+| Conector polarizado | conector cuja geometria reduz a possibilidade de inversão |
+| Crimpagem | união mecânica e elétrica de fio e terminal por deformação controlada |
 | PWM | modulação por largura de pulso |
 | RAG | geração aumentada por recuperação de documentos |
 | Stall | condição de eixo travado do motor |

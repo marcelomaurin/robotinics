@@ -51,6 +51,12 @@ TABLE_WIDTH_DXA = 9411  # A4 minus 2.2 cm margins on each side.
 
 
 FIGURES_PT = {
+    "diy_roadmap": {
+        "caption": "Roteiro faça você mesmo: construir, testar e integrar as três partes do Robotinics.",
+        "alt": "Três blocos mostram mecânica, eletrônica e software, cada um com construção e teste antes da integração.",
+        "source": "Elaboração própria.",
+        "width_cm": 16.1,
+    },
     "architecture": {
         "caption": "Arquitetura em camadas da terceira edição.",
         "alt": "Fluxo em camadas entre interface humana, TCHATGPT, validação, Raspberry Pi, Arduino e hardware.",
@@ -81,9 +87,81 @@ FIGURES_PT = {
         "source": "Acervo do projeto Robotinics.",
         "width_cm": 15.8,
     },
+    "base_cad": {
+        "caption": "Peças superiores da base mecânica no acervo CAD do projeto.",
+        "alt": "Renderização CAD das peças superiores que fecham e estruturam a base móvel.",
+        "source": "Acervo do projeto Robotinics.",
+        "width_cm": 15.4,
+    },
+    "gear_reduction": {
+        "caption": "Exemplo de redução 3:1: menor velocidade e maior torque disponível no eixo de saída.",
+        "alt": "Engrenagem motora de 12 dentes aciona engrenagem de saída de 36 dentes, produzindo redução de três para um.",
+        "source": "Elaboração própria.",
+        "width_cm": 14.8,
+    },
     "power_architecture": {
         "caption": "Distribuição de energia com proteção e trilhos separados.",
         "alt": "Pack de bateria 3S protegido alimentando trilhos separados de tração, servos e lógica.",
+        "source": "Elaboração própria.",
+        "width_cm": 16.0,
+    },
+    "shield_keyed": {
+        "caption": "Shield de referência para Arduino Mega com conectores carenados e polarizados.",
+        "alt": "Shield preta para Arduino Mega com conectores brancos carenados, cabeçalhos azuis e identificação de portas.",
+        "source": "Referência visual fornecida pelo autor; modelo comercial meramente ilustrativo.",
+        "width_cm": 12.2,
+    },
+    "keyed_connector": {
+        "caption": "Conector polarizado: trava mecânica, numeração e ordem elétrica continuam obrigatórias.",
+        "alt": "Desenho de conectores carenados de três e quatro vias com chanfro, posição um e exemplos de sinais.",
+        "source": "Elaboração própria.",
+        "width_cm": 15.3,
+    },
+    "mega_wiring": {
+        "caption": "Mapa de ligações derivado do firmware histórico robotinics.ino.",
+        "alt": "Arduino Mega ligado a servos, ultrassons, driver de motores, sensores analógicos, Raspberry Pi, Bluetooth, GPS e I2C, com os pinos listados.",
+        "source": "Elaboração própria a partir de Software/arduino/robotinics/robotinics.ino.",
+        "width_cm": 16.1,
+    },
+    "driver_l298n": {
+        "caption": "Módulo L298N empregado no protótipo histórico para o acionamento dos motores.",
+        "alt": "Fotografia de módulo driver de motores L298N com dissipador, bornes e pinos de controle.",
+        "source": "Acervo da edição anterior do projeto Robotinics.",
+        "width_cm": 10.5,
+    },
+    "sensor_current": {
+        "caption": "Exemplo histórico de ligação do sensor de corrente ACS712 ao Arduino.",
+        "alt": "Diagrama de um módulo ACS712 ligado ao Arduino, com o caminho de corrente identificado.",
+        "source": "Acervo da edição anterior do projeto Robotinics.",
+        "width_cm": 9.8,
+    },
+    "sensor_ultrasound": {
+        "caption": "Sensor ultrassônico HC-SR04 usado para medir distância.",
+        "alt": "Fotografia frontal do módulo HC-SR04 com dois transdutores e quatro pinos.",
+        "source": "Acervo da edição anterior do projeto Robotinics.",
+        "width_cm": 8.8,
+    },
+    "ultrasound_principle": {
+        "caption": "Princípio de medição por tempo de voo do ultrassom.",
+        "alt": "Pulso ultrassônico parte do sensor, reflete em um objeto e retorna para medição do tempo de voo.",
+        "source": "Acervo da edição anterior do projeto Robotinics, redesenhado editorialmente.",
+        "width_cm": 13.5,
+    },
+    "servo_pcb": {
+        "caption": "Placa controladora de servos preservada no acervo eletrônico do Robotinics.",
+        "alt": "Vista da placa controladora de servo motor do projeto Robotinics.",
+        "source": "Acervo do projeto Robotinics.",
+        "width_cm": 10.4,
+    },
+    "pi5_stack": {
+        "caption": "Pilha atualizada de software e percepção no Raspberry Pi 5.",
+        "alt": "Câmera e serviços locais entram no Raspberry Pi 5, que executa Picamera2, OpenCV, supervisão e integração TCHATGPT antes do validador e do Arduino Mega.",
+        "source": "Elaboração própria.",
+        "width_cm": 16.0,
+    },
+    "llm_pipeline": {
+        "caption": "Papel do LLM: interpretar intenção e propor uma saída estruturada, sem acionar hardware diretamente.",
+        "alt": "Entrada em linguagem natural passa por um modelo de linguagem, contrato JSON, validador determinístico e somente então pode chegar ao catálogo de ações.",
         "source": "Elaboração própria.",
         "width_cm": 16.0,
     },
@@ -102,6 +180,12 @@ FIGURES_PT = {
 }
 
 FIGURES_EN = {
+    "diy_roadmap": {
+        "caption": "Do-it-yourself roadmap: build, test, and integrate the three Robotinics parts.",
+        "alt": "Three blocks show mechanics, electronics, and software, each built and tested before integration.",
+        "source": "Created by the author.",
+        "width_cm": 16.1,
+    },
     "architecture": {
         "caption": "Layered architecture of the third edition.",
         "alt": "Layered flow among the human interface, TCHATGPT, validation, Raspberry Pi, Arduino, and hardware.",
@@ -132,12 +216,34 @@ FIGURES_EN = {
         "source": "Robotinics project archive.",
         "width_cm": 15.8,
     },
+    "base_cad": {
+        "caption": "Upper mechanical-base parts from the project CAD archive.",
+        "alt": "CAD rendering of upper parts that close and reinforce the mobile base.",
+        "source": "Robotinics project archive.",
+        "width_cm": 15.4,
+    },
+    "gear_reduction": {
+        "caption": "A 3:1 reduction example: lower speed and greater available output torque.",
+        "alt": "A 12-tooth motor gear drives a 36-tooth output gear for a three-to-one reduction.",
+        "source": "Created by the author.",
+        "width_cm": 14.8,
+    },
     "power_architecture": {
         "caption": "Power distribution with protection and separate rails.",
         "alt": "Protected 3S battery pack feeding separate traction, servo, and logic rails.",
         "source": "Created by the author.",
         "width_cm": 16.0,
     },
+    "shield_keyed": {"caption": "Reference Arduino Mega shield with shrouded polarized connectors.", "alt": "Black Arduino Mega shield with white shrouded connectors, blue headers, and labeled ports.", "source": "Visual reference supplied by the author; commercial model shown for illustration only.", "width_cm": 12.2},
+    "keyed_connector": {"caption": "Polarized connector: mechanical keying does not replace numbering and pin-order verification.", "alt": "Three- and four-way shrouded connectors with key, position one, and signal examples.", "source": "Created by the author.", "width_cm": 15.3},
+    "mega_wiring": {"caption": "Connection map derived from the historical robotinics.ino firmware.", "alt": "Arduino Mega connected to servos, ultrasonic sensors, motor driver, analog sensors, Raspberry Pi, Bluetooth, GPS, and I2C.", "source": "Created from Software/arduino/robotinics/robotinics.ino.", "width_cm": 16.1},
+    "driver_l298n": {"caption": "L298N module used in the historical prototype.", "alt": "L298N motor-driver module with heat sink, terminals, and control pins.", "source": "Robotinics previous-edition archive.", "width_cm": 10.5},
+    "sensor_current": {"caption": "Historical ACS712 current-sensor connection to Arduino.", "alt": "Diagram of an ACS712 module connected to Arduino with the current path identified.", "source": "Robotinics previous-edition archive.", "width_cm": 9.8},
+    "sensor_ultrasound": {"caption": "HC-SR04 ultrasonic distance sensor.", "alt": "Front view of the HC-SR04 module with two transducers and four pins.", "source": "Robotinics previous-edition archive.", "width_cm": 8.8},
+    "ultrasound_principle": {"caption": "Ultrasonic time-of-flight measurement principle.", "alt": "An ultrasonic pulse reflects from an object and returns to the sensor.", "source": "Robotinics previous-edition archive, editorially redrawn.", "width_cm": 13.5},
+    "servo_pcb": {"caption": "Servo controller board preserved in the Robotinics electronics archive.", "alt": "Robotinics servo controller board.", "source": "Robotinics project archive.", "width_cm": 10.4},
+    "pi5_stack": {"caption": "Updated Raspberry Pi 5 software and perception stack.", "alt": "Camera and local services enter a Raspberry Pi 5 running Picamera2, OpenCV, supervision, and TCHATGPT integration before the validator and Arduino Mega.", "source": "Created by the author.", "width_cm": 16.0},
+    "llm_pipeline": {"caption": "LLM role: interpret intent and propose structured output without directly driving hardware.", "alt": "Natural language passes through a language model, JSON contract, deterministic validator, and action catalog.", "source": "Created by the author.", "width_cm": 16.0},
     "vision_pipeline": {
         "caption": "Vision pipeline separated from motion control.",
         "alt": "Camera, capture, perception, structured event, and safety policy in sequence.",
@@ -318,6 +424,146 @@ def diagram_architecture() -> Path:
     return save_diagram(im, "architecture")
 
 
+def diagram_diy_roadmap() -> Path:
+    im, d = canvas(1800, 900)
+    title_font = ImageFont.truetype(font_path(bold=True), 38)
+    d.text(
+        (900, 95),
+        tr("Um projeto pronto, reconstruído etapa por etapa", "A finished project, rebuilt step by step"),
+        fill=hexrgb(BLUE_DARK),
+        font=title_font,
+        anchor="ma",
+    )
+    cards = [
+        ((55, 230, 555, 650), tr("PARTE I · MECÂNICA", "PART I · MECHANICS"), tr("dimensionar · fabricar\nmontar · testar", "size · fabricate\nassemble · test"), "FFF3E6", ORANGE),
+        ((650, 230, 1150, 650), tr("PARTE II · ELETRÔNICA", "PART II · ELECTRONICS"), tr("alimentar · conectar\nmedir · testar", "power · connect\nmeasure · test"), GREEN_LIGHT, GREEN),
+        ((1245, 230, 1745, 650), tr("PARTE III · SOFTWARE", "PART III · SOFTWARE"), tr("programar · integrar\nobservar · testar", "program · integrate\nobserve · test"), BLUE_LIGHT, BLUE),
+    ]
+    for idx, (xy, title, sub, fill, outline) in enumerate(cards, start=1):
+        rounded_box(d, xy, title, fill=fill, outline=outline, subtitle=sub, size=31)
+        if idx < len(cards):
+            arrow(d, (xy[2], 440), (cards[idx][0][0] - 20, 440), BLUE_DARK)
+    footer_font = ImageFont.truetype(font_path(bold=True), 31)
+    d.text(
+        (900, 780),
+        tr("Integração final somente depois dos testes de cada subsistema", "Final integration only after each subsystem passes its tests"),
+        fill=hexrgb(BLUE_DARK),
+        font=footer_font,
+        anchor="mm",
+    )
+    return save_diagram(im, "diy_roadmap")
+
+
+def diagram_reduction() -> Path:
+    im, d = canvas(1800, 950)
+    small_center = (570, 480)
+    large_center = (1115, 480)
+    small_r = 145
+    large_r = 300
+    d.ellipse((small_center[0] - small_r, small_center[1] - small_r, small_center[0] + small_r, small_center[1] + small_r), fill=hexrgb(BLUE_LIGHT), outline=hexrgb(BLUE), width=12)
+    d.ellipse((large_center[0] - large_r, large_center[1] - large_r, large_center[0] + large_r, large_center[1] + large_r), fill=hexrgb(GREEN_LIGHT), outline=hexrgb(GREEN), width=12)
+    d.ellipse((small_center[0] - 28, small_center[1] - 28, small_center[0] + 28, small_center[1] + 28), fill=hexrgb(BLUE_DARK))
+    d.ellipse((large_center[0] - 34, large_center[1] - 34, large_center[0] + 34, large_center[1] + 34), fill=hexrgb(BLUE_DARK))
+    label = ImageFont.truetype(font_path(bold=True), 39)
+    small = ImageFont.truetype(font_path(), 31)
+    d.text(small_center, tr("Z₁ = 12\nMOTOR", "Z₁ = 12\nMOTOR"), fill=hexrgb(BLUE_DARK), font=label, anchor="mm", align="center")
+    d.text(large_center, tr("Z₂ = 36\nSAÍDA", "Z₂ = 36\nOUTPUT"), fill=hexrgb(GREEN), font=label, anchor="mm", align="center")
+    arrow(d, (420, 235), (530, 170), ORANGE, 10)
+    arrow(d, (1375, 660), (1290, 750), GREEN, 10)
+    d.text((280, 165), tr("rotação de entrada", "input rotation"), fill=hexrgb(ORANGE), font=small, anchor="mm")
+    d.text((1470, 790), tr("rotação de saída", "output rotation"), fill=hexrgb(GREEN), font=small, anchor="mm")
+    d.text((900, 80), tr("i = Z₂ / Z₁ = 36 / 12 = 3", "i = Z₂ / Z₁ = 36 / 12 = 3"), fill=hexrgb(BLUE_DARK), font=label, anchor="ma")
+    d.text((900, 895), tr("Ideal: velocidade ÷ 3 · torque × 3  |  Real: descontar perdas e folgas", "Ideal: speed ÷ 3 · torque × 3  |  Real: allow for losses and backlash"), fill=hexrgb(BLUE_DARK), font=small, anchor="ms")
+    return save_diagram(im, "gear_reduction")
+
+
+def diagram_keyed_connector() -> Path:
+    im, d = canvas(1800, 900)
+    title = ImageFont.truetype(font_path(bold=True), 38)
+    pin = ImageFont.truetype(font_path(bold=True), 30)
+    body = ImageFont.truetype(font_path(), 28)
+    d.text((900, 80), tr("A carcaça define a orientação; o esquema define a função", "The housing sets orientation; the schematic sets function"), fill=hexrgb(BLUE_DARK), font=title, anchor="ma")
+    examples = [
+        ((140, 250, 780, 650), tr("PORTA DE 3 VIAS", "3-WAY PORT"), ["GND", "V+", "SINAL"]),
+        ((1020, 250, 1660, 650), tr("PORTA DE 4 VIAS", "4-WAY PORT"), ["GND", "V+", "TX/SDA", "RX/SCL"]),
+    ]
+    colors = [GRAY, RED, ORANGE, BLUE]
+    for xy, heading, labels in examples:
+        x1, y1, x2, y2 = xy
+        d.rounded_rectangle(xy, radius=28, fill=hexrgb("F8FAFB"), outline=hexrgb(BLUE_DARK), width=7)
+        d.polygon([(x1 + 150, y1), (x1 + 225, y1 - 55), (x2 - 225, y1 - 55), (x2 - 150, y1)], fill=hexrgb(BLUE_DARK))
+        d.text(((x1 + x2) // 2, y1 + 80), heading, fill=hexrgb(BLUE_DARK), font=title, anchor="mm")
+        gap = (x2 - x1 - 120) / len(labels)
+        for idx, label in enumerate(labels):
+            cx = int(x1 + 60 + gap * (idx + 0.5))
+            cy = y1 + 245
+            d.ellipse((cx - 38, cy - 38, cx + 38, cy + 38), fill=hexrgb(colors[idx]), outline=hexrgb(BLUE_DARK), width=3)
+            d.text((cx, cy + 105), f"{idx + 1}", fill=hexrgb(BLUE_DARK), font=pin, anchor="mm")
+            d.text((cx, cy + 165), label, fill=hexrgb(colors[idx]), font=pin, anchor="mm")
+        d.text((x1 + 36, y2 - 30), tr("▲ posição 1", "▲ position 1"), fill=hexrgb(ORANGE), font=body, anchor="ls")
+    d.text((900, 800), tr("Exemplo de convenção — confirme passo, família e pinagem na ficha técnica da shield adquirida", "Example convention — confirm pitch, connector family, and pinout in the purchased shield documentation"), fill=hexrgb(RED), font=body, anchor="mm")
+    return save_diagram(im, "keyed_connector")
+
+
+def diagram_mega_wiring() -> Path:
+    im, d = canvas(1900, 1350)
+    rounded_box(d, (700, 420, 1200, 930), "ARDUINO MEGA 2560", fill=BLUE_LIGHT, outline=BLUE, subtitle=tr("firmware robotinics.ino", "robotinics.ino firmware"), size=39)
+    left = [
+        ((55, 90, 610, 315), tr("ULTRASSOM", "ULTRASOUND"), "TRIG/ECHO: 2/3 · 40/35 · 41/42", GREEN_LIGHT),
+        ((55, 390, 610, 640), tr("SENSORES ANALÓGICOS", "ANALOG SENSORS"), "A0 corrente · A1/A2/A3 acel.\nA4 gás · A6 bateria", GRAY_LIGHT),
+        ((55, 745, 610, 1025), tr("DRIVER DE TRAÇÃO", "TRACTION DRIVER"), "ENA 26 · IN1 28 · IN2 30\nIN3 34 · IN4 32 · ENB 36", "FFF3E6"),
+    ]
+    right = [
+        ((1290, 70, 1845, 370), tr("SERVOS", "SERVOS"), "6 · 8 · 9 · 10 · 11 · 44 · 46\nalimentação externa dedicada", GREEN_LIGHT),
+        ((1290, 445, 1845, 730), tr("PORTAS DE COMUNICAÇÃO", "COMMUNICATION PORTS"), "Serial0/USB gateway · Serial1 18/19 BT\n16/17 RF histórico · Serial3 14/15 GPS", BLUE_LIGHT),
+        ((1290, 825, 1845, 1070), tr("I²C E CONTROLADOR AUX.", "I²C AND AUX CONTROLLER"), "SDA 20 · SCL 21 · LCD 0x20\nSoftwareSerial 37/38", GRAY_LIGHT),
+    ]
+    for xy, title, sub, fill in left:
+        rounded_box(d, xy, title, fill=fill, subtitle=sub, size=30)
+        arrow(d, (xy[2], (xy[1] + xy[3]) // 2), (685, (xy[1] + xy[3]) // 2), BLUE_DARK, 7)
+    for xy, title, sub, fill in right:
+        rounded_box(d, xy, title, fill=fill, subtitle=sub, size=30)
+        arrow(d, (1215, (xy[1] + xy[3]) // 2), (xy[0], (xy[1] + xy[3]) // 2), BLUE_DARK, 7)
+    note_font = ImageFont.truetype(font_path(bold=True), 28)
+    d.text((950, 1230), tr("Todos os pinos devem ser conferidos com a revisão do firmware antes da montagem do chicote", "Check every pin against the firmware revision before assembling the harness"), fill=hexrgb(RED), font=note_font, anchor="mm")
+    return save_diagram(im, "mega_wiring")
+
+
+def diagram_pi5_stack() -> Path:
+    im, d = canvas(1800, 1060)
+    rounded_box(d, (60, 120, 470, 390), tr("Câmera", "Camera"), fill=GRAY_LIGHT, subtitle=tr("Camera Module 3\nou AI Camera", "Camera Module 3\nor AI Camera"), size=34)
+    rounded_box(d, (60, 660, 470, 930), tr("Áudio e rede", "Audio and network"), fill=GRAY_LIGHT, subtitle=tr("microfone, voz, Wi-Fi\nou Ethernet", "microphone, speech, Wi-Fi\nor Ethernet"), size=34)
+    rounded_box(d, (625, 260, 1175, 800), "RASPBERRY PI 5", fill=BLUE_LIGHT, outline=BLUE, subtitle=tr("Raspberry Pi OS 64-bit\nPicamera2 · OpenCV\nserviço do robô · TCHATGPT", "64-bit Raspberry Pi OS\nPicamera2 · OpenCV\nrobot service · TCHATGPT"), size=39)
+    rounded_box(d, (1330, 120, 1740, 390), tr("Validador", "Validator"), fill=GREEN_LIGHT, outline=GREEN, subtitle=tr("contrato, estado\ne limites", "contract, state,\nand limits"), size=34)
+    rounded_box(d, (1330, 660, 1740, 930), "ARDUINO MEGA", fill="FFF3E6", outline=ORANGE, subtitle=tr("tempo real, sensores\ne atuadores", "real time, sensors,\nand actuators"), size=34)
+    arrow(d, (470, 255), (625, 410), BLUE_DARK)
+    arrow(d, (470, 795), (625, 650), BLUE_DARK)
+    arrow(d, (1175, 410), (1330, 255), GREEN)
+    arrow(d, (1535, 390), (1535, 660), ORANGE)
+    note_font = ImageFont.truetype(font_path(bold=True), 28)
+    d.text((900, 990), tr("Fonte recomendada 5 V / 5 A e resfriamento ativo sob carga sustentada", "Recommended 5 V / 5 A supply and active cooling under sustained load"), fill=hexrgb(BLUE_DARK), font=note_font, anchor="mm")
+    return save_diagram(im, "pi5_stack")
+
+
+def diagram_llm_pipeline() -> Path:
+    im, d = canvas(1800, 820)
+    blocks = [
+        ((55, 260, 335, 535), tr("Pedido", "Request"), tr("linguagem natural", "natural language"), "FFF3E6"),
+        ((410, 260, 690, 535), "LLM", tr("interpretação\nprobabilística", "probabilistic\ninterpretation"), BLUE_LIGHT),
+        ((765, 260, 1045, 535), tr("Contrato", "Contract"), "JSON", GREEN_LIGHT),
+        ((1120, 260, 1400, 535), tr("Validador", "Validator"), tr("MAN · estado\nlimites", "MAN · state\nlimits"), GREEN_LIGHT),
+        ((1475, 260, 1755, 535), tr("Resultado", "Result"), tr("resposta ou ação\nautorizada", "reply or authorized\naction"), GRAY_LIGHT),
+    ]
+    for idx, (xy, title, sub, fill) in enumerate(blocks):
+        rounded_box(d, xy, title, fill=fill, subtitle=sub, size=31)
+        if idx < len(blocks) - 1:
+            arrow(d, (xy[2], 397), (blocks[idx + 1][0][0] - 15, 397), BLUE_DARK, 7)
+    f = ImageFont.truetype(font_path(bold=True), 33)
+    d.text((900, 100), tr("O modelo propõe; o software determinístico autoriza", "The model proposes; deterministic software authorizes"), fill=hexrgb(BLUE_DARK), font=f, anchor="ma")
+    d.text((900, 720), tr("Saída inválida, comando inexistente ou parâmetro fora da faixa → rejeitar e registrar", "Invalid output, unknown command, or out-of-range parameter → reject and log"), fill=hexrgb(RED), font=f, anchor="ms")
+    return save_diagram(im, "llm_pipeline")
+
+
 def diagram_command_pipeline() -> Path:
     im, d = canvas(1800, 780)
     x_positions = [55, 405, 755, 1105, 1455]
@@ -439,14 +685,27 @@ def trim_image(path: Path, out: Path, *, pad: int = 40) -> Path:
 def prepare_figures() -> dict[str, Path]:
     GENERATED.mkdir(parents=True, exist_ok=True)
     paths = {
+        "diy_roadmap": diagram_diy_roadmap(),
         "architecture": diagram_architecture(),
         "command_pipeline": diagram_command_pipeline(),
         "safety_states": diagram_safety_states(),
+        "gear_reduction": diagram_reduction(),
         "power_architecture": diagram_power(),
+        "keyed_connector": diagram_keyed_connector(),
+        "mega_wiring": diagram_mega_wiring(),
+        "pi5_stack": diagram_pi5_stack(),
+        "llm_pipeline": diagram_llm_pipeline(),
         "vision_pipeline": diagram_vision(),
         "test_pyramid": diagram_tests(),
         "robot_cad": trim_image(ASSETS / "robot_cad.png", GENERATED / "robot_cad.png", pad=12),
         "arm_cad": trim_image(ASSETS / "arm_cad.png", GENERATED / "arm_cad.png", pad=12),
+        "base_cad": trim_image(ASSETS / "projeto" / "base_superior_cad.png", GENERATED / "base_superior_cad.png", pad=12),
+        "shield_keyed": trim_image(ASSETS / "componentes" / "shield_mega_conectores_chaveados.png", GENERATED / "shield_mega_conectores_chaveados.png", pad=20),
+        "driver_l298n": trim_image(ASSETS / "componentes" / "driver_l298n.png", GENERATED / "driver_l298n.png", pad=16),
+        "sensor_current": trim_image(ASSETS / "componentes" / "sensor_corrente_acs712.png", GENERATED / "sensor_corrente_acs712.png", pad=16),
+        "sensor_ultrasound": trim_image(ASSETS / "componentes" / "sensor_hcsr04.png", GENERATED / "sensor_hcsr04.png", pad=16),
+        "ultrasound_principle": trim_image(ASSETS / "componentes" / "principio_ultrassom.png", GENERATED / "principio_ultrassom.png", pad=8),
+        "servo_pcb": trim_image(ASSETS / "projeto" / "placa_controladora_servo.png", GENERATED / "placa_controladora_servo.png", pad=16),
     }
     return paths
 
@@ -820,7 +1079,14 @@ def add_inline(paragraph, text: str, *, size: float | None = None, color: str | 
             r.font.color.rgb = RGBColor.from_string(color)
 
 
-def add_numbering(doc: Document, fmt: str, text: str, left: int = 540, hanging: int = 270) -> int:
+def add_numbering(
+    doc: Document,
+    fmt: str,
+    text: str,
+    left: int = 540,
+    hanging: int = 270,
+    start_value: int = 1,
+) -> int:
     numbering = doc.part.numbering_part.element
     abstract_ids = [int(el.get(qn("w:abstractNumId"))) for el in numbering.findall(qn("w:abstractNum"))]
     num_ids = [int(el.get(qn("w:numId"))) for el in numbering.findall(qn("w:num"))]
@@ -834,7 +1100,7 @@ def add_numbering(doc: Document, fmt: str, text: str, left: int = 540, hanging: 
     lvl = OxmlElement("w:lvl")
     lvl.set(qn("w:ilvl"), "0")
     start = OxmlElement("w:start")
-    start.set(qn("w:val"), "1")
+    start.set(qn("w:val"), str(start_value))
     lvl.append(start)
     num_fmt = OxmlElement("w:numFmt")
     num_fmt.set(qn("w:val"), fmt)
@@ -1025,7 +1291,7 @@ def add_imprint(doc: Document, meta: dict[str, str]) -> None:
     p.add_run(tr("Idioma: português do Brasil.", "Language: English (United States)."))
     rows = [
         [tr("Projeto", "Project"), tr("Snapshot editorial", "Editorial snapshot")],
-        ["Robotinics", "61d2a19d10e6701e27e46181e1a6c740b8ee4e30"],
+        ["Robotinics", "39c1b4610f1b51883a2d9fcdbccba2c672dafad3"],
         ["TCHATGPT", "15d5e1a7780088701716896cfe9fb3afe0e7b71a"],
     ]
     add_markdown_table(doc, rows)
@@ -1136,7 +1402,7 @@ def add_content(
             i += 1
             continue
 
-        figure_match = re.fullmatch(r"\[FIGURE:([a-z_]+)\]", stripped)
+        figure_match = re.fullmatch(r"\[FIGURE:([a-z0-9_]+)\]", stripped)
         if figure_match:
             key = figure_match.group(1)
             figure_number += 1
@@ -1184,13 +1450,13 @@ def add_content(
             previous_was_number = False
             continue
 
-        numbered = re.match(r"^\d+\.\s+(.+)", stripped)
+        numbered = re.match(r"^(\d+)\.\s+(.+)", stripped)
         if numbered:
             if not previous_was_number or active_decimal_num is None:
-                active_decimal_num = add_numbering(doc, "decimal", "%1.")
+                active_decimal_num = add_numbering(doc, "decimal", "%1.", start_value=int(numbered.group(1)))
             p = doc.add_paragraph()
             apply_numbering(p, active_decimal_num)
-            add_inline(p, numbered.group(1))
+            add_inline(p, numbered.group(2))
             i += 1
             previous_was_number = True
             continue
@@ -1221,8 +1487,8 @@ def build_docx(output: Path, page_map_path: Path | None = None) -> None:
         "Robotinics, robotics, Arduino, Raspberry Pi, TCHATGPT, artificial intelligence",
     )
     doc.core_properties.comments = tr("Terceira edição revista e ampliada.", "Third revised and expanded edition.")
-    doc.core_properties.created = datetime(2026, 8, 11, tzinfo=timezone.utc)
-    doc.core_properties.modified = datetime(2026, 8, 11, tzinfo=timezone.utc)
+    doc.core_properties.created = datetime(2026, 8, 12, tzinfo=timezone.utc)
+    doc.core_properties.modified = datetime(2026, 8, 12, tzinfo=timezone.utc)
 
     cover_section = doc.sections[0]
     configure_sections(doc)
