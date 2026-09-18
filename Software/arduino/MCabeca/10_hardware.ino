@@ -2,7 +2,7 @@
 
 void Start_Serial()
 {
-  Serial.begin(57600);
+  Serial.begin(9600);
   Versao();
 }
 
