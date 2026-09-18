@@ -67,7 +67,7 @@ The Raspberry Pi is intended for high-level processing. Arduino Mega concentrate
 | [MCabeca](Software/arduino/MCabeca/README.en.md) | active head module |
 | [Raspberry Pi](Software/raspberry/README.en.md) | high-level processing |
 | [Robotinics AI](docs/ai/README.en.md) | TCHATGPT, internet, RAG, vision, agents and documentation assistance |
-| [Yocto image](yocto/README.en.md) | reproducible Linux image for Raspberry Pi 4/5 |
+| [Yocto image](Software/raspberry/yocto/README.en.md) | reproducible Linux image for Raspberry Pi 4/5 |
 | [Database](Software/database/README.en.md) | persistence layer |
 | [Web interface](Software/site/README.en.md) | historical web application |
 | [Documentation](docs/README.en.md) | manuals and technical material |
