@@ -236,11 +236,12 @@ void ExecCMD(String pBuffer)
   if (!flgRodou) Println("Comando não reconhecido!");
 }
 
-static void receiveCommand(Stream &port, char *buffer, size_t &pos)
+static void receiveCommand(Stream &port, char *buffer, size_t &pos, bool echoUsb)
 {
   while (port.available() > 0) {
     const char c = (char)port.read();
 
+    if (echoUsb) Serial.print(c);
     if (c == '\r') continue;
 
     if (c == '\n') {
@@ -267,17 +268,17 @@ static void receiveCommand(Stream &port, char *buffer, size_t &pos)
 
 void Le_Arduino()
 {
-  receiveCommand(mySerial, arduinoBuffer, arduinoPos);
+  receiveCommand(mySerial, arduinoBuffer, arduinoPos, false);
 }
 
 void Le_Bluetooth()
 {
-  receiveCommand(Serial1, bluetoothBuffer, bluetoothPos);
+  receiveCommand(Serial1, bluetoothBuffer, bluetoothPos, true);
 }
 
 void Le_Serial()
 {
-  receiveCommand(Serial, usbBuffer, usbPos);
+  receiveCommand(Serial, usbBuffer, usbPos, false);
 }
 
 void Carrega_RC()
