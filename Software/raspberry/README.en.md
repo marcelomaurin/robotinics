@@ -43,3 +43,8 @@ See [AI/README.en.md](AI/README.en.md) and [../../docs/ai/README.en.md](../../do
 ## Yocto image
 
 The reproducible onboard-computer image is maintained in [yocto/README.en.md](yocto/README.en.md), next to the Raspberry Pi runtime it packages.
+
+
+## Voice
+
+The current speech implementation is [Voice/README.en.md](Voice/README.en.md). It replaces eSpeak with a Lazarus/Free Pascal application using TCHATGPT `TAIVoiceSynthesizer` while preserving the public commands `robotinics-speak` and `robotinics-read-file`.
