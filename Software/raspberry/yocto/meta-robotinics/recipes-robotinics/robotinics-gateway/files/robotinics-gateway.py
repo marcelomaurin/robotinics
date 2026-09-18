@@ -5,7 +5,7 @@ import os
 import queue
 import re
 import signal
-import socketserver
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import sys
 import threading
 import time
@@ -375,7 +375,7 @@ class Gateway:
             "gateway": {
                 "serial_port": PORT,
                 "serial_baud": BAUD,
-                "listen": f"{LISTEN_HOST}:{LISTEN_PORT}",
+                "listen": f"http://{LISTEN_HOST}:{LISTEN_PORT}",
                 "queue_size": self.command_queue.qsize(),
             },
             "state": self.state.snapshot(),
@@ -385,52 +385,80 @@ class Gateway:
 GATEWAY = Gateway()
 
 
-class Handler(socketserver.StreamRequestHandler):
-    def _send(self, obj):
-        self.wfile.write((json.dumps(obj, ensure_ascii=False) + "\n").encode("utf-8"))
-        self.wfile.flush()
+class Handler(BaseHTTPRequestHandler):
+    server_version = "RobotinicsGateway/1.0"
 
-    def handle(self):
-        self.connection.settimeout(30)
-        for raw in self.rfile:
-            try:
-                payload = json.loads(raw.decode("utf-8"))
-                op = payload.get("op", "")
+    def log_message(self, fmt, *args):
+        LOG.info("api: " + fmt, *args)
 
-                if op == "ping":
-                    self._send({"ok": True, "pong": time.time()})
-                elif op == "state":
-                    self._send({"ok": True, **GATEWAY.status()})
-                elif op == "catalog":
-                    self._send({
-                        "ok": True,
-                        "exact": sorted(EXACT_COMMANDS),
-                        "angle_prefixes": ANGLE_PREFIXES,
-                        "mcab_exact": sorted(MCAB_EXACT),
-                        "mcab_bool_prefixes": MCAB_BOOL_PREFIXES,
-                    })
-                elif op == "history":
-                    limit = max(1, min(int(payload.get("limit", 20)), HISTORY_SIZE))
-                    self._send({"ok": True, "history": list(GATEWAY.history)[-limit:]})
-                elif op == "command":
-                    req = GATEWAY.submit(payload.get("command", ""), payload.get("timeout"))
-                    wait_timeout = req.timeout + 1.0
-                    if not req.done.wait(wait_timeout):
-                        self._send({"ok": False, "request_id": req.id, "error": "gateway wait timeout"})
-                    else:
-                        self._send(req.result())
-                else:
-                    self._send({"ok": False, "error": "unknown operation"})
-            except (ValueError, TypeError, json.JSONDecodeError) as exc:
-                self._send({"ok": False, "error": str(exc)})
-            except Exception as exc:
-                LOG.exception("client error: %s", exc)
-                self._send({"ok": False, "error": str(exc)})
+    def _json(self, status, obj):
+        data = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(data)
 
+    def _read_json(self):
+        length = int(self.headers.get("Content-Length", "0"))
+        if length <= 0 or length > 16384:
+            raise ValueError("invalid content length")
+        raw = self.rfile.read(length)
+        return json.loads(raw.decode("utf-8"))
 
-class LocalServer(socketserver.ThreadingTCPServer):
-    allow_reuse_address = True
-    daemon_threads = True
+    def do_GET(self):
+        if self.path == "/v1/ping":
+            self._json(200, {"ok": True, "pong": time.time()})
+        elif self.path == "/v1/state":
+            self._json(200, {"ok": True, **GATEWAY.status()})
+        elif self.path == "/v1/catalog":
+            self._json(200, {
+                "ok": True,
+                "exact": sorted(EXACT_COMMANDS),
+                "angle_prefixes": ANGLE_PREFIXES,
+                "mcab_exact": sorted(MCAB_EXACT),
+                "mcab_bool_prefixes": MCAB_BOOL_PREFIXES,
+            })
+        elif self.path.startswith("/v1/history"):
+            limit = 20
+            if "?" in self.path:
+                try:
+                    query = self.path.split("?", 1)[1]
+                    for item in query.split("&"):
+                        if item.startswith("limit="):
+                            limit = int(item.split("=", 1)[1])
+                except ValueError:
+                    limit = 20
+            limit = max(1, min(limit, HISTORY_SIZE))
+            self._json(200, {"ok": True, "history": list(GATEWAY.history)[-limit:]})
+        else:
+            self._json(404, {"ok": False, "error": "not found"})
+
+    def do_POST(self):
+        if self.path != "/v1/command":
+            self._json(404, {"ok": False, "error": "not found"})
+            return
+
+        try:
+            payload = self._read_json()
+            req = GATEWAY.submit(payload.get("command", ""), payload.get("timeout"))
+            if not req.done.wait(req.timeout + 1.0):
+                self._json(504, {
+                    "ok": False,
+                    "request_id": req.id,
+                    "error": "gateway wait timeout"
+                })
+            else:
+                result = req.result()
+                self._json(200 if result["ok"] else 504, result)
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            self._json(400, {"ok": False, "error": str(exc)})
+        except RuntimeError as exc:
+            self._json(503, {"ok": False, "error": str(exc)})
+        except Exception as exc:
+            LOG.exception("api error: %s", exc)
+            self._json(500, {"ok": False, "error": str(exc)})
 
 
 def stop_handler(signum, frame):
@@ -444,9 +472,9 @@ def main():
     signal.signal(signal.SIGINT, stop_handler)
 
     GATEWAY.start()
-    with LocalServer((LISTEN_HOST, LISTEN_PORT), Handler) as server:
+    with ThreadingHTTPServer((LISTEN_HOST, LISTEN_PORT), Handler) as server:
         server.timeout = 0.5
-        LOG.info("local API listening on %s:%d", LISTEN_HOST, LISTEN_PORT)
+        LOG.info("local HTTP API listening on http://%s:%d", LISTEN_HOST, LISTEN_PORT)
         while RUN.is_set():
             server.handle_request()
 
