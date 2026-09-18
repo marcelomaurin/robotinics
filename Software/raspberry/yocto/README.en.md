@@ -1,6 +1,6 @@
 # Robotinics Yocto Image
 
-[Português](README.md) · [Español](README.es.md)
+[Português](README.md) · [Español](README.es.md) · [Raspberry](../README.en.md) · [Main project](../../../README_EN.md)
 
 This directory defines the reproducible Robotinics Raspberry Pi image using Yocto Project 6.0 Wrynose LTS, meta-raspberrypi and the custom meta-robotinics layer.
 
@@ -8,7 +8,7 @@ Default machine is raspberrypi4-64, with raspberrypi5 also supported by the mani
 
 Build:
 
-    cd yocto
+    cd Software/raspberry/yocto
     ./scripts/build.sh rpi4
 
 The image includes networking, SSH, Python, serial gateway support, optional vision and speech features, and the filesystem/configuration foundation for the TCHATGPT ARM64 runtime.
