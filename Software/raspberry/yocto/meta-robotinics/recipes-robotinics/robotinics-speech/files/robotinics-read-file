@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-[ "$#" -eq 1 ] || { echo "uso: robotinics-read-file arquivo" >&2; exit 2; }
-exec /usr/bin/espeak -v pt -p 165 -s 120 -f "$1"
