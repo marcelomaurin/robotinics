@@ -27,7 +27,8 @@ A pasta possui módulos históricos organizados em:
 
 - `Input/` — entrada e aquisição;
 - `Output/` — saída e integração;
-- [`AI/`](AI/README.md) — runtime proposto com TCHATGPT, RAG, internet, visão, voz e gateway do robô.
+- [`AI/`](AI/README.md) — runtime proposto com TCHATGPT, RAG, internet, visão, voz e gateway do robô;
+- [`yocto/`](yocto/README.md) — imagem Linux reproduzível do computador de bordo.
 
 Esses diretórios representam a evolução inicial do software Raspberry e devem ser entendidos como base histórica para uma arquitetura futura mais modular.
 
@@ -108,4 +109,4 @@ Essa reorganização deve ser feita sem apagar o material histórico existente.
 
 ## Imagem Yocto
 
-A imagem reproduzível do computador de bordo está em [../../yocto/README.md](../../yocto/README.md). Ela usa Yocto Wrynose LTS, meta-raspberrypi e a layer meta-robotinics.
+A imagem reproduzível do computador de bordo está em [yocto/README.md](yocto/README.md). Ela usa Yocto Wrynose LTS, meta-raspberrypi e a layer meta-robotinics.

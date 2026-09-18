@@ -38,3 +38,8 @@ A future directory structure can separate vision, calibration, robot control, pr
 The current Robotinics continuation defines a dedicated Raspberry Pi AI runtime based on TCHATGPT, RAG, controlled internet access, vision, voice and telemetry.
 
 See [AI/README.en.md](AI/README.en.md) and [../../docs/ai/README.en.md](../../docs/ai/README.en.md).
+
+
+## Yocto image
+
+The reproducible onboard-computer image is maintained in [yocto/README.en.md](yocto/README.en.md), next to the Raspberry Pi runtime it packages.

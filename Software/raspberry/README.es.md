@@ -30,3 +30,8 @@ Arduino Mega continúa siendo responsable del control inmediato y de la segurida
 La continuación actual define un runtime de IA en Raspberry Pi basado en TCHATGPT, RAG, acceso controlado a internet, visión, voz y telemetría.
 
 Consulte [AI/README.es.md](AI/README.es.md) y [../../docs/ai/README.es.md](../../docs/ai/README.es.md).
+
+
+## Imagen Yocto
+
+La imagen reproducible del computador de a bordo se mantiene en [yocto/README.es.md](yocto/README.es.md), junto al runtime Raspberry Pi que empaqueta.
