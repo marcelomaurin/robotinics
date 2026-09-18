@@ -1,6 +1,7 @@
 SUMMARY = "Robotinics Raspberry Pi image"
 DESCRIPTION = "Headless Robotinics image with serial gateway, networking, speech/vision options and AI runtime foundation."
 LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
 inherit core-image
 
