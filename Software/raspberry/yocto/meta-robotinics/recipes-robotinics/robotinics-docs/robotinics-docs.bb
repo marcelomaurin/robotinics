@@ -1,6 +1,5 @@
 SUMMARY = "Robotinics documentation for local AI context"
-LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
+LICENSE = "CLOSED"
 
 SRC_URI = "git://github.com/marcelomaurin/robotinics.git;protocol=https;branch=master"
 SRCREV = "bf2bc64d610cceb064e48055d35e1c9f017aae6f"
