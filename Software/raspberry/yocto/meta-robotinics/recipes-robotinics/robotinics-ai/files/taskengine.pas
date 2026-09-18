@@ -5,7 +5,7 @@ unit taskengine;
 interface
 
 uses
-  Classes, SysUtils, fpjson;
+  Classes, SysUtils, fpjson, jsonparser;
 
 type
   TRobotTask = class
@@ -81,7 +81,7 @@ begin
     O.Add('status', FStatus);
     O.Add('created_at', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss.zzz', FCreatedAt));
     for I := 0 to FSteps.Count - 1 do
-      A.Add(FSteps[I]);
+      A.Add(GetJSON(FSteps[I]));
     O.Add('steps_json', A);
     Result := O.FormatJSON;
   finally
