@@ -65,6 +65,7 @@ O Raspberry Pi fica responsável por processamento de mais alto nível. O Arduin
 | [Mega](Software/arduino/robotinics/README.md) | controlador principal do robô |
 | [MCabeca](Software/arduino/MCabeca/README.md) | cabeça ativa: servos, laser, LEDs e ultrassom |
 | [Raspberry](Software/raspberry/README.md) | processamento de alto nível e I/O |
+| [Robotinics AI](docs/ai/README.md) | TCHATGPT, internet, RAG, visão, agentes e documentação assistida |
 | [Database](Software/database/README.md) | estrutura de dados do projeto |
 | [Site](Software/site/README.md) | interface web histórica |
 | [Documentação](docs/README.md) | manuais e material de referência |
@@ -84,6 +85,16 @@ Associado a uma câmera controlada pelo Raspberry Pi, o módulo pode ser usado p
 - acompanhamento experimental de objetos.
 
 A calibração visual pertence ao Raspberry Pi. O microcontrolador deve apenas receber e executar ângulos e comandos físicos.
+
+## Continuação com IA no Raspberry Pi
+
+A continuidade da Rev. 3 propõe o Raspberry Pi como **computador de bordo inteligente**, usando a biblioteca [TCHATGPT](https://github.com/marcelomaurin/CHATGPT) para integrar LLM, agentes, RAG, visão, voz e acesso controlado à internet.
+
+A arquitetura preserva o princípio de segurança do projeto: a IA interpreta, pesquisa e planeja; o Arduino Mega continua responsável pelo controle físico determinístico.
+
+Documentação: [docs/ai/README.md](docs/ai/README.md)
+
+Para agentes de IA que precisem compreender ou atualizar este repositório, consulte também [AGENTS.md](AGENTS.md) e [AI_README.md](AI_README.md).
 
 ## Firmware
 
