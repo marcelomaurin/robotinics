@@ -1,0 +1,45 @@
+header:
+  version: 14
+
+machine: raspberrypi4-64
+distro: poky
+target:
+  - robotinics-image
+
+repos:
+  poky:
+    url: https://git.yoctoproject.org/poky
+    branch: wrynose
+    path: layers/poky
+    layers:
+      meta:
+      meta-poky:
+  meta-openembedded:
+    url: https://github.com/openembedded/meta-openembedded.git
+    branch: wrynose
+    path: layers/meta-openembedded
+    layers:
+      meta-oe:
+      meta-python:
+      meta-networking:
+      meta-multimedia:
+  meta-raspberrypi:
+    url: https://github.com/agherzan/meta-raspberrypi.git
+    branch: wrynose
+    path: layers/meta-raspberrypi
+  robotinics:
+    path: ..
+    layers:
+      meta-robotinics:
+
+local_conf_header:
+  robotinics: |
+    CONF_VERSION = "2"
+    PACKAGE_CLASSES = "package_rpm"
+    INIT_MANAGER = "systemd"
+    ENABLE_UART = "1"
+    ENABLE_I2C = "1"
+    ENABLE_SPI_BUS = "1"
+    IMAGE_FSTYPES += "wic.bz2"
+    EXTRA_IMAGE_FEATURES += "ssh-server-openssh"
+    ROBOTINICS_FEATURES ?= "vision speech"

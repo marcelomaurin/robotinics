@@ -1,0 +1,18 @@
+[Unit]
+Description=Robotinics Arduino Mega serial gateway
+After=dev-ttyACM0.device network.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/robotinics/robotinics.env
+ExecStart=/usr/bin/robotinics-gateway
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/robotinics /var/log/robotinics
+
+[Install]
+WantedBy=multi-user.target

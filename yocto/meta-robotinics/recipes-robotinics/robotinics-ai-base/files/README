@@ -1,0 +1,5 @@
+Robotinics AI runtime placeholder.
+
+The Yocto image prepares configuration and runtime directories, but the TCHATGPT ARM64 application must be cross-compiled and validated before enabling ROBOTINICS_AI_ENABLED=1.
+
+The AI process must use RobotGateway and must not open the Arduino serial port directly.

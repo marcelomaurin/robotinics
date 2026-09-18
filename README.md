@@ -66,6 +66,7 @@ O Raspberry Pi fica responsável por processamento de mais alto nível. O Arduin
 | [MCabeca](Software/arduino/MCabeca/README.md) | cabeça ativa: servos, laser, LEDs e ultrassom |
 | [Raspberry](Software/raspberry/README.md) | processamento de alto nível e I/O |
 | [Robotinics AI](docs/ai/README.md) | TCHATGPT, internet, RAG, visão, agentes e documentação assistida |
+| [Imagem Yocto](yocto/README.md) | Linux reproduzível para Raspberry Pi 4/5 |
 | [Database](Software/database/README.md) | estrutura de dados do projeto |
 | [Site](Software/site/README.md) | interface web histórica |
 | [Documentação](docs/README.md) | manuais e material de referência |
@@ -95,6 +96,10 @@ A arquitetura preserva o princípio de segurança do projeto: a IA interpreta, p
 Documentação: [docs/ai/README.md](docs/ai/README.md)
 
 Para agentes de IA que precisem compreender ou atualizar este repositório, consulte também [AGENTS.md](AGENTS.md) e [AI_README.md](AI_README.md).
+
+## Imagem Linux do Raspberry Pi
+
+A continuidade do projeto possui uma camada Yocto própria em [yocto/README.md](yocto/README.md). Ela cria uma imagem reproduzível para Raspberry Pi 4/5 com gateway serial, rede, voz/visão opcionais e preparação para o runtime TCHATGPT ARM64.
 
 ## Firmware
 

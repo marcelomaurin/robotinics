@@ -104,3 +104,8 @@ raspberry/
 ```
 
 Essa reorganização deve ser feita sem apagar o material histórico existente.
+
+
+## Imagem Yocto
+
+A imagem reproduzível do computador de bordo está em [../../yocto/README.md](../../yocto/README.md). Ela usa Yocto Wrynose LTS, meta-raspberrypi e a layer meta-robotinics.
