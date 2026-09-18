@@ -62,3 +62,16 @@ O livro também apresenta voz, visão computacional, memória, RAG, observabilid
 O projeto é educacional e experimental. Baterias de íons de lítio, ferramentas, soldagem, motores e partes móveis exigem proteção, supervisão e componentes adequados.
 
 O snapshot examinado do Robotinics não contém uma licença formal. A publicação ou redistribuição deve ser acompanhada pela licença escolhida pelo autor.
+
+
+## Continuação após a Rev. 3
+
+A Rev. 3 permanece como referência editorial consolidada.
+
+A continuidade arquitetural do projeto — incluindo integração controlada com internet, runtime TCHATGPT no Raspberry Pi e manutenção documental assistida por IA — está em:
+
+- [../ai/README.md](../ai/README.md)
+- [../../Software/raspberry/AI/README.md](../../Software/raspberry/AI/README.md)
+- [../../AGENTS.md](../../AGENTS.md)
+
+Esses documentos complementam a Rev. 3 sem alterar seu snapshot editorial congelado.
