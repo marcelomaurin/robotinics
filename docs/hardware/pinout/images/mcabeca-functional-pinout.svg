@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+<style>
+text{font-family:Arial,sans-serif;fill:#111}.t{font-size:30px;font-weight:bold}.h{font-size:20px;font-weight:bold}.n{font-size:17px}.s{font-size:15px}.box{fill:#f7f7f7;stroke:#222;stroke-width:2}.pin{fill:#fff;stroke:#444;stroke-width:1.5}.line{stroke:#333;stroke-width:2;fill:none}.warn{fill:#fff7e6;stroke:#8a5a00;stroke-width:2}
+</style>
+<rect width="1200" height="820" fill="white"/>
+<text x="600" y="45" text-anchor="middle" class="t">Robotinics — MCabeca / Arduino Nano / ATmega328P</text>
+<text x="600" y="75" text-anchor="middle" class="n">Pinout funcional da cabeça robótica</text>
+
+<rect x="430" y="130" width="340" height="540" rx="20" class="box"/>
+<text x="600" y="165" text-anchor="middle" class="h">ARDUINO NANO</text>
+<text x="600" y="192" text-anchor="middle" class="n">ATmega328P</text>
+
+<g class="n">
+<rect x="455" y="230" width="130" height="34" class="pin"/><text x="465" y="253">D2 / PD2</text>
+<rect x="455" y="275" width="130" height="34" class="pin"/><text x="465" y="298">D3 / PD3</text>
+<rect x="455" y="320" width="130" height="34" class="pin"/><text x="465" y="343">D4 / PD4</text>
+<rect x="455" y="365" width="130" height="34" class="pin"/><text x="465" y="388">D6 / PD6</text>
+<rect x="455" y="410" width="130" height="34" class="pin"/><text x="465" y="433">D7 / PD7</text>
+<rect x="615" y="230" width="130" height="34" class="pin"/><text x="625" y="253">D8 / PB0</text>
+<rect x="615" y="275" width="130" height="34" class="pin"/><text x="625" y="298">D9 / PB1</text>
+<rect x="615" y="320" width="130" height="34" class="pin"/><text x="625" y="343">D12 / PB4</text>
+<rect x="615" y="365" width="130" height="34" class="pin"/><text x="625" y="388">D13 / PB5</text>
+<rect x="615" y="430" width="130" height="34" class="pin"/><text x="625" y="453">D0 / PD0 RX</text>
+<rect x="615" y="475" width="130" height="34" class="pin"/><text x="625" y="498">D1 / PD1 TX</text>
+</g>
+
+<rect x="40" y="160" width="300" height="220" rx="15" class="box"/>
+<text x="190" y="195" text-anchor="middle" class="h">Percepção</text>
+<text x="70" y="235" class="n">D2 ← Echo ultrassônico</text>
+<text x="70" y="275" class="n">D13 → Trigger ultrassônico</text>
+<text x="70" y="315" class="n">D3 → Laser</text>
+
+<rect x="40" y="420" width="300" height="250" rx="15" class="box"/>
+<text x="190" y="455" text-anchor="middle" class="h">Iluminação</text>
+<text x="70" y="495" class="n">D4 → LED vermelho</text>
+<text x="70" y="535" class="n">D6 → LED azul</text>
+<text x="70" y="575" class="n">D9 → LED verde</text>
+<text x="70" y="615" class="n">D7 → Olhos</text>
+
+<rect x="860" y="170" width="290" height="200" rx="15" class="box"/>
+<text x="1005" y="205" text-anchor="middle" class="h">Movimento da cabeça</text>
+<text x="890" y="250" class="n">D8  → Servo X</text>
+<text x="890" y="290" class="n">D12 → Servo Y</text>
+<text x="890" y="330" class="s">Raspberry calcula pixel → ângulo.</text>
+
+<rect x="850" y="430" width="310" height="170" rx="15" class="box"/>
+<text x="1005" y="465" text-anchor="middle" class="h">UART</text>
+<text x="885" y="510" class="n">D0 / PD0 ← RX</text>
+<text x="885" y="550" class="n">D1 / PD1 → TX</text>
+
+<path d="M340 270 L455 270" class="line"/>
+<path d="M340 530 L455 410" class="line"/>
+<path d="M745 280 L860 260" class="line"/>
+<path d="M745 455 L850 500" class="line"/>
+
+<rect x="340" y="710" width="520" height="70" rx="12" class="warn"/>
+<text x="600" y="740" text-anchor="middle" class="n">Atenção: D0/D1 também são usados para upload/debug.</text>
+<text x="600" y="765" text-anchor="middle" class="n">A velocidade serial deve ser igual nos dois lados da comunicação.</text>
+</svg>

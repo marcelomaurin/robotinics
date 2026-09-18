@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000">
+<style>
+text{font-family:Arial,sans-serif;fill:#111}.t{font-size:30px;font-weight:bold}.h{font-size:20px;font-weight:bold}.n{font-size:17px}.s{font-size:15px}.box{fill:#f7f7f7;stroke:#222;stroke-width:2}.pin{fill:#fff;stroke:#444;stroke-width:1.5}.line{stroke:#333;stroke-width:2;fill:none}.dash{stroke:#666;stroke-width:2;stroke-dasharray:8 6;fill:none}
+</style>
+<rect width="1400" height="1000" fill="white"/>
+<text x="700" y="45" text-anchor="middle" class="t">Robotinics — Arduino Mega 2560 / ATmega2560</text>
+<text x="700" y="75" text-anchor="middle" class="n">Pinout funcional utilizado pelo firmware principal</text>
+
+<rect x="520" y="120" width="360" height="760" rx="20" class="box"/>
+<text x="700" y="155" text-anchor="middle" class="h">ARDUINO MEGA 2560</text>
+<text x="700" y="182" text-anchor="middle" class="n">ATmega2560</text>
+
+<!-- left pins -->
+<g class="n">
+<rect x="540" y="220" width="150" height="34" class="pin"/><text x="550" y="243">D6 / PH3</text>
+<rect x="540" y="265" width="150" height="34" class="pin"/><text x="550" y="288">D44 / PL5</text>
+<rect x="540" y="310" width="150" height="34" class="pin"/><text x="550" y="333">D8 / PH5</text>
+<rect x="540" y="355" width="150" height="34" class="pin"/><text x="550" y="378">D9 / PH6</text>
+<rect x="540" y="400" width="150" height="34" class="pin"/><text x="550" y="423">D10 / PB4</text>
+<rect x="540" y="445" width="150" height="34" class="pin"/><text x="550" y="468">D11 / PB5</text>
+<rect x="540" y="490" width="150" height="34" class="pin"/><text x="550" y="513">D46 / PL3</text>
+<rect x="540" y="555" width="150" height="34" class="pin"/><text x="550" y="578">D26 ENA</text>
+<rect x="540" y="595" width="150" height="34" class="pin"/><text x="550" y="618">D28 IN1</text>
+<rect x="540" y="635" width="150" height="34" class="pin"/><text x="550" y="658">D30 IN2</text>
+<rect x="540" y="675" width="150" height="34" class="pin"/><text x="550" y="698">D34 IN3</text>
+<rect x="540" y="715" width="150" height="34" class="pin"/><text x="550" y="738">D32 IN4</text>
+<rect x="540" y="755" width="150" height="34" class="pin"/><text x="550" y="778">D36 ENB</text>
+</g>
+
+<!-- right pins -->
+<g class="n">
+<rect x="710" y="220" width="150" height="34" class="pin"/><text x="720" y="243">D2 / PE4</text>
+<rect x="710" y="265" width="150" height="34" class="pin"/><text x="720" y="288">D3 / PE5</text>
+<rect x="710" y="310" width="150" height="34" class="pin"/><text x="720" y="333">D40 / PG1</text>
+<rect x="710" y="355" width="150" height="34" class="pin"/><text x="720" y="378">D35 / PC2</text>
+<rect x="710" y="400" width="150" height="34" class="pin"/><text x="720" y="423">D41 / PG0</text>
+<rect x="710" y="445" width="150" height="34" class="pin"/><text x="720" y="468">D42 / PL7</text>
+<rect x="710" y="510" width="150" height="34" class="pin"/><text x="720" y="533">A0 / PF0</text>
+<rect x="710" y="550" width="150" height="34" class="pin"/><text x="720" y="573">A1 / PF1</text>
+<rect x="710" y="590" width="150" height="34" class="pin"/><text x="720" y="613">A2 / PF2</text>
+<rect x="710" y="630" width="150" height="34" class="pin"/><text x="720" y="653">A3 / PF3</text>
+<rect x="710" y="670" width="150" height="34" class="pin"/><text x="720" y="693">A4 / PF4</text>
+<rect x="710" y="710" width="150" height="34" class="pin"/><text x="720" y="733">A5 / PF5</text>
+<rect x="710" y="750" width="150" height="34" class="pin"/><text x="720" y="773">A6 / PF6</text>
+</g>
+
+<!-- left peripherals -->
+<rect x="40" y="160" width="360" height="340" rx="15" class="box"/>
+<text x="220" y="195" text-anchor="middle" class="h">Servos</text>
+<text x="70" y="235" class="n">D6  → Cabeça principal</text>
+<text x="70" y="270" class="n">D44 → Braço direito</text>
+<text x="70" y="305" class="n">D8  → Punho/mov. direito</text>
+<text x="70" y="340" class="n">D9  → Braço esquerdo</text>
+<text x="70" y="375" class="n">D10 → Garra esquerda</text>
+<text x="70" y="410" class="n">D11 → Garra direita</text>
+<text x="70" y="445" class="n">D46 → Punho esquerdo</text>
+
+<rect x="40" y="540" width="360" height="260" rx="15" class="box"/>
+<text x="220" y="575" text-anchor="middle" class="h">Tração / Ponte H</text>
+<text x="70" y="615" class="n">ENA D26 / ENB D36</text>
+<text x="70" y="650" class="n">IN1 D28 / IN2 D30</text>
+<text x="70" y="685" class="n">IN3 D34 / IN4 D32</text>
+<text x="70" y="735" class="s">Motores devem usar alimentação própria.</text>
+
+<!-- right peripherals -->
+<rect x="1000" y="140" width="350" height="260" rx="15" class="box"/>
+<text x="1175" y="175" text-anchor="middle" class="h">Ultrassônicos</text>
+<text x="1030" y="215" class="n">Ré: Trigger D2 / Echo D3</text>
+<text x="1030" y="255" class="n">Frente: Trigger D40 / Echo D35</text>
+<text x="1030" y="295" class="n">Cabeça: Trigger D41 / Echo D42</text>
+
+<rect x="1000" y="430" width="350" height="250" rx="15" class="box"/>
+<text x="1175" y="465" text-anchor="middle" class="h">Analógicos</text>
+<text x="1030" y="505" class="n">A0 corrente</text>
+<text x="1030" y="540" class="n">A1/A2/A3 acelerômetro</text>
+<text x="1030" y="575" class="n">A4/A5 gás</text>
+<text x="1030" y="610" class="n">A6 tensão</text>
+
+<rect x="980" y="720" width="390" height="200" rx="15" class="box"/>
+<text x="1175" y="755" text-anchor="middle" class="h">Comunicações</text>
+<text x="1010" y="795" class="n">Serial0 D0/D1 → USB / Raspberry</text>
+<text x="1010" y="825" class="n">Serial1 D19/D18 → Bluetooth</text>
+<text x="1010" y="855" class="n">Serial3 D15/D14 → GPS</text>
+<text x="1010" y="885" class="n">I²C D20/D21 → LCD 0x20</text>
+
+<!-- connection lines -->
+<path d="M400 330 L520 330" class="line"/>
+<path d="M400 650 L520 650" class="line"/>
+<path d="M880 300 L1000 270" class="line"/>
+<path d="M880 600 L1000 555" class="line"/>
+<path d="M880 815 L980 815" class="line"/>
+
+<text x="700" y="940" text-anchor="middle" class="s">Fonte de verdade: firmware em Software/arduino/robotinics/</text>
+<text x="700" y="965" text-anchor="middle" class="s">Este diagrama mostra os pinos utilizados pelo Robotinics; consulte o documento completo para o pinout integral.</text>
+</svg>

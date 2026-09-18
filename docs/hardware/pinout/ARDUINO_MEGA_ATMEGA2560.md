@@ -126,3 +126,7 @@ Os nomes históricos das constantes estão invertidos em relação à semântica
 ## Alimentação
 
 Motores e servos não devem ser alimentados diretamente pelos pinos de I/O do ATmega2560. Documentar separadamente fonte de lógica, fonte de servos, fonte dos motores, reguladores, aterramento comum e proteções.
+
+## Diagrama visual
+
+![Pinout funcional do Arduino Mega no Robotinics](images/mega-functional-pinout.svg)

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="850" viewBox="0 0 1250 850">
+<style>
+text{font-family:Arial,sans-serif;fill:#111}.t{font-size:30px;font-weight:bold}.h{font-size:20px;font-weight:bold}.n{font-size:17px}.s{font-size:15px}.box{fill:#f7f7f7;stroke:#222;stroke-width:2}.pin{fill:#fff;stroke:#444;stroke-width:1.5}.line{stroke:#333;stroke-width:2;fill:none}.warn{fill:#fff7e6;stroke:#8a5a00;stroke-width:2}
+</style>
+<rect width="1250" height="850" fill="white"/>
+<text x="625" y="45" text-anchor="middle" class="t">Robotinics — Raspberry Pi 4/5 ↔ Arduino Mega</text>
+<text x="625" y="75" text-anchor="middle" class="n">Conexão principal e GPIO disponível</text>
+
+<rect x="80" y="150" width="360" height="370" rx="20" class="box"/>
+<text x="260" y="190" text-anchor="middle" class="h">RASPBERRY PI 4 / 5</text>
+<text x="260" y="220" text-anchor="middle" class="n">Computador de bordo</text>
+<text x="120" y="270" class="n">USB → /dev/ttyACM0</text>
+<text x="120" y="310" class="n">GPIO14 / Physical 8  = TXD0</text>
+<text x="120" y="350" class="n">GPIO15 / Physical 10 = RXD0</text>
+<text x="120" y="390" class="n">GPIO2  / Physical 3  = SDA1</text>
+<text x="120" y="430" class="n">GPIO3  / Physical 5  = SCL1</text>
+<text x="120" y="470" class="n">Lógica GPIO = 3,3 V</text>
+
+<rect x="810" y="150" width="360" height="370" rx="20" class="box"/>
+<text x="990" y="190" text-anchor="middle" class="h">ARDUINO MEGA 2560</text>
+<text x="990" y="220" text-anchor="middle" class="n">Controlador físico</text>
+<text x="850" y="270" class="n">USB / Serial0</text>
+<text x="850" y="310" class="n">D0 / PE0 = RX0</text>
+<text x="850" y="350" class="n">D1 / PE1 = TX0</text>
+<text x="850" y="390" class="n">D20 / PD1 = SDA</text>
+<text x="850" y="430" class="n">D21 / PD0 = SCL</text>
+<text x="850" y="470" class="n">Lógica típica = 5 V</text>
+
+<path d="M440 270 L810 270" class="line"/>
+<text x="625" y="252" text-anchor="middle" class="n">USB serial — ligação recomendada</text>
+<text x="625" y="295" text-anchor="middle" class="s">Raspberry: /dev/ttyACM0 ↔ Mega: USB/Serial0</text>
+
+<path d="M440 350 C560 350 690 350 810 350" class="line"/>
+<text x="625" y="335" text-anchor="middle" class="s">UART direta: opcional / futura</text>
+
+<rect x="280" y="590" width="690" height="120" rx="15" class="warn"/>
+<text x="625" y="625" text-anchor="middle" class="h">ATENÇÃO AOS NÍVEIS LÓGICOS</text>
+<text x="625" y="660" text-anchor="middle" class="n">Raspberry Pi = 3,3 V | Arduino Mega = 5 V</text>
+<text x="625" y="690" text-anchor="middle" class="n">Não ligar TX de 5 V do Mega diretamente a um GPIO do Raspberry.</text>
+
+<text x="625" y="770" text-anchor="middle" class="n">Arquitetura atual: prefira USB serial; preserve GPIO para expansões.</text>
+<text x="625" y="800" text-anchor="middle" class="s">Para UART direta, use conversão de nível apropriada e GND comum.</text>
+</svg>

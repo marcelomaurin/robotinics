@@ -25,3 +25,15 @@ A documentação deve ser revisada quando houver mudança de pinagem, controlado
 ## Segurança elétrica
 
 Esta documentação descreve sinal e associação lógica. Ela não substitui o esquema elétrico. Verifique tensão lógica, corrente máxima, alimentação separada de servos/motores, terra comum, conversão 3,3 V/5 V e proteção de cargas indutivas.
+
+## Diagramas visuais
+
+- [Arduino Mega — pinout funcional](images/mega-functional-pinout.svg)
+- [MCabeca / Nano — pinout funcional](images/mcabeca-functional-pinout.svg)
+- [Raspberry Pi ↔ Arduino Mega](images/raspberry-mega-connection.svg)
+
+![Arduino Mega — pinout funcional](images/mega-functional-pinout.svg)
+
+![MCabeca / Nano — pinout funcional](images/mcabeca-functional-pinout.svg)
+
+![Raspberry Pi ↔ Arduino Mega](images/raspberry-mega-connection.svg)
