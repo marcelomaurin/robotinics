@@ -3,7 +3,7 @@
   Arduino Nano / ATmega328P
 
   Refatoracao compativel com o firmware 1.2.
-  Mantem pinagem, baud rate e protocolo externo.
+  Mantem pinagem e protocolo externo. Serial alinhada ao Mega em 9600 bps.
 */
 
 #include <Servo.h>
