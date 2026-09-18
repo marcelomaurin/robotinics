@@ -89,6 +89,7 @@ void Help()
   Println("GPPUNHOESQ - Controle de Girar a PUNHO ESQ = Angulo");
   Println("GPPUNHODIR - Controle de Girar a PUNHO DIR = Angulo");
   Println("SETMONITOR - Status de monitoramento = ON/OFF");
+  Println("MCAB:<comando> - Envia comando ao modulo MCabeca");
 }
 
 static bool startsWith(const String &value, const char *prefix)
@@ -157,7 +158,14 @@ void ExecCMD(String pBuffer)
   }
 
   if (startsWith(pBuffer, "SERIAL:")) {
-    // substring(5) preservado por compatibilidade com o firmware 1.3.
+    // Comando legado preservado.
+    EnviaArduino(pBuffer.substring(5));
+    flgRodou = true;
+  }
+
+  if (startsWith(pBuffer, "MCAB:")) {
+    // Namespace novo, sem interferir no protocolo legado.
+    // Ex.: MCAB:DIST, MCAB:POINT:90,45, MCAB:LEDAZUL=ON
     EnviaArduino(pBuffer.substring(5));
     flgRodou = true;
   }
@@ -268,7 +276,34 @@ static void receiveCommand(Stream &port, char *buffer, size_t &pos, bool echoUsb
 
 void Le_Arduino()
 {
-  receiveCommand(mySerial, arduinoBuffer, arduinoPos, false);
+  // O canal Arduino secundario esta dedicado ao MCabeca.
+  // Respostas do Nano devem subir para USB/Bluetooth, nao ser executadas
+  // como comandos locais do Mega.
+  while (mySerial.available() > 0) {
+    const char ch = (char)mySerial.read();
+
+    if (ch == '\r') continue;
+
+    if (ch == '\n') {
+      arduinoBuffer[arduinoPos] = '\0';
+
+      if (arduinoPos > 0) {
+        Println(String(arduinoBuffer));
+      }
+
+      arduinoPos = 0;
+      arduinoBuffer[0] = '\0';
+      return;
+    }
+
+    if (arduinoPos < RX_BUFFER_SIZE - 1) {
+      arduinoBuffer[arduinoPos++] = ch;
+      arduinoBuffer[arduinoPos] = '\0';
+    } else {
+      arduinoPos = 0;
+      arduinoBuffer[0] = '\0';
+    }
+  }
 }
 
 void Le_Bluetooth()
