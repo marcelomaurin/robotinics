@@ -31,3 +31,10 @@ Camera-to-servo calibration belongs to Raspberry Pi. MCabeca should only receive
 Raspberry coordinates high-level behavior, while the Mega remains responsible for immediate physical control, basic safety and peripheral communication.
 
 A future directory structure can separate vision, calibration, robot control, protocol, telemetry and services while preserving historical code.
+
+
+## AI layer
+
+The current Robotinics continuation defines a dedicated Raspberry Pi AI runtime based on TCHATGPT, RAG, controlled internet access, vision, voice and telemetry.
+
+See [AI/README.en.md](AI/README.en.md) and [../../docs/ai/README.en.md](../../docs/ai/README.en.md).

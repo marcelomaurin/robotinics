@@ -26,7 +26,8 @@ Câmera / Rede / Aplicações
 A pasta possui módulos históricos organizados em:
 
 - `Input/` — entrada e aquisição;
-- `Output/` — saída e integração.
+- `Output/` — saída e integração;
+- [`AI/`](AI/README.md) — runtime proposto com TCHATGPT, RAG, internet, visão, voz e gateway do robô.
 
 Esses diretórios representam a evolução inicial do software Raspberry e devem ser entendidos como base histórica para uma arquitetura futura mais modular.
 
@@ -78,6 +79,14 @@ O Mega deve continuar responsável por:
 - execução de servos;
 - segurança local;
 - comunicação com periféricos.
+
+## Camada de IA
+
+A continuação atual do Robotinics define uma camada específica de IA no Raspberry Pi.
+
+Ela integra TCHATGPT, RAG, internet, visão, voz e telemetria, mantendo a comunicação física centralizada no RobotGateway.
+
+Consulte [AI/README.md](AI/README.md) e [../../docs/ai/README.md](../../docs/ai/README.md).
 
 ## Evolução sugerida
 
