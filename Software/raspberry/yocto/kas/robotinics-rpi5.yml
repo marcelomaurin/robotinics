@@ -44,4 +44,4 @@ local_conf_header:
     EXTRA_IMAGE_FEATURES += "ssh-server-openssh"
     HOSTTOOLS += "fpc"
     BB_ENV_PASSTHROUGH_ADDITIONS += "ROBOTINICS_FPC_SOURCE"
-    ROBOTINICS_FEATURES ?= "vision speech"
+    ROBOTINICS_FEATURES ?= "vision speech ai"
