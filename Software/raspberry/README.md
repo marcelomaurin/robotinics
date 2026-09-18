@@ -28,7 +28,8 @@ A pasta possui módulos históricos organizados em:
 - `Input/` — entrada e aquisição;
 - `Output/` — saída e integração;
 - [`AI/`](AI/README.md) — runtime proposto com TCHATGPT, RAG, internet, visão, voz e gateway do robô;
-- [`yocto/`](yocto/README.md) — imagem Linux reproduzível do computador de bordo.
+- [`yocto/`](yocto/README.md) — imagem Linux reproduzível do computador de bordo;
+- [`Voice/`](Voice/README.md) — síntese de voz Lazarus/TCHATGPT mantendo a interface legada.
 
 Esses diretórios representam a evolução inicial do software Raspberry e devem ser entendidos como base histórica para uma arquitetura futura mais modular.
 

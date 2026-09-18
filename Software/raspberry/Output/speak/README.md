@@ -1,24 +1,26 @@
-# Saída de Voz
+# Saída de Voz — Histórico
 
-[Raspberry Output](../README.md) · [English](README.en.md) · [Español](README.es.md)
+[Raspberry Output](../README.md) · [Implementação atual](../../Voice/README.md)
 
-Este diretório contém recursos históricos de síntese de voz do Robotinics.
+Este diretório contém **somente a implementação histórica** de voz do Robotinics.
 
-## Estrutura
+## Estado
 
-- `espeak/` — integração baseada em eSpeak.
+**DEPRECATED**
 
-## Objetivo
+A integração baseada em eSpeak não faz mais parte da imagem atual do Raspberry Pi.
 
-A voz permite ao robô apresentar informações sem depender exclusivamente de uma tela.
+A implementação vigente está em:
 
-Possíveis usos incluem:
+- [Software/raspberry/Voice](../../Voice/README.md)
 
-- mensagens de inicialização;
-- alertas;
-- confirmação de comandos;
-- estado de sensores;
-- resultado de tarefas;
-- interação experimental com usuários.
+Ela mantém as mesmas entradas públicas:
 
-A síntese de voz pertence à camada de alto nível e não deve bloquear rotinas críticas de controle físico.
+```bash
+robotinics-speak "texto"
+robotinics-read-file arquivo.txt
+```
+
+mas utiliza uma aplicação Lazarus/Free Pascal com `TAIVoiceSynthesizer` da biblioteca TCHATGPT e a API de síntese de voz.
+
+Os arquivos eSpeak permanecem nesta pasta apenas como registro histórico do projeto.
