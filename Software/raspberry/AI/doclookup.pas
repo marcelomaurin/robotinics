@@ -59,7 +59,7 @@ begin
       else
       begin
         Ext := LowerCase(ExtractFileExt(Path));
-        if not (Ext in ['.md', '.txt']) then Continue;
+        if (Ext <> '.md') and (Ext <> '.txt') then Continue;
         S := TStringList.Create;
         try
           try
