@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 
+"$ROOT/scripts/bootstrap-fpc.sh"
+export PATH="$ROOT/.tools/fpc/bin:$PATH"
+export ROBOTINICS_FPC_SOURCE="$ROOT/.tools/fpc-src"
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 TARGET=${1:-rpi4}
 
