@@ -2,7 +2,7 @@ SUMMARY = "Robotinics documentation for local AI context"
 LICENSE = "CLOSED"
 
 SRC_URI = "git://github.com/marcelomaurin/robotinics.git;protocol=https;branch=master"
-SRCREV = "bf2bc64d610cceb064e48055d35e1c9f017aae6f"
+SRCREV = "d8c6cf5b6412cb1f6486ca8b219f8b393579c321"
 S = "${WORKDIR}/git"
 
 inherit allarch
