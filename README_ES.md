@@ -67,7 +67,7 @@ Raspberry Pi concentra procesamiento de alto nivel. Arduino Mega controla la may
 | [MCabeca](Software/arduino/MCabeca/README.es.md) | módulo activo de cabeza |
 | [Raspberry](Software/raspberry/README.es.md) | procesamiento de alto nivel |
 | [Robotinics AI](docs/ai/README.es.md) | TCHATGPT, internet, RAG, visión, agentes y documentación asistida |
-| [Imagen Yocto](yocto/README.es.md) | Linux reproducible para Raspberry Pi 4/5 |
+| [Imagen Yocto](Software/raspberry/yocto/README.es.md) | Linux reproducible para Raspberry Pi 4/5 |
 | [Base de datos](Software/database/README.es.md) | persistencia |
 | [Web](Software/site/README.es.md) | interfaz histórica |
 | [Documentación](docs/README.es.md) | manuales y material técnico |
