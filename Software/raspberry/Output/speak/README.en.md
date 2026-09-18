@@ -1,9 +1,14 @@
-# Speech Output
+# Speech Output — Historical
 
-[Raspberry Output](../README.en.md) · [Português](README.md) · [Español](README.es.md)
+[Current implementation](../../Voice/README.en.md)
 
-This directory contains historical Robotinics speech-synthesis resources.
+**DEPRECATED**
 
-The `espeak/` folder contains eSpeak-based integration.
+This directory contains the historical eSpeak implementation only. The current Robotinics speech backend is a Lazarus/Free Pascal application using TCHATGPT `TAIVoiceSynthesizer`.
 
-Speech can provide startup messages, alerts, command confirmation, sensor status and task results. It belongs to the high-level software layer and should not block physical-control routines.
+Public command compatibility is preserved:
+
+```bash
+robotinics-speak "text"
+robotinics-read-file file.txt
+```
