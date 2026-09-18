@@ -1,9 +1,14 @@
-# Salida de Voz
+# Salida de Voz — Histórica
 
-[Raspberry Output](../README.es.md) · [Português](README.md) · [English](README.en.md)
+[Implementación actual](../../Voice/README.es.md)
 
-Este directorio contiene recursos históricos de síntesis de voz.
+**DEPRECATED**
 
-La carpeta `espeak/` contiene integración basada en eSpeak.
+Esta carpeta contiene únicamente la implementación histórica basada en eSpeak. La implementación actual usa una aplicación Lazarus/Free Pascal con `TAIVoiceSynthesizer` de TCHATGPT.
 
-La voz puede presentar mensajes de inicio, alertas, confirmaciones, estado de sensores y resultados de tareas. Debe permanecer en la capa de alto nivel.
+Se conservan los comandos públicos:
+
+```bash
+robotinics-speak "texto"
+robotinics-read-file archivo.txt
+```
