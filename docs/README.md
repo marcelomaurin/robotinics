@@ -82,3 +82,8 @@ A documentação principal utiliza:
 - Español.
 
 A versão em português é usada como referência principal quando não houver outra indicação.
+
+
+## Pinout dos controladores
+
+A documentação de pinout dos controladores está em [hardware/pinout/README.md](hardware/pinout/README.md), cobrindo Arduino Mega/ATmega2560, MCabeca/ATmega328P e Raspberry Pi 4/5.
