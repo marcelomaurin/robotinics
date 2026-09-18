@@ -2,7 +2,7 @@
 
 [Documentação de IA](../../../docs/ai/README.md) · [English](README.en.md) · [Español](README.es.md)
 
-Este módulo documenta a implementação proposta da camada de IA do Robotinics no Raspberry Pi.
+Este módulo contém a implementação inicial da camada de IA do Robotinics no Raspberry Pi.
 
 ## Papel
 
@@ -33,20 +33,34 @@ O Raspberry funciona como computador de bordo e gateway entre:
 
 ARM64 deve ser validado componente a componente, conforme já orientado na Rev. 3.
 
-## Serviços
+## Componentes implementados
 
 ```text
-RobotinicsAI
-├── LLMService
-├── AgentService
+robotinics-ai
+├── TCHATGPT
+├── GatewayClient
 ├── InternetService
-├── RAGService
-├── VisionService
-├── VoiceService
-├── TelemetryService
-├── RobotGateway
-├── DocumentationService
-└── AuditService
+├── DocumentationLookup
+└── TaskEngine
+
+robotinics-gateway
+├── serial Mega
+├── fila de comandos
+├── request_id
+├── timeout
+├── parser de estado
+├── catálogo de comandos
+└── API HTTP local
+
+robotinics-ai-api
+└── API HTTP local para perguntas
+```
+
+Endpoints locais:
+
+```text
+Gateway: http://127.0.0.1:8765
+AI:      http://127.0.0.1:8766
 ```
 
 ## LLMService
@@ -159,20 +173,24 @@ ROBOTINICS_SERIAL_PORT
 ROBOTINICS_SERIAL_BAUD
 ```
 
-## Roteiro de implementação
+## Estado atual
 
-1. compilar `openai_core` no Raspberry;
-2. testar `TCHATGPT` em console;
-3. validar serial sem IA;
-4. implementar `RobotGateway`;
-5. indexar documentação com RAG;
-6. implementar `InternetService`;
-7. adicionar agente em modo somente leitura;
-8. adicionar visão;
-9. adicionar voz;
-10. habilitar propostas de ação;
-11. validar confirmação e telemetria;
-12. criar testes de regressão.
+Implementado nesta etapa:
+
+1. RobotGateway com leitura e escrita serial;
+2. fila de comandos e `request_id`;
+3. validação de comandos;
+4. estado persistido em JSON;
+5. API HTTP local do gateway;
+6. aplicação `robotinics-ai` em Lazarus/TCHATGPT;
+7. criação de tarefa para cada pergunta;
+8. coleta de telemetria e histórico;
+9. busca de documentação local;
+10. adaptador genérico de internet;
+11. API local da IA;
+12. recipes Yocto ARM64.
+
+Ainda dependem de validação em hardware: build completo ARM64, câmera, STT e telemetria real do Mega.
 
 ## Documentação automática
 
