@@ -66,9 +66,18 @@ The Raspberry Pi is intended for high-level processing. Arduino Mega concentrate
 | [Mega firmware](Software/arduino/robotinics/README.en.md) | main physical controller |
 | [MCabeca](Software/arduino/MCabeca/README.en.md) | active head module |
 | [Raspberry Pi](Software/raspberry/README.en.md) | high-level processing |
+| [Robotinics AI](docs/ai/README.en.md) | TCHATGPT, internet, RAG, vision, agents and documentation assistance |
 | [Database](Software/database/README.en.md) | persistence layer |
 | [Web interface](Software/site/README.en.md) | historical web application |
 | [Documentation](docs/README.en.md) | manuals and technical material |
+
+## Raspberry Pi AI continuation
+
+The Rev. 3 continuation uses Raspberry Pi as an intelligent onboard computer with the [TCHATGPT](https://github.com/marcelomaurin/CHATGPT) library for LLM access, agents, RAG, vision, voice and controlled internet integration.
+
+AI interprets, researches and plans; Arduino Mega remains responsible for deterministic physical control.
+
+See [docs/ai/README.en.md](docs/ai/README.en.md), [AGENTS.md](AGENTS.md) and [AI_README.md](AI_README.md).
 
 ## Arduino Mega
 
