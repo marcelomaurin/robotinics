@@ -12,9 +12,21 @@ O projeto surgiu com uma proposta multidisciplinar, reunindo mecânica, estrutur
 
 Instituição: [Etec José Martimiano da Silva – Centro Paula Souza](https://www.cps.sp.gov.br/etecs/etec-jose-martimiano-da-silva/)
 
-## Manual
+## Documentação principal
 
-Um dos principais documentos é o material **Projetos IoT com Arduino e Raspberry**, mantido no repositório em formato compactado.
+A referência mais recente do projeto é a **Robotinics Rev. 3**, disponível em [rev3/README.md](rev3/README.md), com edições em português e inglês, manuscritos-fonte e arquivos de reconstrução.
+
+A Rev. 3 consolida a arquitetura moderna do Robotinics, incluindo Raspberry Pi, TCHATGPT, agentes, visão, voz, RAG e controle supervisionado.
+
+## Continuação de IA
+
+A evolução posterior da arquitetura de IA está documentada em [ai/README.md](ai/README.md).
+
+Essa documentação descreve a integração com internet, o runtime no Raspberry Pi e um agente específico para manter os READMEs sincronizados com o código.
+
+## Material histórico
+
+O repositório também preserva **Projetos IoT com Arduino e Raspberry** como documentação histórica.
 
 Esse conteúdo registra conceitos, montagens, experimentos e etapas associadas ao desenvolvimento do projeto.
 
