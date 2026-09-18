@@ -38,18 +38,20 @@ void Le_GPS()
 
     if (bien == 6) {
       int cont = 0;
-      for (uint16_t i = 0; i < conta && cont < 13; i++) {
+      bool encontrouChecksum = false;
+      for (uint16_t i = 0; i < conta; i++) {
         if (linea[i] == ',' && cont < 12) {
           indices[cont++] = i;
         } else if (linea[i] == '*') {
           indices[12] = i;
+          encontrouChecksum = true;
+          break;
         }
       }
 
-      // Uma GPRMC normal contem os separadores esperados.
-      // Se vier truncada, descarta e aguarda a proxima em vez de acessar
-      // indices fora dos limites.
-      if (cont < 12) {
+      // Uma GPRMC normal precisa dos separadores e do '*'.
+      // Se vier truncada, descarta e aguarda a proxima.
+      if (cont < 11 || !encontrouChecksum) {
         conta = 0;
         linea[0] = '\0';
         continue;
