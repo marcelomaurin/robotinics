@@ -128,3 +128,8 @@ O PR #3 propõe separar internamente:
 - testes.
 
 O objetivo é aumentar legibilidade, reduzir acoplamento e facilitar manutenção sem trocar hardware nem alterar o protocolo já usado pelo equipamento.
+
+
+## Pinout
+
+O mapeamento entre pinos Arduino, portas do ATmega2560 e funções do Robotinics está documentado em [docs/hardware/pinout/ARDUINO_MEGA_ATMEGA2560.md](../../../docs/hardware/pinout/ARDUINO_MEGA_ATMEGA2560.md).

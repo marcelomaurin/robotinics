@@ -163,3 +163,8 @@ Por isso, a implementação deve:
 ## Firmware
 
 O PR #4 refatora o firmware histórico preservando pinagem e comandos legados, mas tornando o código mais adequado ao Arduino Nano e à integração com o Mega.
+
+
+## Pinout
+
+O mapeamento entre pinos do Arduino Nano, portas do ATmega328P e funções do MCabeca está documentado em [docs/hardware/pinout/MCABECA_ATMEGA328P.md](../../../docs/hardware/pinout/MCABECA_ATMEGA328P.md).
