@@ -1,11 +1,26 @@
 // Sensor ultrassonico ------------------------------------------------------
 
+static float medeDistanciaCM()
+{
+  float somaCm = 0.0f;
+
+  // Mantem as tres amostras originais.
+  for (uint8_t i = 0; i < 3; i++)
+  {
+    const long microsec = ultrasonic.timing();
+    somaCm += ultrasonic.convert(microsec, Ultrasonic::CM);
+  }
+
+  const float cm = somaCm / 3.0f;
+  cmCabeca = (int)cm;
+  return cm;
+}
+
 void Le_Ultrasom(int Imprime)
 {
   float somaCm = 0.0f;
   float somaPol = 0.0f;
 
-  // Mantem as tres amostras originais para compatibilidade do comportamento.
   for (uint8_t i = 0; i < 3; i++)
   {
     const long microsec = ultrasonic.timing();
@@ -32,4 +47,11 @@ void Le_Ultrasom(int Imprime)
     Serial.println(inMsec);
     Prompt();
   }
+}
+
+void EnviaDistancia()
+{
+  const float cm = medeDistanciaCM();
+  Serial.print(F("MCAB:DIST:"));
+  Serial.println(cm);
 }
