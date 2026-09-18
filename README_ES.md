@@ -66,9 +66,18 @@ Raspberry Pi concentra procesamiento de alto nivel. Arduino Mega controla la may
 | [Mega](Software/arduino/robotinics/README.es.md) | controlador físico principal |
 | [MCabeca](Software/arduino/MCabeca/README.es.md) | módulo activo de cabeza |
 | [Raspberry](Software/raspberry/README.es.md) | procesamiento de alto nivel |
+| [Robotinics AI](docs/ai/README.es.md) | TCHATGPT, internet, RAG, visión, agentes y documentación asistida |
 | [Base de datos](Software/database/README.es.md) | persistencia |
 | [Web](Software/site/README.es.md) | interfaz histórica |
 | [Documentación](docs/README.es.md) | manuales y material técnico |
+
+## Continuación con IA en Raspberry Pi
+
+La continuación de Rev. 3 utiliza Raspberry Pi como computador inteligente de a bordo con la biblioteca [TCHATGPT](https://github.com/marcelomaurin/CHATGPT) para LLM, agentes, RAG, visión, voz e integración controlada con internet.
+
+La IA interpreta, investiga y planifica; Arduino Mega continúa con el control físico determinístico.
+
+Consulte [docs/ai/README.es.md](docs/ai/README.es.md), [AGENTS.md](AGENTS.md) y [AI_README.md](AI_README.md).
 
 ## Arduino Mega
 
