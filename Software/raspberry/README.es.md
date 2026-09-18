@@ -35,3 +35,8 @@ Consulte [AI/README.es.md](AI/README.es.md) y [../../docs/ai/README.es.md](../..
 ## Imagen Yocto
 
 La imagen reproducible del computador de a bordo se mantiene en [yocto/README.es.md](yocto/README.es.md), junto al runtime Raspberry Pi que empaqueta.
+
+
+## Voz
+
+La implementación actual de voz está en [Voice/README.es.md](Voice/README.es.md). Sustituye eSpeak por una aplicación Lazarus/Free Pascal usando `TAIVoiceSynthesizer` de TCHATGPT y conserva los comandos públicos `robotinics-speak` y `robotinics-read-file`.
