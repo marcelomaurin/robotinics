@@ -65,12 +65,13 @@ begin
     'Quando faltarem dados, diga quais dados faltam.';
 end;
 
-function BuildUserPrompt(const Question, StateJSON, HistoryJSON,
+function BuildUserPrompt(const Question, StateJSON, CatalogJSON, HistoryJSON,
   DocsContext, InternetContext: string): string;
 begin
   Result :=
     'QUESTION:' + LineEnding + Question + LineEnding + LineEnding +
     'ROBOT_STATE:' + LineEnding + StateJSON + LineEnding + LineEnding +
+    'GATEWAY_CATALOG:' + LineEnding + CatalogJSON + LineEnding + LineEnding +
     'GATEWAY_HISTORY:' + LineEnding + HistoryJSON + LineEnding + LineEnding +
     'DOCUMENTATION:' + LineEnding + DocsContext + LineEnding + LineEnding;
 
@@ -81,7 +82,7 @@ begin
   Result := Result +
     'Produza uma resposta final baseada nesses dados. ' +
     'Se sugerir uma acao fisica, descreva-a como proposta e cite o comando ' +
-    'Robotinics correspondente somente se ele estiver documentado.';
+    'Robotinics correspondente somente se ele estiver presente em GATEWAY_CATALOG.';
 end;
 
 function AskOnce(const Question: string): Integer;
@@ -90,7 +91,7 @@ var
   Internet: TInternetService;
   Chat: TCHATGPT;
   Task: TRobotTask;
-  StateJSON, HistoryJSON, DocsContext, InternetContext: string;
+  StateJSON, CatalogJSON, HistoryJSON, DocsContext, InternetContext: string;
   Prompt, StatePath, DocsPath, SearchURL: string;
   TaskFile: string;
 begin
@@ -109,12 +110,14 @@ begin
 
     try
       StateJSON := Gateway.State;
+      CatalogJSON := Gateway.Catalog;
       HistoryJSON := Gateway.History(20);
-      Task.AddStep('collect_telemetry', 'DONE', 'Estado e historico coletados.');
+      Task.AddStep('collect_telemetry', 'DONE', 'Estado, catalogo e historico coletados.');
     except
       on E: Exception do
       begin
         StateJSON := '{"ok":false,"error":"' + E.Message + '"}';
+        CatalogJSON := '{"ok":false}';
         HistoryJSON := '{"ok":false}';
         Task.AddStep('collect_telemetry', 'ERROR', E.Message);
       end;
@@ -155,7 +158,7 @@ begin
     Chat.Timeout := StrToIntDef(Env('ROBOTINICS_LLM_TIMEOUT_MS', '120000'), 120000);
     Chat.Dev := BuildSystemPrompt;
 
-    Prompt := BuildUserPrompt(Question, StateJSON, HistoryJSON,
+    Prompt := BuildUserPrompt(Question, StateJSON, CatalogJSON, HistoryJSON,
       DocsContext, InternetContext);
 
     Task.AddStep('reason', 'RUNNING', 'Enviando contexto ao TCHATGPT.');
