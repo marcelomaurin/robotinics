@@ -119,7 +119,7 @@ A implementação eSpeak foi retirada da imagem. A interface pública continua s
 
 Nos manifests kas:
 
-    ROBOTINICS_FEATURES ?= "vision speech"
+    ROBOTINICS_FEATURES ?= "vision speech ai"
 
 A feature `speech` volta a fazer parte da imagem padrão. O build executa `scripts/bootstrap-fpc.sh`, prepara o compilador host FPC 3.2.2 e a receita `robotinics-voice-bin` monta o cross compiler `ppcrossa64` usando os binutils do Yocto antes de compilar o aplicativo.
 
@@ -167,3 +167,36 @@ cd Software/raspberry/yocto
 O script usa o pacote oficial FPC 3.2.2 como bootstrap e clona a tag oficial `release_3_2_2` do repositório Free Pascal. As units `aibase.pas` e `aivoicesynthesizer.pas` são sincronizadas da biblioteca TCHATGPT; para o build headless é removida apenas a dependência visual `LResources` e o recurso de ícone.
 
 A API `TAIVoiceSynthesizer` e o engine `seOpenAI` permanecem os mesmos.
+
+
+## Runtime de IA
+
+A imagem instala dois serviços locais:
+
+```text
+robotinics-gateway.service  -> http://127.0.0.1:8765
+robotinics-ai-api.service   -> http://127.0.0.1:8766
+```
+
+Teste:
+
+```bash
+./scripts/smoke-runtime.sh
+./scripts/smoke-runtime.sh "faça um resumo do estado do robô"
+```
+
+Build isolado da IA:
+
+```bash
+./scripts/build-ai.sh rpi4
+```
+
+A API da IA aceita:
+
+```bash
+curl -X POST http://127.0.0.1:8766/v1/ask \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"qual o estado atual?"}'
+```
+
+Cada pergunta gera uma tarefa em `/var/lib/robotinics/tasks/`.
