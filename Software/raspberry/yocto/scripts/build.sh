@@ -1,11 +1,12 @@
 #!/bin/sh
 set -eu
 
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+TARGET=${1:-rpi4}
+
 "$ROOT/scripts/bootstrap-fpc.sh"
 export PATH="$ROOT/.tools/fpc/bin:$PATH"
 export ROBOTINICS_FPC_SOURCE="$ROOT/.tools/fpc-src"
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-TARGET=${1:-rpi4}
 
 case "$TARGET" in
   rpi4) MANIFEST="$ROOT/kas/robotinics-rpi4.yml" ;;
