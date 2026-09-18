@@ -10,8 +10,10 @@ void Start_Servo()
 {
   CabecaX.attach(PIN_CABECA_X);
   CabecaY.attach(PIN_CABECA_Y);
-  CabecaX.write(CABECA_X_HOME);
-  CabecaY.write(CABECA_Y_HOME);
+  currentX = CABECA_X_HOME;
+  currentY = CABECA_Y_HOME;
+  CabecaX.write(currentX);
+  CabecaY.write(currentY);
 }
 
 void Start_Olhos()
@@ -74,15 +76,17 @@ void LaserOFF()
 
 void Point(int y, int x)
 {
-  y = constrain(y, 0, 180);
-  x = constrain(x, 0, 180);
+  currentY = (uint8_t)constrain(y, 0, 180);
+  currentX = (uint8_t)constrain(x, 0, 180);
 
-  CabecaY.write(y);
-  CabecaX.write(x);
+  CabecaY.write(currentY);
+  CabecaX.write(currentX);
 }
 
 void VariaLuz()
 {
+  if (!lightAuto) return;
+
   const unsigned long agora = millis();
   if (agora - ultimoPassoLuz < INTERVALO_LUZ_MS) return;
 
