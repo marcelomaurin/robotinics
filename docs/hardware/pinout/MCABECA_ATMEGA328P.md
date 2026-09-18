@@ -80,3 +80,7 @@ Laser → D3 / PD3. O laser é apontador/referência óptica. Se o módulo exigi
 ## Alimentação
 
 O Nano e os periféricos devem compartilhar referência de GND. Servos devem ter alimentação dimensionada adequadamente e não devem depender do regulador do Nano.
+
+## Diagrama visual
+
+![Pinout funcional do MCabeca / Arduino Nano](images/mcabeca-functional-pinout.svg)
