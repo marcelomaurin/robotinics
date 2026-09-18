@@ -4,57 +4,123 @@
 
 ![Robotinics](Mecanic/solidwork/robotinics.JPG)
 
-Robotinics es una plataforma abierta de robótica, automatización y experimentación que integra **mecánica, electrónica, firmware embebido, computación y software**.
+Robotinics es una plataforma abierta de robótica, automatización y experimentación diseñada para integrar **mecánica, electrónica, firmware embebido, Raspberry Pi y software de aplicación**.
 
-El objetivo es ofrecer una base evolutiva para estudio, prototipado y desarrollo.
+El objetivo no es ofrecer solamente un robot terminado. Robotinics funciona como una plataforma técnica evolutiva que puede estudiarse, modificarse, reproducirse y ampliarse.
+
+## Alcance
+
+El proyecto incluye:
+
+- modelos CAD y piezas imprimibles;
+- esquemas electrónicos y PCB;
+- Arduino Mega como controlador principal;
+- Arduino Nano como controlador MCabeca;
+- motores, servos y sensores;
+- puntero láser y ultrasonido;
+- integración con Raspberry Pi;
+- base de datos;
+- interfaz web histórica;
+- documentación educativa e histórica.
 
 ## Arquitectura
 
 ```text
-                      Raspberry Pi
-                visión / software / lógica
-                           │
-                           ▼
-                     Arduino Mega
-                 control físico principal
-                  /        │         \
-             motores    sensores    servos
-                           │
-                           ▼
-                    MCabeca / Nano
+                       Raspberry Pi
+                visión / integración / lógica
+                            │
+                            ▼
+                      Arduino Mega
+                controlador físico principal
+                 /        │          \
+             motores    sensores     servos
+                            │
+                            ▼
+                     MCabeca / Nano
                 ┌──────────┼──────────┐
               Servo X    Servo Y    Ultrasonido
-                           │
-                       Láser / LEDs
+                            │
+                        Láser / LEDs
 ```
 
-## Módulos
+Raspberry Pi concentra procesamiento de alto nivel. Arduino Mega controla la mayor parte del hardware físico. MCabeca es un periférico especializado de la cabeza.
 
-- [Electrónica](Eletronic/README.md)
-- [Mecánica](Mecanic/README.md)
-- [Software](Software/README.md)
-- [Arduino](Software/arduino/README.md)
-- [Controlador Mega](Software/arduino/robotinics/README.md)
-- [MCabeca](Software/arduino/MCabeca/README.md)
-- [Raspberry](Software/raspberry/README.md)
-- [Base de datos](Software/database/README.md)
-- [Sitio web](Software/site/README.md)
-- [Documentación](docs/README.md)
+## Módulos principales
 
-## MCabeca y percepción activa
+| Módulo | Función |
+|---|---|
+| [Electrónica](Eletronic/README.es.md) | esquemas, PCB y alimentación |
+| [Mecánica](Mecanic/README.es.md) | CAD, ensamblajes y piezas |
+| [Software](Software/README.es.md) | software embebido y de alto nivel |
+| [Arduino](Software/arduino/README.es.md) | firmware de microcontroladores |
+| [Mega](Software/arduino/robotinics/README.es.md) | controlador físico principal |
+| [MCabeca](Software/arduino/MCabeca/README.es.md) | módulo activo de cabeza |
+| [Raspberry](Software/raspberry/README.es.md) | procesamiento de alto nivel |
+| [Base de datos](Software/database/README.es.md) | persistencia |
+| [Web](Software/site/README.es.md) | interfaz histórica |
+| [Documentación](docs/README.es.md) | manuales y material técnico |
 
-MCabeca combina dos servos, un **puntero láser**, LEDs y un sensor ultrasónico. El láser se usa como referencia óptica y puntero visual.
+## Arduino Mega
 
-Combinado con una cámara en Raspberry Pi, puede apoyar escaneo angular, detección del punto láser, experimentos de profundidad monocular y fusión de sensores.
+Arduino Mega se utiliza por la gran cantidad de E/S necesarias. Controla motores, servos, sensores, GPS, LCD, Bluetooth, RF y comunicaciones.
 
-La calibración y la visión pertenecen al Raspberry Pi. El microcontrolador sólo ejecuta ángulos y comandos físicos.
+## MCabeca
+
+MCabeca utiliza Arduino Nano y controla dos ejes de servo, puntero láser, LEDs independientes, ojos y sensor ultrasónico.
+
+No realiza visión ni calibración de cámara.
+
+## Percepción activa
+
+Raspberry Pi puede utilizar la cámara y el láser para:
+
+1. capturar la imagen;
+2. detectar el punto láser;
+3. aplicar calibración;
+4. convertir píxeles en ángulos;
+5. comandar MCabeca;
+6. combinar la información visual con la distancia ultrasónica.
+
+Esto permite experimentar con scanning, apuntado visual, ayuda a visión monocular y fusión de sensores.
+
+El láser es una referencia óptica y visual, no un arma.
+
+## División de responsabilidades
+
+Raspberry Pi debe manejar visión, calibración, triangulación, lógica de misión, integración e IA opcional.
+
+Los microcontroladores deben manejar motores, servos, sensores, LEDs, láser y seguridad local simple.
+
+## Estructura
+
+```text
+robotinics/
+├── Eletronic/
+├── Mecanic/
+├── Software/
+│   ├── arduino/
+│   ├── database/
+│   ├── raspberry/
+│   └── site/
+└── docs/
+```
 
 ## Modernización
 
-El firmware está siendo refactorizado manteniendo hardware y protocolo:
-
-- PR #3 — firmware del Arduino Mega;
+- PR #3 — refactor del firmware Arduino Mega;
 - PR #4 — optimización de MCabeca para Arduino Nano.
+
+La meta es mejorar la arquitectura sin exigir reemplazo del hardware existente.
+
+## Política de documentación
+
+El README raíz explica la plataforma completa. Cada módulo mantiene su propia documentación y cada idioma utiliza un archivo separado.
+
+Idiomas principales:
+
+- Portugués;
+- Inglés;
+- Español.
 
 ## Autor
 
@@ -62,3 +128,5 @@ El firmware está siendo refactorizado manteniendo hardware y protocolo:
 
 - GitHub: [marcelomaurin](https://github.com/marcelomaurin)
 - Sitio: [Maurinsoft](https://maurinsoft.com.br)
+
+Robotinics es una plataforma experimental y educativa. Utilice prácticas adecuadas de seguridad con motores, alimentación, baterías, piezas móviles y punteros láser.
