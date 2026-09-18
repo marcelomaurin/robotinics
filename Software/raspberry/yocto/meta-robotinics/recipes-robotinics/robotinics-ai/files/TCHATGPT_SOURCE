@@ -1,0 +1,11 @@
+Robotinics AI headless TCHATGPT snapshot
+source: https://github.com/marcelomaurin/CHATGPT
+commit: e593fb758801cecb087e55e3222fc513cc35fee2
+
+Headless adjustments in chatgpt.pas:
+- LazUTF8 removed; UTF8Decode/UTF8Encode from SysUtils used.
+- LResources removed.
+- Lazarus component registration disabled.
+- icon resource initialization removed.
+
+TCHATGPT provider logic and SendQuestion API remain unchanged.
