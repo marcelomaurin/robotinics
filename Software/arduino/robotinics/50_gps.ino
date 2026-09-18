@@ -12,13 +12,18 @@ void Start_GPS()
 
 void Le_GPS()
 {
-  static uint16_t conta = 0;
+  // O comando GPS do firmware 1.3 aguardava uma sentenca GPRMC valida.
+  // Esse comportamento e mantido; apenas protegemos os buffers.
+  uint16_t conta = 0;
 
-  while (Serial3.available() > 0) {
+  while (true) {
+    if (Serial3.available() <= 0) continue;
+
     byteGPS = Serial3.read();
 
     if (conta >= sizeof(linea) - 1) {
-      conta = 0; // protege contra overflow mantendo o parser operacional
+      conta = 0;
+      linea[0] = '\0';
     }
 
     linea[conta++] = (char)byteGPS;
@@ -41,6 +46,15 @@ void Le_GPS()
         }
       }
 
+      // Uma GPRMC normal contem os separadores esperados.
+      // Se vier truncada, descarta e aguarda a proxima em vez de acessar
+      // indices fora dos limites.
+      if (cont < 12) {
+        conta = 0;
+        linea[0] = '\0';
+        continue;
+      }
+
       Println("");
       Println("");
       Println("---------------");
@@ -61,18 +75,19 @@ void Le_GPS()
       };
 
       for (int i = 0; i < 12; i++) {
-        Print(labels[i]);
+        Print(String(labels[i]));
         const int startPos = indices[i] + 1;
         const int endPos = indices[i + 1];
+
         if (startPos >= 0 && endPos > startPos && endPos <= (int)conta) {
-          for (int j = startPos; j < endPos; j++) Print(String(linea[j]));
+          for (int j = startPos; j < endPos; j++) {
+            Print(String(linea[j]));
+          }
         }
         Println("");
       }
 
       Println("---------------");
-      conta = 0;
-      linea[0] = '\0';
       return;
     }
 
