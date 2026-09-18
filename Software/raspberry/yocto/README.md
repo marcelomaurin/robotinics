@@ -57,7 +57,7 @@ A imagem robotinics-image instala:
 - estrutura de configuração em /etc/robotinics
 - estado persistente em /var/lib/robotinics
 - base da camada de IA
-- voz com eSpeak quando a feature speech está habilitada
+- interface de voz TCHATGPT quando a feature speech está habilitada
 - V4L2/OpenCV quando a feature vision está habilitada
 
 ## Gateway serial
@@ -110,7 +110,7 @@ Só depois o runtime deve ser habilitado por padrão.
 
 Os antigos srvMonitor2 e srvFala não são instalados na imagem porque possuem problemas de segurança e robustez já registrados na Rev. 3. A imagem reaproveita a funcionalidade necessária em serviços novos.
 
-Os scripts antigos de voz foram substituídos pelos comandos:
+A implementação eSpeak foi retirada da imagem. A interface pública continua sendo:
 
     robotinics-speak "texto"
     robotinics-read-file arquivo.txt
@@ -119,9 +119,9 @@ Os scripts antigos de voz foram substituídos pelos comandos:
 
 Nos manifests kas:
 
-    ROBOTINICS_FEATURES ?= "vision speech"
+    ROBOTINICS_FEATURES ?= "vision"
 
-Para uma imagem menor, remova vision ou speech.
+A feature `speech` está temporariamente fora do padrão até o binário Lazarus ARM64 ser validado. Para habilitar a interface de voz após instalar o binário, acrescente `speech` a `ROBOTINICS_FEATURES`.
 
 ## Próxima etapa
 
