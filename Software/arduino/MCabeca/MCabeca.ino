@@ -25,6 +25,10 @@ const uint8_t PIN_LED_VERMELHO = 4;
 const uint8_t CABECA_X_HOME = 90;
 const uint8_t CABECA_Y_HOME = 0;
 
+uint8_t currentX = CABECA_X_HOME;
+uint8_t currentY = CABECA_Y_HOME;
+bool lightAuto = true;
+
 Ultrasonic ultrasonic(PINO_TRIGGER, PINO_ECHO);
 Servo CabecaX;
 Servo CabecaY;
