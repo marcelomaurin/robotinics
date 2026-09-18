@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+BIN=/opt/robotinics/voice/robotinics-voice
+
+if [ ! -x "$BIN" ]; then
+  echo "robotinics-voice: binário Lazarus ARM64 não instalado." >&2
+  echo "Compile Software/raspberry/Voice/robotinics_voice.lpi com TCHATGPT/openai_voice e instale em $BIN." >&2
+  exit 126
+fi
+
+exec "$BIN" "$@"
