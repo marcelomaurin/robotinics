@@ -1,75 +1,145 @@
-# robotinics
-English
-=======
-Robotinics Project 2
-The Robotinics Project is a multi-purpose robot project.
+# Robotinics
 
-With the main resources for activation and control, Robotinics allows the implementation of customized programming.
-As well as improving your hardware.
+[Português](README.md) · [English](README_EN.md) · [Español](README_ES.md)
 
-The Robotinics Project includes everything from the assembly of the plastic parts to the printing of the electronic plates.
+![Robotinics](Mecanic/solidwork/robotinics.JPG)
 
+Robotinics é uma plataforma aberta de robótica, automação e experimentação criada para integrar **mecânica, eletrônica, firmware, computação embarcada e software** em um mesmo projeto.
 
-Regarding Hardware, Electronics and Software, Robotinics allows developers to evolve the project from a solid base.
-Not needing to develop from scratch.
+O objetivo não é oferecer apenas um robô pronto, mas uma base evolutiva para estudo, prototipagem e desenvolvimento de novas funcionalidades.
 
+## Visão geral
 
-Project Documentation
------------------------
-Complete manual in pdf format
-https://github.com/MarceloMaurin/robotinics/blob/master/docs/Projetos%20IOT%20com%20Arduino%20e%20Raspberry-rev10.pdf.zip
+O projeto reúne:
 
-Project website
----------------
-http://maurinsoft.com.br/index.php/robotinics-3/
+- estrutura mecânica e peças para fabricação e impressão 3D;
+- projetos de placas eletrônicas e distribuição de alimentação;
+- Arduino Mega como controlador principal de baixo nível;
+- módulo de cabeça baseado em Arduino Nano;
+- sensores, servomotores, motores, laser apontador e ultrassom;
+- integração com Raspberry Pi;
+- banco de dados e interface web;
+- documentação didática e material histórico do projeto.
 
+## Arquitetura
 
-Spanish
-=======
-Proyecto de robótica 2
-The Robotinics Project es un proyecto de robot polivalente.
+```text
+                      Raspberry Pi
+                 visão / software / lógica
+                           │
+                           │ serial
+                           ▼
+                     Arduino Mega
+                controle físico principal
+                  /        │         \
+             motores    sensores    servos
+                           │
+                           ▼
+                    MCabeca / Nano
+                ┌──────────┼──────────┐
+              Servo X    Servo Y    Ultrassom
+                           │
+                       Laser / LEDs
+```
 
-Con los principales recursos para activación y control, Robotinics permite la implementación de programación personalizada.
-Además de mejorar su hardware.
+O Raspberry Pi fica responsável por processamento de mais alto nível. O Arduino Mega concentra a maior quantidade de I/O e executa o controle físico. O MCabeca é um módulo especializado da cabeça robótica.
 
-El Proyecto de Robótica incluye desde el montaje de las piezas de plástico hasta la impresión de las planchas electrónicas.
+## Módulos
 
+| Módulo | Conteúdo |
+|---|---|
+| [Eletrônica](Eletronic/README.md) | esquemas, placas, alimentação e PCBs |
+| [Mecânica](Mecanic/README.md) | SolidWorks, STL e peças estruturais |
+| [Software](Software/README.md) | firmware, Raspberry, banco e interface |
+| [Arduino](Software/arduino/README.md) | firmwares embarcados |
+| [Mega](Software/arduino/robotinics/README.md) | controlador principal do robô |
+| [MCabeca](Software/arduino/MCabeca/README.md) | cabeça ativa: servos, laser, LEDs e ultrassom |
+| [Raspberry](Software/raspberry/README.md) | processamento de alto nível e I/O |
+| [Database](Software/database/README.md) | estrutura de dados do projeto |
+| [Site](Software/site/README.md) | interface web histórica |
+| [Documentação](docs/README.md) | manuais e material de referência |
 
-En cuanto a hardware, electrónica y software, la robótica permite a los desarrolladores hacer evolucionar el proyecto desde una base sólida.
-No necesita desarrollarse desde cero.
+## MCabeca e percepção ativa
 
+O MCabeca possui dois servos associados a um **apontador laser**, LEDs e sensor ultrassônico. A intenção do módulo não é atuar como arma: o laser funciona como referência óptica e apontador visual.
 
-Documentación del proyecto
------------------------
-Manual completo en formato pdf
-https://github.com/MarceloMaurin/robotinics/blob/master/docs/Projetos%20IOT%20com%20Arduino%20e%20Raspberry-rev10.pdf.zip
+Associado a uma câmera controlada pelo Raspberry Pi, o módulo pode ser usado para:
 
-Sitio web del proyecto
----------------
-http://maurinsoft.com.br/index.php/robotinics-3/
+- apontamento visual;
+- varredura angular;
+- identificação do ponto laser na imagem;
+- auxílio à estimativa de profundidade de uma câmera monocular;
+- scanning de uma região;
+- combinação de distância visual e ultrassônica;
+- acompanhamento experimental de objetos.
 
-Portuguese
-==========
-Projeto Robotinics 2
-O Projeto Robotinics é um projeto de robô de multiplo proposito.
+A calibração visual pertence ao Raspberry Pi. O microcontrolador deve apenas receber e executar ângulos e comandos físicos.
 
-Dispondo dos principais recursos para acionamento e controle, o Robotinics permite a implementação de programação customizada.
-Bem como melhoria de seu hardware.
+## Firmware
 
-O Projeto do Robotinics contempla desde a montagem das peças plasticas, até a impressão das placas eletronicas.
+O projeto possui dois firmwares principais:
 
+### Arduino Mega
 
-Contemplando Hardware, Eletrônica e Software o Robotinics, permite que desenvolvedores evoluam o projeto a partir de uma base sólida. 
-Não necessitando desenvolver a partir do zero.
+Local: [Software/arduino/robotinics](Software/arduino/robotinics)
 
+Responsável por controle do robô, motores, servos, sensores, comunicação e segurança básica.
 
-Documentação do Projeto
------------------------
-Manual completo em formato pdf
-https://github.com/MarceloMaurin/robotinics/blob/master/docs/Projetos%20IOT%20com%20Arduino%20e%20Raspberry-rev10.pdf.zip
+### Arduino Nano — MCabeca
 
+Local: [Software/arduino/MCabeca](Software/arduino/MCabeca)
 
-Site do projeto
----------------
-http://maurinsoft.com.br/index.php/robotinics-3/
+Responsável pelo módulo de cabeça robótica.
 
+Os firmwares estão passando por uma modernização mantendo compatibilidade com o hardware e o protocolo legado:
+
+- PR #3 — refatoração do firmware do Mega;
+- PR #4 — otimização do MCabeca para Arduino Nano.
+
+## Estrutura do repositório
+
+```text
+robotinics/
+├── Eletronic/
+│   ├── arduino/
+│   ├── eagle/
+│   ├── pcb/
+│   └── pcb wizzard/
+├── Mecanic/
+│   ├── solidwork/
+│   └── stl/
+├── Software/
+│   ├── arduino/
+│   │   ├── robotinics/
+│   │   └── MCabeca/
+│   ├── database/
+│   ├── raspberry/
+│   └── site/
+└── docs/
+```
+
+## Documentação histórica
+
+O repositório mantém o material completo produzido ao longo da evolução do projeto, inclusive o manual **Projetos IoT com Arduino e Raspberry**.
+
+Consulte [docs/README.md](docs/README.md).
+
+## Filosofia do projeto
+
+Robotinics foi concebido como uma plataforma multidisciplinar. A evolução do projeto deve preservar quatro princípios:
+
+1. hardware reproduzível;
+2. módulos independentes;
+3. protocolo compatível entre dispositivos;
+4. separação entre controle físico e processamento de alto nível.
+
+## Autor
+
+**Marcelo Maurin Martins**
+
+- GitHub: [marcelomaurin](https://github.com/marcelomaurin)
+- Site: [Maurinsoft](https://maurinsoft.com.br)
+
+---
+
+Robotinics é um projeto experimental e educacional. Ao trabalhar com motores, alimentação elétrica, laser, baterias ou partes móveis, utilize procedimentos adequados de segurança.
