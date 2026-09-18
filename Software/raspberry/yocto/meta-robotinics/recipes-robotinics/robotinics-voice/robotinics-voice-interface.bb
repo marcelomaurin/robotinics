@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 SRC_URI = "file://robotinics-speak file://robotinics-read-file file://robotinics-voice"
 S = "${UNPACKDIR}"
 
-RDEPENDS:${PN} = "bash alsa-utils-aplay"
+RDEPENDS:${PN} = "bash alsa-utils-aplay robotinics-voice-bin"
 
 do_install() {
     install -d ${D}${bindir}
