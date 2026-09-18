@@ -111,3 +111,8 @@ Essa reorganização deve ser feita sem apagar o material histórico existente.
 ## Imagem Yocto
 
 A imagem reproduzível do computador de bordo está em [yocto/README.md](yocto/README.md). Ela usa Yocto Wrynose LTS, meta-raspberrypi e a layer meta-robotinics.
+
+
+## Pinout do Raspberry Pi
+
+O header GPIO de 40 pinos, UART, I²C, SPI e cuidados de nível lógico estão documentados em [docs/hardware/pinout/RASPBERRY_PI_GPIO.md](../../docs/hardware/pinout/RASPBERRY_PI_GPIO.md).
