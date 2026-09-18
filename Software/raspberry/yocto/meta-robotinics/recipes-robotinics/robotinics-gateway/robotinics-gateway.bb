@@ -1,7 +1,7 @@
 SUMMARY = "Robotinics serial gateway"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
-SRC_URI = "file://robotinics-gateway.py file://robotinics-gateway.service"
+SRC_URI = "file://robotinics-gateway.py file://robotinics-gatewayctl.py file://robotinics-gateway.service"
 S = "${UNPACKDIR}"
 
 inherit systemd
@@ -13,6 +13,7 @@ SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${S}/robotinics-gateway.py ${D}${bindir}/robotinics-gateway
+    install -m 0755 ${S}/robotinics-gatewayctl.py ${D}${bindir}/robotinics-gatewayctl
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${S}/robotinics-gateway.service ${D}${systemd_system_unitdir}/robotinics-gateway.service
 }
