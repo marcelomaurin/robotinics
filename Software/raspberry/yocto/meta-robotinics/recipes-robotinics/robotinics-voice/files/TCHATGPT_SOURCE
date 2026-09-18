@@ -1,0 +1,9 @@
+Files aibase.pas and aivoicesynthesizer.pas are synchronized from:
+https://github.com/marcelomaurin/CHATGPT
+commit: e593fb758801cecb087e55e3222fc513cc35fee2
+
+The Yocto copy of aivoicesynthesizer.pas is headless:
+- LResources dependency removed
+- Lazarus icon resource initialization removed
+
+The public TAIVoiceSynthesizer API and seOpenAI behavior are unchanged.
