@@ -82,7 +82,7 @@ begin
     O.Add('created_at', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss.zzz', FCreatedAt));
     for I := 0 to FSteps.Count - 1 do
       A.Add(GetJSON(FSteps[I]));
-    O.Add('steps_json', A);
+    O.Add('steps', A);
     Result := O.FormatJSON;
   finally
     O.Free;
