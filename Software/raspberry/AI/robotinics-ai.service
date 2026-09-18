@@ -1,0 +1,21 @@
+[Unit]
+Description=Robotinics AI runtime
+After=network-online.target robotinics-gateway.service
+Wants=network-online.target
+Requires=robotinics-gateway.service
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/robotinics/robotinics.env
+EnvironmentFile=-/etc/robotinics/robotinics-ai.env
+ExecStart=/opt/robotinics/ai/robotinics-ai --interactive
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/robotinics /var/log/robotinics
+
+[Install]
+WantedBy=multi-user.target
