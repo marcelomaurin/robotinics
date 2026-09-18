@@ -65,3 +65,7 @@ Os pinos 5 V e 3,3 V são alimentação, não GPIO. Nunca aplique 5 V em um GPIO
 ## Raspberry Pi 4 e 5
 
 Para os sinais GPIO tradicionais documentados aqui, o header físico de 40 pinos mantém compatibilidade. Funções alternativas específicas do SoC devem ser confirmadas antes do uso.
+
+## Diagrama de conexão com o Mega
+
+![Raspberry Pi conectado ao Arduino Mega](images/raspberry-mega-connection.svg)
