@@ -8,6 +8,16 @@ Robotinics é uma plataforma aberta de robótica, automação e experimentação
 
 O objetivo não é oferecer apenas um robô pronto, mas uma base evolutiva para estudo, prototipagem e desenvolvimento de novas funcionalidades.
 
+## Origem do projeto
+
+O Robotinics nasceu em **2015** como **Trabalho de Conclusão de Curso (TCC)** do curso de **Técnico em Mecânica Industrial**, apresentado na **Etec José Martimiano da Silva**, em Ribeirão Preto/SP, unidade do **Centro Paula Souza**.
+
+Esse contexto explica a natureza multidisciplinar do projeto desde sua origem: o trabalho não foi concebido apenas como software ou eletrônica, mas como um sistema integrado envolvendo **mecânica, fabricação de peças, eletrônica, acionamentos, sensores, microcontroladores e software**.
+
+A partir do trabalho acadêmico original, o Robotinics continuou evoluindo como plataforma experimental, incorporando novas revisões mecânicas, placas eletrônicas, Arduino, Raspberry Pi, visão computacional e outros módulos de software.
+
+Instituição: [Etec José Martimiano da Silva – Centro Paula Souza](https://www.cps.sp.gov.br/etecs/etec-jose-martimiano-da-silva/)
+
 ## Visão geral
 
 O projeto reúne:
