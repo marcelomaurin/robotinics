@@ -119,9 +119,9 @@ A implementação eSpeak foi retirada da imagem. A interface pública continua s
 
 Nos manifests kas:
 
-    ROBOTINICS_FEATURES ?= "vision"
+    ROBOTINICS_FEATURES ?= "vision speech"
 
-A feature `speech` está temporariamente fora do padrão até o binário Lazarus ARM64 ser validado. Para habilitar a interface de voz após instalar o binário, acrescente `speech` a `ROBOTINICS_FEATURES`.
+A feature `speech` volta a fazer parte da imagem padrão. O build executa `scripts/bootstrap-fpc.sh`, prepara o compilador host FPC 3.2.2 e a receita `robotinics-voice-bin` monta o cross compiler `ppcrossa64` usando os binutils do Yocto antes de compilar o aplicativo.
 
 ## Próxima etapa
 
@@ -131,5 +131,39 @@ A feature `speech` está temporariamente fora do padrão até o binário Lazarus
 - confirmar serial do Mega
 - validar câmera
 - validar áudio
-- criar receita de cross-compile do aplicativo TCHATGPT
+- validar o cross-compile em host Yocto suportado e no hardware real
 - integrar atualização OTA posteriormente
+
+
+## Cross-compile da voz ARM64
+
+A implementação atual não depende da IDE Lazarus dentro da imagem. O projeto continua Lazarus para desenvolvimento, mas o build Yocto usa Free Pascal em modo headless.
+
+Fluxo:
+
+```text
+bootstrap FPC x86_64
+        |
+fonte FPC release_3_2_2
+        |
+binutils/sysroot Yocto
+        |
+ppcrossa64
+        |
+TAIVoiceSynthesizer headless
+        |
+robotinics-voice ARM64
+        |
+/opt/robotinics/voice/robotinics-voice
+```
+
+Para compilar somente a voz:
+
+```bash
+cd Software/raspberry/yocto
+./scripts/build-voice.sh rpi4
+```
+
+O script usa o pacote oficial FPC 3.2.2 como bootstrap e clona a tag oficial `release_3_2_2` do repositório Free Pascal. As units `aibase.pas` e `aivoicesynthesizer.pas` são sincronizadas da biblioteca TCHATGPT; para o build headless é removida apenas a dependência visual `LResources` e o recurso de ícone.
+
+A API `TAIVoiceSynthesizer` e o engine `seOpenAI` permanecem os mesmos.

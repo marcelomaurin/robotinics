@@ -81,3 +81,24 @@ No Raspberry ARM64, validar primeiro a compilação do pacote TCHATGPT.
 O eSpeak não é mais backend da implementação atual.
 
 A pasta histórica `Output/speak/espeak` permanece apenas como registro do projeto antigo e não deve ser instalada na imagem Yocto moderna.
+
+
+## Build ARM64 via Yocto
+
+A imagem do Raspberry possui um fluxo próprio de cross-compilação:
+
+```bash
+cd Software/raspberry/yocto
+./scripts/build-voice.sh rpi4
+```
+
+O build:
+
+1. instala um bootstrap FPC 3.2.2 local em `yocto/.tools/`;
+2. clona a tag oficial `release_3_2_2` do Free Pascal;
+3. usa os binutils e o sysroot do Yocto para montar `ppcrossa64`;
+4. compila uma cópia headless de `TAIVoiceSynthesizer`;
+5. gera `robotinics-voice` para ARM64;
+6. instala o binário em `/opt/robotinics/voice/robotinics-voice`.
+
+A interface de linha de comando continua idêntica para os demais módulos.
