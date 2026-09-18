@@ -1,6 +1,6 @@
 # Robotinics Yocto Image
 
-[English](README.en.md) · [Español](README.es.md) · [Projeto](../README.md)
+[English](README.en.md) · [Español](README.es.md) · [Raspberry](../README.md) · [Projeto principal](../../../README.md)
 
 Esta pasta monta a imagem Linux reproduzível do Raspberry Pi para o Robotinics.
 
@@ -33,7 +33,7 @@ Máquinas previstas:
 
 Instale kas e execute:
 
-    cd yocto
+    cd Software/raspberry/yocto
     ./scripts/build.sh rpi4
 
 Para Raspberry Pi 5:
