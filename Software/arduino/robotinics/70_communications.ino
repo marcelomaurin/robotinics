@@ -90,6 +90,8 @@ void Help()
   Println("GPPUNHODIR - Controle de Girar a PUNHO DIR = Angulo");
   Println("SETMONITOR - Status de monitoramento = ON/OFF");
   Println("MCAB:<comando> - Envia comando ao modulo MCabeca");
+  Println("PING - Renova watchdog de controle");
+  Println("SAFETY - Exibe estado basico de seguranca");
 }
 
 static bool startsWith(const String &value, const char *prefix)
@@ -102,11 +104,16 @@ void ExecCMD(String pBuffer)
   pBuffer.trim();
   bool flgRodou = false;
 
+  // Qualquer comando completo vindo de um canal externo renova a atividade.
+  // Isso nao autoriza movimento: apenas informa que o controlador esta vivo.
+  SafetyRegisterControlActivity();
+
+  // PARA vem primeiro e nao depende de qualquer outro estado.
+  if (pBuffer == "PARA") {
+    SafetyStop(SAFETY_STOP_COMMAND, false); flgRodou = true;
   // Comandos simples: correspondencia exata evita colisoes como ULTRA/ULTRA1.
-  if (pBuffer == "RE") {
+  } else if (pBuffer == "RE") {
     Re(); flgRodou = true;
-  } else if (pBuffer == "PARA") {
-    Para(); flgRodou = true;
   } else if (pBuffer == "FRENTE") {
     Frente(); flgRodou = true;
   } else if (pBuffer == "GESQ") {
@@ -143,6 +150,14 @@ void ExecCMD(String pBuffer)
     Ver(); flgRodou = true;
   } else if (pBuffer == "TESTE") {
     TesteMovimento(); flgRodou = true;
+  } else if (pBuffer == "PING") {
+    Println("PONG"); flgRodou = true;
+  } else if (pBuffer == "SAFETY") {
+    Print("SAFETY:MOTION:");
+    Println(SafetyMotionActive() ? "ACTIVE" : "STOPPED");
+    Print("SAFETY:LAST_STOP:");
+    Println(String(SafetyLastStopReason()));
+    flgRodou = true;
   }
 
   if (startsWith(pBuffer, "MSG1:")) {
