@@ -97,16 +97,16 @@ Falha no Raspberry, LLM ou aplicação de usuário não pode manter movimento in
 ## Fase 6 — Gateway 2.0
 
 ### Atividades
-- [ ] estados de conexão explícitos;
+- [x] estados de conexão explícitos;
 - [x] heartbeat durante movimento;
-- [ ] fila com prioridade;
-- [ ] cancelamento;
-- [ ] retry configurável;
-- [ ] telemetria estruturada;
-- [ ] eventos;
-- [ ] API versionada;
-- [ ] testes unitários;
-- [ ] métricas e diagnóstico.
+- [x] fila com prioridade;
+- [x] cancelamento;
+- [x] retry configurável;
+- [~] telemetria estruturada — sensores legados e MCabeca convertidos para estado; expansão de GPS/ACEL ainda pendente;
+- [x] eventos;
+- [x] API versionada v1/v2;
+- [x] testes unitários;
+- [~] métricas e diagnóstico — métricas operacionais implementadas; diagnóstico avançado ainda pendente.
 
 ### Critério de conclusão
 Clientes de alto nível não precisam conhecer detalhes da serial.
