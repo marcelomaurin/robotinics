@@ -144,11 +144,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y fp-compiler fp-units-fcl
 
-      - name: Compile Task Engine test
+      - name: Compile AI core tests
         run: |
           mkdir -p /tmp/robotinics-fpc
-          fpc             -FuSoftware/raspberry/AI             -FU/tmp/robotinics-fpc             -FE/tmp/robotinics-fpc             Software/raspberry/AI/tests/test_taskengine.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_taskengine.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_rag.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_actionpolicy.pas
 
-      - name: Run Task Engine test
+      - name: Run AI core tests
         run: |
           /tmp/robotinics-fpc/test_taskengine
+          /tmp/robotinics-fpc/test_rag
+          /tmp/robotinics-fpc/test_actionpolicy
