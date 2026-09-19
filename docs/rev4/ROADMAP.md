@@ -161,15 +161,15 @@ Push e pull request já compilam Mega e MCabeca e executam validações básicas
 ## Fase 10 — Task Engine 2.0
 
 ### Atividades
-- [ ] tarefas;
-- [ ] subtarefas;
-- [ ] dependências;
-- [ ] tentativas;
-- [ ] cancelamento;
-- [ ] evidências;
-- [ ] resultado;
-- [ ] persistência;
-- [ ] auditoria.
+- [x] tarefas;
+- [x] subtarefas;
+- [x] dependências;
+- [x] tentativas;
+- [x] cancelamento;
+- [x] evidências;
+- [x] resultado;
+- [x] persistência;
+- [x] auditoria.
 
 ---
 
