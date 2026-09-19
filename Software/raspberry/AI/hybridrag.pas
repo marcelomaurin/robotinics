@@ -37,11 +37,10 @@ implementation
 
 function JsonEscape(const S: string): string;
 begin
-  Result := StringReplace(S, '', '\', [rfReplaceAll]);
-  Result := StringReplace(Result, '"', '"', [rfReplaceAll]);
-  Result := StringReplace(Result, #13, '', [rfReplaceAll]);
-  Result := StringReplace(Result, #10, '
-', [rfReplaceAll]);
+  Result := StringReplace(S, Chr(92), Chr(92) + Chr(92), [rfReplaceAll]);
+  Result := StringReplace(Result, '"', Chr(92) + '"', [rfReplaceAll]);
+  Result := StringReplace(Result, #13, Chr(92) + 'r', [rfReplaceAll]);
+  Result := StringReplace(Result, #10, Chr(92) + 'n', [rfReplaceAll]);
 end;
 
 function ExtractTitle(const Path, Text: string): string;
