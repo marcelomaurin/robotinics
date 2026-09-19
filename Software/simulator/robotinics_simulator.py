@@ -51,6 +51,7 @@ class BodyState:
         "LCD",
         "MCABECA_BRIDGE",
         "SAFETY_WATCHDOG",
+        "HEALTH",
     ])
 
 
@@ -168,6 +169,19 @@ class RobotinicsSimulator:
             return [PROMPT]
         if command == "IDENTIFY":
             return ["RBT:IDENTIFY:BODY:MEGA2560:1.3", PROMPT]
+        if command == "HEALTH":
+            active = "ACTIVE" if self.body.motion != "STOPPED" else "IDLE"
+            return [
+                "RBT:HEALTH:BODY:OK",
+                f"RBT:HEALTH:SAFETY:{active}",
+                f"RBT:HEALTH:MOTION:{self.body.motion}",
+                f"RBT:TELEM:ULTRA_RE_CM:{self.body.ultra_re_cm:.1f}",
+                f"RBT:TELEM:ULTRA_FRONT_CM:{self.body.ultra_front_cm:.1f}",
+                f"RBT:TELEM:ULTRA_HEAD_CM:{self.body.ultra_head_cm:.1f}",
+                "MCAB:HEALTH:HEAD:OK",
+                f"MCAB:POS:{self.head.x},{self.head.y}",
+                PROMPT,
+            ]
         if command == "CAPABILITIES":
             return [*(f"RBT:CAP:{cap}" for cap in self.body.capabilities), PROMPT]
         if command == "SAFETY":
