@@ -5,7 +5,7 @@ program robotinics_ai;
 uses
   Classes, SysUtils,
   chatgpt,
-  gatewayclient, internetservice, doclookup, taskengine;
+  gatewayclient, internetservice, doclookup, taskengine, actionpolicy;
 
 function Env(const AName, ADefault: string): string;
 begin
@@ -66,14 +66,15 @@ begin
 end;
 
 function BuildUserPrompt(const Question, StateJSON, CatalogJSON, HistoryJSON,
-  DocsContext, InternetContext: string): string;
+  DocsContext, InternetContext, ToolCatalog: string): string;
 begin
   Result :=
     'QUESTION:' + LineEnding + Question + LineEnding + LineEnding +
     'ROBOT_STATE:' + LineEnding + StateJSON + LineEnding + LineEnding +
     'GATEWAY_CATALOG:' + LineEnding + CatalogJSON + LineEnding + LineEnding +
     'GATEWAY_HISTORY:' + LineEnding + HistoryJSON + LineEnding + LineEnding +
-    'DOCUMENTATION:' + LineEnding + DocsContext + LineEnding + LineEnding;
+    'DOCUMENTATION:' + LineEnding + DocsContext + LineEnding + LineEnding +
+    'TYPED_TOOLS:' + LineEnding + ToolCatalog + LineEnding + LineEnding;
 
   if InternetContext <> '' then
     Result := Result +
@@ -81,8 +82,11 @@ begin
 
   Result := Result +
     'Produza uma resposta final baseada nesses dados. ' +
+    'Use TYPED_TOOLS apenas como contrato de ferramenta; nunca invente ferramenta. ' +
     'Se sugerir uma acao fisica, descreva-a como proposta e cite o comando ' +
-    'Robotinics correspondente somente se ele estiver presente em GATEWAY_CATALOG.';
+    'Robotinics correspondente somente se ele estiver presente em GATEWAY_CATALOG. ' +
+    'Movimento ou atuador fisico exige confirmacao humana explicita antes de execucao. ' +
+    'PARA e permitido como acao segura de parada sem confirmacao.';
 end;
 
 function AskOnce(const Question: string): Integer;
@@ -91,7 +95,7 @@ var
   Internet: TInternetService;
   Chat: TCHATGPT;
   Task: TRobotTask;
-  StateJSON, CatalogJSON, HistoryJSON, DocsContext, InternetContext: string;
+  StateJSON, CatalogJSON, HistoryJSON, DocsContext, InternetContext, ToolCatalog: string;
   Prompt, StatePath, DocsPath, SearchURL: string;
   TaskFile: string;
   STUnderstand, STTelemetry, STDocs, STInternet, STReason: string;
@@ -202,8 +206,11 @@ begin
     Chat.Timeout := StrToIntDef(Env('ROBOTINICS_LLM_TIMEOUT_MS', '120000'), 120000);
     Chat.Dev := BuildSystemPrompt;
 
+    ToolCatalog := ToolCatalogJSON;
+    Task.AddEvidence('agent', 'tool_catalog', ToolCatalog);
+
     Prompt := BuildUserPrompt(Question, StateJSON, CatalogJSON, HistoryJSON,
-      DocsContext, InternetContext);
+      DocsContext, InternetContext, ToolCatalog);
 
     Task.StartSubTask(STReason, 'Enviando contexto ao TCHATGPT.');
     Task.AddStep('reason', 'RUNNING', 'Enviando contexto ao TCHATGPT.');
