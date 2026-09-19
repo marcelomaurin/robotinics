@@ -149,11 +149,11 @@ Push e pull request já compilam Mega e MCabeca e executam validações básicas
 ## Fase 9 — Telemetria e diagnóstico
 
 ### Atividades
-- [ ] modelo de estado unificado;
-- [ ] health por módulo;
-- [ ] autoteste;
-- [ ] diagnóstico guiado;
-- [ ] histórico;
+- [x] modelo de estado unificado;
+- [x] health por módulo;
+- [~] autoteste — HEALTH estruturado implementado em Body/Head; sequência ativa de ensaio ainda pendente;
+- [x] diagnóstico guiado;
+- [~] histórico — comandos/eventos persistidos; histórico dedicado de telemetria ainda pendente;
 - [ ] relatório de manutenção.
 
 ---
