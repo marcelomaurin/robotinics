@@ -11,6 +11,7 @@
 #endif
 
 #include "robotinics_config.h"
+#include "robotinics_safety.h"
 
 /*
   Robotinics - Body Controller / Arduino Mega
