@@ -1,0 +1,114 @@
+name: Robotinics CI
+
+on:
+  push:
+    branches:
+      - master
+      - "rev4/**"
+    paths:
+      - "Software/arduino/**"
+      - "Software/raspberry/Gateway/**"
+      - ".github/workflows/robotinics-ci.yml"
+  pull_request:
+    paths:
+      - "Software/arduino/**"
+      - "Software/raspberry/Gateway/**"
+      - ".github/workflows/robotinics-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  mega:
+    name: Arduino Mega 2560
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Install AVR core
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+
+      - name: Install Arduino libraries
+        run: |
+          arduino-cli lib install Servo
+          mkdir -p "$HOME/Arduino/libraries"
+          git clone --depth 1 https://github.com/johnrickman/LiquidCrystal_I2C.git "$HOME/Arduino/libraries/LiquidCrystal_I2C"
+          git clone --depth 1 https://github.com/meirarc/Ultrasonic.git "$HOME/Arduino/libraries/Ultrasonic"
+          git clone --depth 1 https://github.com/sui77/rc-switch.git "$HOME/Arduino/libraries/rc-switch"
+
+      - name: Compile Robotinics Mega
+        run: |
+          arduino-cli compile             --fqbn arduino:avr:mega             --warnings all             Software/arduino/robotinics
+
+  mcabeca:
+    name: Arduino Nano / MCabeca
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Install AVR core
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+
+      - name: Install Arduino libraries
+        run: |
+          arduino-cli lib install Servo
+          mkdir -p "$HOME/Arduino/libraries"
+          git clone --depth 1 https://github.com/meirarc/Ultrasonic.git "$HOME/Arduino/libraries/Ultrasonic"
+
+      - name: Compile MCabeca
+        run: |
+          arduino-cli compile             --fqbn arduino:avr:nano             --warnings all             Software/arduino/MCabeca
+
+  gateway:
+    name: Raspberry Gateway
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Syntax check
+        run: |
+          python -m py_compile Software/raspberry/Gateway/robotinics_gateway.py
+
+      - name: Protocol catalog smoke test
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          path = Path("Software/raspberry/Gateway/robotinics_gateway.py")
+          tree = ast.parse(path.read_text(encoding="utf-8"))
+
+          required = {"PARA", "FRENTE", "RE", "GESQ", "GDIR", "PING", "SAFETY"}
+          found = None
+
+          for node in tree.body:
+              if isinstance(node, ast.Assign):
+                  for target in node.targets:
+                      if isinstance(target, ast.Name) and target.id == "EXACT_COMMANDS":
+                          found = ast.literal_eval(node.value)
+
+          if found is None:
+              raise SystemExit("EXACT_COMMANDS not found")
+
+          missing = required - set(found)
+          if missing:
+              raise SystemExit(f"Missing required commands: {sorted(missing)}")
+
+          print("Gateway protocol catalog OK")
+          PY
