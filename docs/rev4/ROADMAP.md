@@ -62,15 +62,15 @@ O Head Controller possui API física previsível e não depende de lógica cogni
 ## Fase 4 — Robotinics Device Protocol
 
 ### Atividades
-- [ ] catalogar comandos atuais;
-- [ ] catalogar formatos de resposta;
-- [ ] definir `OK`, `ERR` e eventos;
-- [ ] definir versionamento;
-- [ ] definir heartbeat;
-- [ ] definir `IDENTIFY`;
-- [ ] definir `CAPABILITIES`;
-- [ ] definir política de compatibilidade;
-- [ ] definir depreciação futura.
+- [x] catalogar comandos atuais;
+- [x] catalogar formatos de resposta atuais;
+- [~] definir `OK`, `ERR` e eventos — namespaces reservados e `SAFETY:STOP` implementado; `RBT:OK/ERR/EVENT` completo ainda pendente;
+- [x] definir versionamento 1.x/2.x;
+- [x] definir heartbeat `PING/PONG`;
+- [x] definir e implementar `IDENTIFY`;
+- [x] definir e implementar `CAPABILITIES`;
+- [x] definir política de compatibilidade;
+- [x] definir depreciação futura.
 
 ### Critério de conclusão
 Um software pode implementar um cliente Robotinics sem ler o firmware.
@@ -135,7 +135,7 @@ Gateway e AI Runtime podem ser testados sem o robô físico.
 - [x] compile Mega;
 - [x] compile MCabeca;
 - [x] syntax/smoke test Gateway;
-- [ ] protocol tests;
+- [x] protocol tests;
 - [ ] compile Free Pascal AI Runtime;
 - [ ] smoke test do simulador;
 - [ ] validação de links;
