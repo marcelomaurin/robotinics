@@ -94,6 +94,7 @@ var
   StateJSON, CatalogJSON, HistoryJSON, DocsContext, InternetContext: string;
   Prompt, StatePath, DocsPath, SearchURL: string;
   TaskFile: string;
+  STUnderstand, STTelemetry, STDocs, STInternet, STReason: string;
 begin
   Result := 1;
   StatePath := Env('ROBOTINICS_STATE_PATH', '/var/lib/robotinics');
@@ -106,13 +107,31 @@ begin
   Internet := TInternetService.Create(SearchURL);
   Chat := TCHATGPT.Create(nil);
   try
-    Task.AddStep('understand', 'DONE', 'Pergunta recebida.');
+    STUnderstand := Task.AddSubTask('Entender solicitacao', 'analysis', '');
+    STTelemetry := Task.AddSubTask('Coletar estado do robo', 'telemetry', STUnderstand);
+    STDocs := Task.AddSubTask('Consultar documentacao', 'rag', STUnderstand);
+    STInternet := Task.AddSubTask('Consultar fonte externa', 'internet', STUnderstand);
+    STReason := Task.AddSubTask(
+      'Gerar resposta final',
+      'reasoning',
+      STTelemetry + ',' + STDocs + ',' + STInternet
+    );
 
+    Task.StartSubTask(STUnderstand, 'Interpretando a pergunta.');
+    Task.AddStep('understand', 'DONE', 'Pergunta recebida.');
+    Task.AddEvidence('user', 'question', Question);
+    Task.CompleteSubTask(STUnderstand, 'Solicitacao registrada e plano criado.');
+
+    Task.StartSubTask(STTelemetry, 'Consultando Gateway.');
     try
       StateJSON := Gateway.State;
       CatalogJSON := Gateway.Catalog;
       HistoryJSON := Gateway.History(20);
       Task.AddStep('collect_telemetry', 'DONE', 'Estado, catalogo e historico coletados.');
+      Task.AddEvidence('gateway', 'state', StateJSON);
+      Task.AddEvidence('gateway', 'catalog', CatalogJSON);
+      Task.AddEvidence('gateway', 'history', HistoryJSON);
+      Task.CompleteSubTask(STTelemetry, 'Estado, catalogo e historico coletados.');
     except
       on E: Exception do
       begin
@@ -120,31 +139,56 @@ begin
         CatalogJSON := '{"ok":false}';
         HistoryJSON := '{"ok":false}';
         Task.AddStep('collect_telemetry', 'ERROR', E.Message);
+        Task.AddEvidence('gateway', 'error', E.Message);
+        Task.FailSubTask(STTelemetry, E.Message);
       end;
     end;
 
+    Task.StartSubTask(STDocs, 'Consultando documentacao local.');
     DocsContext := LookupDocumentation(DocsPath, Question, 8, 24000);
     if DocsContext <> '' then
-      Task.AddStep('search_docs', 'DONE', 'Documentacao local consultada.')
+    begin
+      Task.AddStep('search_docs', 'DONE', 'Documentacao local consultada.');
+      Task.AddEvidence('documentation', 'context', DocsContext);
+      Task.CompleteSubTask(STDocs, 'Documentacao relevante encontrada.');
+    end
     else
+    begin
       Task.AddStep('search_docs', 'EMPTY', 'Nenhum trecho local relevante.');
+      Task.CompleteSubTask(STDocs, 'Consulta concluida sem trechos relevantes.');
+    end;
 
     InternetContext := '';
+    Task.StartSubTask(STInternet, 'Avaliando consulta externa.');
     if Internet.Enabled and EnvBool('ROBOTINICS_INTERNET_AUTO', True) then
     begin
       try
         InternetContext := Internet.Search(Question);
         if InternetContext <> '' then
-          Task.AddStep('search_internet', 'DONE', 'Consulta externa realizada.')
+        begin
+          Task.AddStep('search_internet', 'DONE', 'Consulta externa realizada.');
+          Task.AddEvidence('internet', 'context', InternetContext);
+          Task.CompleteSubTask(STInternet, 'Fonte externa consultada.');
+        end
         else
+        begin
           Task.AddStep('search_internet', 'EMPTY', 'Fonte externa sem retorno.');
+          Task.CompleteSubTask(STInternet, 'Consulta concluida sem retorno.');
+        end;
       except
         on E: Exception do
+        begin
           Task.AddStep('search_internet', 'ERROR', E.Message);
+          Task.AddEvidence('internet', 'error', E.Message);
+          Task.FailSubTask(STInternet, E.Message);
+        end;
       end;
     end
     else
+    begin
       Task.AddStep('search_internet', 'SKIPPED', 'Internet nao configurada.');
+      Task.CompleteSubTask(STInternet, 'Internet desabilitada ou nao configurada.');
+    end;
 
     Chat.Provider := ProviderFromEnv(
       Env('ROBOTINICS_LLM_PROVIDER', 'openai-compatible'));
@@ -161,11 +205,15 @@ begin
     Prompt := BuildUserPrompt(Question, StateJSON, CatalogJSON, HistoryJSON,
       DocsContext, InternetContext);
 
+    Task.StartSubTask(STReason, 'Enviando contexto ao TCHATGPT.');
     Task.AddStep('reason', 'RUNNING', 'Enviando contexto ao TCHATGPT.');
     if Chat.SendQuestion(Prompt) then
     begin
       Writeln(Chat.Response);
       Task.AddStep('reason', 'DONE', 'Resposta gerada pelo TCHATGPT.');
+      Task.AddEvidence('llm', 'response', Chat.Response);
+      Task.SetResult(Chat.Response);
+      Task.CompleteSubTask(STReason, 'Resposta final gerada.');
       Task.SetStatus('DONE');
       Result := 0;
     end
@@ -173,6 +221,8 @@ begin
     begin
       Writeln(StdErr, 'Erro TCHATGPT: ', Chat.LastError);
       Task.AddStep('reason', 'ERROR', Chat.LastError);
+      Task.AddEvidence('llm', 'error', Chat.LastError);
+      Task.FailSubTask(STReason, Chat.LastError);
       Task.SetStatus('ERROR');
       Result := 4;
     end;
