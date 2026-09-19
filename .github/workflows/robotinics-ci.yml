@@ -142,7 +142,7 @@ jobs:
       - name: Install Free Pascal
         run: |
           sudo apt-get update
-          sudo apt-get install -y fp-compiler fp-units-fcl fp-units-net
+          sudo apt-get install -y fp-compiler fp-units-fcl fp-units-net fp-units-db sqlite3
 
       - name: Compile AI core tests
         run: |
@@ -152,6 +152,7 @@ jobs:
           fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_actionpolicy.pas
           fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_hybridrag.pas
           fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_toolrunner.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_ftsrag.pas
 
       - name: Run AI core tests
         run: |
@@ -160,3 +161,4 @@ jobs:
           /tmp/robotinics-fpc/test_actionpolicy
           /tmp/robotinics-fpc/test_hybridrag
           /tmp/robotinics-fpc/test_toolrunner
+          /tmp/robotinics-fpc/test_ftsrag
