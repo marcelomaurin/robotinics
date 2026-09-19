@@ -74,6 +74,7 @@ void setup()
   StartSerial();
   StartArduino();
   StartBluetooth();
+  StartRC();
   Start_lcd();
   Start_GPS();
 
