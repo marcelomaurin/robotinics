@@ -200,6 +200,12 @@ Primary languages:
 - English;
 - Spanish.
 
+## Robotinics Rev. 4
+
+Current project evolution is organized under [Robotinics Rev. 4](docs/rev4/README.md). It formalizes the layered architecture, modernization roadmap, legacy protocol compatibility and validation criteria for firmware, Gateway, simulator, AI and distribution.
+
+Rev. 4 is incremental: existing hardware remains the project baseline and structural changes must be validated before replacing established behavior.
+
 ## Historical material
 
 The repository intentionally keeps historical CAD, PCB, software and documentation files. They are useful for understanding the evolution of the project, but not every file should be assumed to be the current reference revision.
