@@ -176,14 +176,14 @@ Push e pull request já compilam Mega e MCabeca e executam validações básicas
 ## Fase 11 — RAG e Agent Runtime
 
 ### Atividades
-- [ ] busca lexical melhorada;
-- [ ] BM25/FTS;
-- [ ] metadata;
+- [x] busca lexical melhorada;
+- [~] BM25/FTS — ranking BM25-like em memória implementado; índice FTS persistente ainda pendente;
+- [x] metadata;
 - [ ] embeddings opcionais;
-- [ ] busca híbrida;
-- [ ] ferramentas tipadas;
-- [ ] política de ações;
-- [ ] confirmação humana para operações físicas relevantes.
+- [~] busca híbrida — ranking lexical + boosts por título/caminho implementado; camada semântica por embeddings ainda pendente;
+- [x] ferramentas tipadas;
+- [x] política de ações;
+- [x] confirmação humana para operações físicas relevantes.
 
 ---
 
