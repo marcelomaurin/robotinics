@@ -8,11 +8,13 @@ on:
     paths:
       - "Software/arduino/**"
       - "Software/raspberry/Gateway/**"
+      - "Software/raspberry/AI/**"
       - ".github/workflows/robotinics-ci.yml"
   pull_request:
     paths:
       - "Software/arduino/**"
       - "Software/raspberry/Gateway/**"
+      - "Software/raspberry/AI/**"
       - ".github/workflows/robotinics-ci.yml"
   workflow_dispatch:
 
@@ -128,3 +130,25 @@ jobs:
       - name: Gateway + simulator integration
         run: |
           python -m unittest discover -s Software/simulator/tests -p "test_gateway_integration.py" -v
+
+
+  taskengine:
+    name: Free Pascal Task Engine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Free Pascal
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fp-compiler fp-units-fcl
+
+      - name: Compile Task Engine test
+        run: |
+          mkdir -p /tmp/robotinics-fpc
+          fpc             -FuSoftware/raspberry/AI             -FU/tmp/robotinics-fpc             -FE/tmp/robotinics-fpc             Software/raspberry/AI/tests/test_taskengine.pas
+
+      - name: Run Task Engine test
+        run: |
+          /tmp/robotinics-fpc/test_taskengine
