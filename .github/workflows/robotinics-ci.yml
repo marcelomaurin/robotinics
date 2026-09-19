@@ -142,7 +142,7 @@ jobs:
       - name: Install Free Pascal
         run: |
           sudo apt-get update
-          sudo apt-get install -y fp-compiler fp-units-fcl
+          sudo apt-get install -y fp-compiler fp-units-fcl fp-units-net
 
       - name: Compile AI core tests
         run: |
