@@ -145,6 +145,12 @@ robotinics/
 └── docs/
 ```
 
+## Robotinics Rev. 4
+
+A evolução atual do projeto está organizada na [Robotinics Rev. 4](docs/rev4/README.md), que formaliza a arquitetura em camadas, o roadmap de modernização, a preservação do protocolo legado e os critérios de validação para firmware, Gateway, simulador, IA e distribuição.
+
+A Rev. 4 é incremental: o hardware atual continua sendo a base do projeto e cada mudança estrutural deve ser validada antes de substituir comportamento existente.
+
 ## Documentação histórica
 
 O repositório mantém o material completo produzido ao longo da evolução do projeto, inclusive o manual **Projetos IoT com Arduino e Raspberry**.

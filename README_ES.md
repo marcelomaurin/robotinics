@@ -142,6 +142,12 @@ Idiomas principales:
 - Inglés;
 - Español.
 
+## Robotinics Rev. 4
+
+La evolución actual del proyecto está organizada en [Robotinics Rev. 4](docs/rev4/README.md). Allí se formalizan la arquitectura por capas, el roadmap de modernización, la compatibilidad con el protocolo legado y los criterios de validación para firmware, Gateway, simulador, IA y distribución.
+
+Rev. 4 es incremental: el hardware existente continúa siendo la base del proyecto y los cambios estructurales deben validarse antes de sustituir comportamientos establecidos.
+
 ## Autor
 
 **Marcelo Maurin Martins**
