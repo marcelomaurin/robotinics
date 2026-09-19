@@ -348,6 +348,16 @@ void ExecCMD(String pBuffer)
   Serial.print("Comando:");
   Serial.println(pBuffer);
   bool flgRum = false;
+  if(pBuffer == "HEALTH")
+  {
+    Serial.println("MCAB:HEALTH:HEAD:OK");
+    Serial.print("MCAB:POS:");
+    Serial.print(CabecaX.read());
+    Serial.print(",");
+    Serial.println(CabecaY.read());
+    flgRum = true;
+  }
+
   if(pBuffer.indexOf("ULTRA")>=0)
   {
     //lcd.clear();
@@ -451,6 +461,7 @@ void Help()
   Serial.println("SCANNING - Varre area com laser");
   Serial.println("POINT - Aponta laser posicao POINT=x,y");
   Serial.println("TESTE - Teste de Movimento"); 
+  Serial.println("HEALTH - Estado estruturado do modulo"); 
 
 }
 

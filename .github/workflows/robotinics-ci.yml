@@ -1,0 +1,164 @@
+name: Robotinics CI
+
+on:
+  push:
+    branches:
+      - master
+      - "rev4/**"
+    paths:
+      - "Software/arduino/**"
+      - "Software/raspberry/Gateway/**"
+      - "Software/raspberry/AI/**"
+      - ".github/workflows/robotinics-ci.yml"
+  pull_request:
+    paths:
+      - "Software/arduino/**"
+      - "Software/raspberry/Gateway/**"
+      - "Software/raspberry/AI/**"
+      - ".github/workflows/robotinics-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  mega:
+    name: Arduino Mega 2560
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Install AVR core
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+
+      - name: Install Arduino libraries
+        run: |
+          arduino-cli lib install Servo
+          mkdir -p "$HOME/Arduino/libraries"
+          git clone --depth 1 https://github.com/johnrickman/LiquidCrystal_I2C.git "$HOME/Arduino/libraries/LiquidCrystal_I2C"
+          git clone --depth 1 https://github.com/meirarc/Ultrasonic.git "$HOME/Arduino/libraries/Ultrasonic"
+          git clone --depth 1 https://github.com/sui77/rc-switch.git "$HOME/Arduino/libraries/rc-switch"
+
+      - name: Compile Robotinics Mega
+        run: |
+          arduino-cli compile             --fqbn arduino:avr:mega             --warnings all             Software/arduino/robotinics
+
+  mcabeca:
+    name: Arduino Nano / MCabeca
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Install AVR core
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+
+      - name: Install Arduino libraries
+        run: |
+          arduino-cli lib install Servo
+          mkdir -p "$HOME/Arduino/libraries"
+          git clone --depth 1 https://github.com/meirarc/Ultrasonic.git "$HOME/Arduino/libraries/Ultrasonic"
+
+      - name: Compile MCabeca
+        run: |
+          arduino-cli compile             --fqbn arduino:avr:nano             --warnings all             Software/arduino/MCabeca
+
+  gateway:
+    name: Raspberry Gateway
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install pyserial
+
+      - name: Syntax check
+        run: |
+          python -m py_compile Software/raspberry/Gateway/robotinics_gateway.py
+
+      - name: Protocol catalog smoke test
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          path = Path("Software/raspberry/Gateway/robotinics_gateway.py")
+          tree = ast.parse(path.read_text(encoding="utf-8"))
+
+          required = {"PARA", "FRENTE", "RE", "GESQ", "GDIR", "PING", "SAFETY"}
+          found = None
+
+          for node in tree.body:
+              if isinstance(node, ast.Assign):
+                  for target in node.targets:
+                      if isinstance(target, ast.Name) and target.id == "EXACT_COMMANDS":
+                          found = ast.literal_eval(node.value)
+
+          if found is None:
+              raise SystemExit("EXACT_COMMANDS not found")
+
+          missing = required - set(found)
+          if missing:
+              raise SystemExit(f"Missing required commands: {sorted(missing)}")
+
+          print("Gateway protocol catalog OK")
+          PY
+
+      - name: Protocol unit tests
+        run: |
+          python -m unittest discover -s Software/raspberry/Gateway/tests -p "test_*.py" -v
+
+      - name: Simulator unit tests
+        run: |
+          python -m unittest discover -s Software/simulator/tests -p "test_simulator.py" -v
+
+      - name: Gateway + simulator integration
+        run: |
+          python -m unittest discover -s Software/simulator/tests -p "test_gateway_integration.py" -v
+
+
+  taskengine:
+    name: Free Pascal Task Engine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Free Pascal
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fp-compiler fp-units-fcl fp-units-net fp-units-db sqlite3
+
+      - name: Compile AI core tests
+        run: |
+          mkdir -p /tmp/robotinics-fpc
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_taskengine.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_rag.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_actionpolicy.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_hybridrag.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_toolrunner.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_ftsrag.pas
+
+      - name: Run AI core tests
+        run: |
+          /tmp/robotinics-fpc/test_taskengine
+          /tmp/robotinics-fpc/test_rag
+          /tmp/robotinics-fpc/test_actionpolicy
+          /tmp/robotinics-fpc/test_hybridrag
+          /tmp/robotinics-fpc/test_toolrunner
+          /tmp/robotinics-fpc/test_ftsrag

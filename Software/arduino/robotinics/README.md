@@ -85,6 +85,26 @@ Quando o robô se move para frente ou para trás e o sensor correspondente indic
 
 Essa lógica é deliberadamente mantida próxima ao controlador físico.
 
+Na Rev. 4, a segurança de tração também inclui:
+
+- `PARA` tratado com prioridade no parser;
+- watchdog lógico de comunicação;
+- heartbeat `PING` enviado pelo Gateway enquanto há movimento;
+- parada automática se o controlador externo deixar de renovar o heartbeat;
+- timeout máximo de uma ordem de movimento;
+- motivo da parada exposto como `SAFETY:STOP:<reason>`;
+- consulta local por `SAFETY`.
+
+Configuração atual proposta para validação:
+
+```text
+heartbeat Gateway: 1 s
+watchdog Mega:      3 s
+timeout movimento: 30 s
+```
+
+Esses tempos são centralizados em `robotinics_config.h` e devem ser confirmados em ensaio físico antes de serem considerados parâmetros finais.
+
 ## Protocolo
 
 A comunicação usa comandos de texto.
@@ -116,7 +136,7 @@ O Mega encaminha o conteúdo ao Nano e retorna as respostas ao canal externo.
 
 O firmware histórico concentrava todas as funcionalidades em um único arquivo.
 
-O PR #3 propõe separar internamente:
+A implementação da Rev. 4 separa internamente:
 
 - display;
 - motores;
@@ -128,6 +148,23 @@ O PR #3 propõe separar internamente:
 - testes.
 
 O objetivo é aumentar legibilidade, reduzir acoplamento e facilitar manutenção sem trocar hardware nem alterar o protocolo já usado pelo equipamento.
+
+Estrutura atual:
+
+```text
+robotinics.ino          composição, estado compartilhado, setup e loop
+robotinics_config.h     pinagem, baud rates e parâmetros físicos
+10_display.ino          LCD e apresentação local
+20_motors.ino           tração
+30_servos.ino           servos do corpo
+40_sensors.ino          sensores e leituras
+50_gps.ino              GPS / NMEA
+60_safety.ino           margem de colisão e ciclo de leituras
+70_communications.ino   protocolo Device e canais seriais
+80_tests.ino            teste funcional legado
+```
+
+Esta modularização ainda deve ser validada por compilação automatizada e ensaio no hardware real antes de ser considerada marco concluído.
 
 
 ## Pinout

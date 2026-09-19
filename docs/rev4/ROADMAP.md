@@ -21,18 +21,18 @@ Este roadmap transforma a proposta da Rev. 4 em entregas verificáveis.
 ## Fase 2 — Firmware Mega
 
 ### Atividades
-- [ ] extrair pinagem para arquivo dedicado;
-- [ ] separar motores;
-- [ ] separar servos;
-- [ ] separar sensores;
-- [ ] separar display;
-- [ ] separar GPS/RF/comunicações auxiliares;
-- [ ] extrair parser de comandos;
-- [ ] reduzir uso de `String`;
+- [x] extrair pinagem para arquivo dedicado;
+- [x] separar motores;
+- [x] separar servos;
+- [x] separar sensores;
+- [x] separar display;
+- [x] separar GPS/RF/comunicações auxiliares;
+- [x] extrair parser de comandos;
+- [~] reduzir uso de `String` — buffers de recepção já migrados; mensagens e compatibilidade ainda usam `String`;
 - [ ] eliminar código morto;
-- [ ] corrigir bugs sem alterar protocolo;
+- [~] corrigir bugs sem alterar protocolo — corrente, ultrassom, buffers e inicialização RF corrigidos; validação em hardware pendente;
 - [ ] criar camada de telemetria;
-- [ ] criar SafetyController.
+- [x] criar SafetyController — margem de colisão, STOP prioritário, watchdog lógico e timeout de movimento implementados; validação em hardware pendente.
 
 ### Compatibilidade obrigatória
 Os comandos legados devem continuar aceitos durante esta fase.
@@ -62,15 +62,15 @@ O Head Controller possui API física previsível e não depende de lógica cogni
 ## Fase 4 — Robotinics Device Protocol
 
 ### Atividades
-- [ ] catalogar comandos atuais;
-- [ ] catalogar formatos de resposta;
-- [ ] definir `OK`, `ERR` e eventos;
-- [ ] definir versionamento;
-- [ ] definir heartbeat;
-- [ ] definir `IDENTIFY`;
-- [ ] definir `CAPABILITIES`;
-- [ ] definir política de compatibilidade;
-- [ ] definir depreciação futura.
+- [x] catalogar comandos atuais;
+- [x] catalogar formatos de resposta atuais;
+- [~] definir `OK`, `ERR` e eventos — namespaces reservados e `SAFETY:STOP` implementado; `RBT:OK/ERR/EVENT` completo ainda pendente;
+- [x] definir versionamento 1.x/2.x;
+- [x] definir heartbeat `PING/PONG`;
+- [x] definir e implementar `IDENTIFY`;
+- [x] definir e implementar `CAPABILITIES`;
+- [x] definir política de compatibilidade;
+- [x] definir depreciação futura.
 
 ### Critério de conclusão
 Um software pode implementar um cliente Robotinics sem ler o firmware.
@@ -80,14 +80,14 @@ Um software pode implementar um cliente Robotinics sem ler o firmware.
 ## Fase 5 — Safety Layer
 
 ### Atividades
-- [ ] STOP prioritário;
-- [ ] watchdog;
-- [ ] timeout para movimento contínuo;
-- [ ] estado seguro na perda de comunicação;
+- [x] STOP prioritário;
+- [x] watchdog lógico de comunicação;
+- [x] timeout para movimento contínuo;
+- [x] estado seguro na perda de comunicação;
 - [ ] limites dos servos;
-- [ ] catálogo de comandos permitido;
+- [x] catálogo de comandos permitido no Gateway;
 - [ ] política para ações vindas de agente;
-- [ ] registro de falhas.
+- [~] registro de falhas — Gateway registra `SAFETY:STOP:*`; persistência consolidada ainda pendente;
 
 ### Critério de conclusão
 Falha no Raspberry, LLM ou aplicação de usuário não pode manter movimento indefinido.
@@ -97,16 +97,16 @@ Falha no Raspberry, LLM ou aplicação de usuário não pode manter movimento in
 ## Fase 6 — Gateway 2.0
 
 ### Atividades
-- [ ] estados de conexão explícitos;
-- [ ] heartbeat;
-- [ ] fila com prioridade;
-- [ ] cancelamento;
-- [ ] retry configurável;
-- [ ] telemetria estruturada;
-- [ ] eventos;
-- [ ] API versionada;
-- [ ] testes unitários;
-- [ ] métricas e diagnóstico.
+- [x] estados de conexão explícitos;
+- [x] heartbeat durante movimento;
+- [x] fila com prioridade;
+- [x] cancelamento;
+- [x] retry configurável;
+- [~] telemetria estruturada — sensores legados e MCabeca convertidos para estado; expansão de GPS/ACEL ainda pendente;
+- [x] eventos;
+- [x] API versionada v1/v2;
+- [x] testes unitários;
+- [~] métricas e diagnóstico — métricas operacionais implementadas; diagnóstico avançado ainda pendente.
 
 ### Critério de conclusão
 Clientes de alto nível não precisam conhecer detalhes da serial.
@@ -116,13 +116,13 @@ Clientes de alto nível não precisam conhecer detalhes da serial.
 ## Fase 7 — Simulator
 
 ### Atividades
-- [ ] dispositivo serial virtual;
-- [ ] simulador Body Controller;
-- [ ] simulador Head Controller;
-- [ ] sensores configuráveis;
-- [ ] cenários de falha;
+- [x] dispositivo serial virtual;
+- [x] simulador Body Controller;
+- [x] simulador Head Controller;
+- [x] sensores configuráveis;
+- [~] cenários de falha — colisão, watchdog, timeout, drop de resposta e desconexão modelados; expansão futura pendente;
 - [ ] replay de telemetria;
-- [ ] testes de protocolo.
+- [x] testes de protocolo.
 
 ### Critério de conclusão
 Gateway e AI Runtime podem ser testados sem o robô físico.
@@ -132,58 +132,58 @@ Gateway e AI Runtime podem ser testados sem o robô físico.
 ## Fase 8 — CI
 
 ### Pipeline
-- [ ] compile Mega;
-- [ ] compile MCabeca;
-- [ ] lint/test Gateway;
-- [ ] protocol tests;
+- [x] compile Mega;
+- [x] compile MCabeca;
+- [x] syntax/smoke test Gateway;
+- [x] protocol tests;
 - [ ] compile Free Pascal AI Runtime;
-- [ ] smoke test do simulador;
+- [x] smoke/integration test do simulador;
 - [ ] validação de links;
 - [ ] validação Yocto.
 
 ### Critério de conclusão
-Push e pull request informam automaticamente regressões conhecidas.
+Push e pull request já compilam Mega e MCabeca e executam validações básicas do Gateway; os demais checks continuam incrementais.
 
 ---
 
 ## Fase 9 — Telemetria e diagnóstico
 
 ### Atividades
-- [ ] modelo de estado unificado;
-- [ ] health por módulo;
-- [ ] autoteste;
-- [ ] diagnóstico guiado;
-- [ ] histórico;
-- [ ] relatório de manutenção.
+- [x] modelo de estado unificado;
+- [x] health por módulo;
+- [x] autoteste — sequência segura implementada no Gateway, iniciando por `PARA` e sem comandos de movimento;
+- [x] diagnóstico guiado;
+- [~] histórico — comandos/eventos e relatórios de manutenção persistidos; replay/histórico dedicado de telemetria ainda pendente;
+- [x] relatório de manutenção JSON persistente com evidências, diagnóstico, health, sensores, falhas e métricas.
 
 ---
 
 ## Fase 10 — Task Engine 2.0
 
 ### Atividades
-- [ ] tarefas;
-- [ ] subtarefas;
-- [ ] dependências;
-- [ ] tentativas;
-- [ ] cancelamento;
-- [ ] evidências;
-- [ ] resultado;
-- [ ] persistência;
-- [ ] auditoria.
+- [x] tarefas;
+- [x] subtarefas;
+- [x] dependências;
+- [x] tentativas;
+- [x] cancelamento;
+- [x] evidências;
+- [x] resultado;
+- [x] persistência;
+- [x] auditoria.
 
 ---
 
 ## Fase 11 — RAG e Agent Runtime
 
 ### Atividades
-- [ ] busca lexical melhorada;
-- [ ] BM25/FTS;
-- [ ] metadata;
-- [ ] embeddings opcionais;
-- [ ] busca híbrida;
-- [ ] ferramentas tipadas;
-- [ ] política de ações;
-- [ ] confirmação humana para operações físicas relevantes.
+- [x] busca lexical melhorada;
+- [x] BM25/FTS — ranking BM25-like e índice SQLite FTS5 incremental implementados;
+- [x] metadata;
+- [x] embeddings opcionais — endpoint compatível com OpenAI configurável por ambiente;
+- [x] busca híbrida — score lexical normalizado combinado com similaridade cosseno de embeddings;
+- [x] ferramentas tipadas;
+- [x] política de ações;
+- [x] confirmação humana para operações físicas relevantes.
 
 ---
 
