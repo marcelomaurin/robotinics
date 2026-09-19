@@ -116,13 +116,13 @@ Clientes de alto nível não precisam conhecer detalhes da serial.
 ## Fase 7 — Simulator
 
 ### Atividades
-- [ ] dispositivo serial virtual;
-- [ ] simulador Body Controller;
-- [ ] simulador Head Controller;
-- [ ] sensores configuráveis;
-- [ ] cenários de falha;
+- [x] dispositivo serial virtual;
+- [x] simulador Body Controller;
+- [x] simulador Head Controller;
+- [x] sensores configuráveis;
+- [~] cenários de falha — colisão, watchdog, timeout, drop de resposta e desconexão modelados; expansão futura pendente;
 - [ ] replay de telemetria;
-- [ ] testes de protocolo.
+- [x] testes de protocolo.
 
 ### Critério de conclusão
 Gateway e AI Runtime podem ser testados sem o robô físico.
@@ -137,7 +137,7 @@ Gateway e AI Runtime podem ser testados sem o robô físico.
 - [x] syntax/smoke test Gateway;
 - [x] protocol tests;
 - [ ] compile Free Pascal AI Runtime;
-- [ ] smoke test do simulador;
+- [x] smoke/integration test do simulador;
 - [ ] validação de links;
 - [ ] validação Yocto.
 
