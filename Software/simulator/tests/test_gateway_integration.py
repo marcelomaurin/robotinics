@@ -8,9 +8,10 @@ import time
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-SIM_PATH = ROOT / "robotinics_simulator.py"
-GW_PATH = ROOT.parent / "raspberry" / "Gateway" / "robotinics_gateway.py"
+SIM_DIR = Path(__file__).resolve().parents[1]
+SOFTWARE_DIR = Path(__file__).resolve().parents[2]
+SIM_PATH = SIM_DIR / "robotinics_simulator.py"
+GW_PATH = SOFTWARE_DIR / "raspberry" / "Gateway" / "robotinics_gateway.py"
 
 sim_spec = importlib.util.spec_from_file_location("robotinics_simulator", SIM_PATH)
 simmod = importlib.util.module_from_spec(sim_spec)
