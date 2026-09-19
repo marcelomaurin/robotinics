@@ -5,7 +5,7 @@ program robotinics_ai;
 uses
   Classes, SysUtils,
   chatgpt,
-  gatewayclient, internetservice, doclookup, taskengine, actionpolicy;
+  gatewayclient, internetservice, doclookup, hybridrag, taskengine, actionpolicy, toolrunner;
 
 function Env(const AName, ADefault: string): string;
 begin
@@ -96,7 +96,7 @@ var
   Chat: TCHATGPT;
   Task: TRobotTask;
   StateJSON, CatalogJSON, HistoryJSON, DocsContext, InternetContext, ToolCatalog: string;
-  Prompt, StatePath, DocsPath, SearchURL: string;
+  Prompt, StatePath, DocsPath, SearchURL, RagIndexPath, EmbedURL, EmbedToken, EmbedModel: string;
   TaskFile: string;
   STUnderstand, STTelemetry, STDocs, STInternet, STReason: string;
 begin
@@ -104,6 +104,11 @@ begin
   StatePath := Env('ROBOTINICS_STATE_PATH', '/var/lib/robotinics');
   DocsPath := Env('ROBOTINICS_DOCS_PATH', '/opt/robotinics/docs');
   SearchURL := Env('ROBOTINICS_SEARCH_URL', '');
+  RagIndexPath := Env('ROBOTINICS_RAG_INDEX',
+    IncludeTrailingPathDelimiter(StatePath) + 'rag/index.json');
+  EmbedURL := Env('ROBOTINICS_EMBEDDING_URL', '');
+  EmbedToken := Env('ROBOTINICS_EMBEDDING_TOKEN', '');
+  EmbedModel := Env('ROBOTINICS_EMBEDDING_MODEL', 'text-embedding-3-small');
 
   Task := TRobotTask.Create(Question);
   Gateway := TGatewayClient.Create(
@@ -149,7 +154,23 @@ begin
     end;
 
     Task.StartSubTask(STDocs, 'Consultando documentacao local.');
-    DocsContext := LookupDocumentation(DocsPath, Question, 8, 24000);
+    try
+      if (not FileExists(RagIndexPath)) or EnvBool('ROBOTINICS_RAG_REBUILD', False) then
+      begin
+        BuildHybridIndex(DocsPath, RagIndexPath, EmbedURL, EmbedToken, EmbedModel);
+        Task.AddEvidence('rag', 'index', RagIndexPath);
+      end;
+      DocsContext := HybridContext(RagIndexPath, Question, EmbedURL, EmbedToken,
+        EmbedModel, 8, 24000, 0.65);
+      if DocsContext = '' then
+        DocsContext := LookupDocumentation(DocsPath, Question, 8, 24000);
+    except
+      on E: Exception do
+      begin
+        Task.AddEvidence('rag', 'error', E.Message);
+        DocsContext := LookupDocumentation(DocsPath, Question, 8, 24000);
+      end;
+    end;
     if DocsContext <> '' then
     begin
       Task.AddStep('search_docs', 'DONE', 'Documentacao local consultada.');
