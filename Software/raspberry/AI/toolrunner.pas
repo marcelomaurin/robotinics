@@ -29,9 +29,13 @@ function ExecuteTool(AGateway: TGatewayClient; ATask: TRobotTask;
 var
   D: TActionDecision;
 begin
-  FillChar(Result, SizeOf(Result), 0);
+  Result.OK := False;
+  Result.NeedsConfirmation := False;
+  Result.Risk := '';
   Result.ToolName := AToolName;
   Result.Command := ACommand;
+  Result.Response := '';
+  Result.Error := '';
 
   D := EvaluateAction(AToolName, ACommand);
   Result.Risk := RiskToString(D.Risk);
