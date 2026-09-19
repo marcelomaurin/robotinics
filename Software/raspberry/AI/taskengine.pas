@@ -220,7 +220,7 @@ var
   I, P: Integer;
   D: TJSONData;
   O: TJSONObject;
-  Deps, DepID, Status: string;
+  Deps, DepID, DepStatus: string;
 begin
   Result := False;
   I := FindSubTaskIndex(AID);
@@ -252,8 +252,8 @@ begin
 
     if DepID <> '' then
     begin
-      Status := SubTaskStatus(DepID);
-      if (Status = '') or (Status = 'PENDING') or (Status = 'RUNNING') then
+      DepStatus := SubTaskStatus(DepID);
+      if (DepStatus = '') or (DepStatus = 'PENDING') or (DepStatus = 'RUNNING') then
         Exit(False);
     end;
   until Deps = '';
