@@ -99,6 +99,18 @@ class GatewaySimulatorIntegrationTests(unittest.TestCase):
         self.assertIn("MOTION", snap["capabilities"])
         self.assertIn("SAFETY_WATCHDOG", snap["capabilities"])
 
+    def test_self_test_and_maintenance_report(self):
+        report = self.gateway.run_self_test()
+        self.assertTrue(report["checks_ok"])
+        self.assertEqual(report["health"]["body"], "OK")
+        self.assertEqual(report["health"]["head"], "OK")
+        commands = [item["command"] for item in report["evidence"]]
+        self.assertEqual(commands[0], "PARA")
+        self.assertIn("HEALTH", commands)
+        self.assertIn("MCAB:HEALTH", commands)
+        latest = self.gateway.load_maintenance_report("latest")
+        self.assertEqual(latest["report_id"], report["report_id"])
+
     def test_motion_safety_and_mcabeça(self):
         self.execute("FRENTE")
         self.assertFalse(self.gateway.state.snapshot()["motion"]["stopped"])
