@@ -23,6 +23,7 @@ BAUD = int(os.getenv("ROBOTINICS_SERIAL_BAUD", "115200"))
 STATE_DIR = Path(os.getenv("ROBOTINICS_STATE_PATH", "/var/lib/robotinics"))
 STATE_FILE = STATE_DIR / "gateway-state.json"
 HISTORY_FILE = STATE_DIR / "gateway-history.jsonl"
+MAINTENANCE_DIR = STATE_DIR / "maintenance-reports"
 LISTEN_HOST = os.getenv("ROBOTINICS_GATEWAY_HOST", "127.0.0.1")
 LISTEN_PORT = int(os.getenv("ROBOTINICS_GATEWAY_PORT", "8765"))
 DEFAULT_TIMEOUT = float(os.getenv("ROBOTINICS_COMMAND_TIMEOUT", "5"))
@@ -59,7 +60,7 @@ EXACT_COMMANDS = {
 }
 MCAB_EXACT = {
     "DIST", "GETPOS", "CENTER", "LASERON", "LASEROFF", "SCANNING",
-    "VER", "MAN", "ULTRA", "TESTE"
+    "VER", "MAN", "ULTRA", "TESTE", "HEALTH"
 }
 MCAB_BOOL_PREFIXES = (
     "LEDAZUL=", "LEDVERDE=", "LEDVERMELHO=", "OLHOS=", "LIGHTAUTO="
@@ -674,6 +675,150 @@ class Gateway:
         with HISTORY_FILE.open("a", encoding="utf-8") as fp:
             fp.write(json.dumps(item, ensure_ascii=False) + "\n")
 
+    def _wait_request(self, command, timeout=3.0, retries=None, priority=PRIORITY_HIGH):
+        req = self.submit(
+            command,
+            timeout=timeout,
+            internal=True,
+            retries=retries,
+            priority=priority,
+        )
+        wait_time = req.timeout * (1 + req.retries) + 1.0
+        if not req.done.wait(wait_time):
+            return {
+                "request_id": req.id,
+                "command": command,
+                "ok": False,
+                "error": "self-test wait timeout",
+                "lines": [],
+            }
+        return req.result()
+
+    def maintenance_report(self, evidence=None, report_id=None, started_at=None):
+        diagnostics = self.diagnose()
+        snapshot = self.state.snapshot()
+        report_id = report_id or str(uuid.uuid4())
+        now = time.time()
+        evidence = evidence or []
+
+        checks_ok = all(item.get("ok") for item in evidence) if evidence else None
+        result = {
+            "report_id": report_id,
+            "created_at": now,
+            "started_at": started_at,
+            "finished_at": now,
+            "overall": diagnostics["overall"],
+            "checks_ok": checks_ok,
+            "device": snapshot.get("device"),
+            "connection": snapshot.get("connection"),
+            "health": snapshot.get("health"),
+            "motion": snapshot.get("motion"),
+            "sensors": snapshot.get("sensors"),
+            "telemetry": snapshot.get("telemetry"),
+            "faults": snapshot.get("faults"),
+            "diagnostics": diagnostics,
+            "evidence": evidence,
+            "gateway_metrics": self.status()["metrics"],
+        }
+        return result
+
+    def save_maintenance_report(self, report):
+        MAINTENANCE_DIR.mkdir(parents=True, exist_ok=True)
+        report_id = report["report_id"]
+        path = MAINTENANCE_DIR / f"{report_id}.json"
+        path.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        latest = MAINTENANCE_DIR / "latest.json"
+        latest.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        self._event(
+            "maintenance_report",
+            report_id=report_id,
+            overall=report["overall"],
+            checks_ok=report["checks_ok"],
+        )
+        return path
+
+    def list_maintenance_reports(self, limit=20):
+        if not MAINTENANCE_DIR.exists():
+            return []
+        items = []
+        for path in MAINTENANCE_DIR.glob("*.json"):
+            if path.name == "latest.json":
+                continue
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+                items.append({
+                    "report_id": data.get("report_id"),
+                    "created_at": data.get("created_at"),
+                    "overall": data.get("overall"),
+                    "checks_ok": data.get("checks_ok"),
+                })
+            except Exception:
+                continue
+        items.sort(key=lambda item: item.get("created_at") or 0, reverse=True)
+        return items[:max(1, min(int(limit), 100))]
+
+    def load_maintenance_report(self, report_id="latest"):
+        name = "latest.json" if report_id == "latest" else f"{report_id}.json"
+        path = MAINTENANCE_DIR / name
+        if not path.exists():
+            return None
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def run_self_test(self):
+        report_id = str(uuid.uuid4())
+        started_at = time.time()
+        self._event("self_test_started", report_id=report_id)
+
+        commands = [
+            "PARA",
+            "IDENTIFY",
+            "CAPABILITIES",
+            "HEALTH",
+            "SAFETY",
+            "ULTRA",
+            "ULTRA1",
+            "ULTRA2",
+            "CORR",
+            "GAS",
+            "MCAB:HEALTH",
+            "MCAB:DIST",
+            "MCAB:GETPOS",
+        ]
+
+        evidence = []
+        for command in commands:
+            retries = 0 if command == "PARA" else None
+            priority = PRIORITY_EMERGENCY if command == "PARA" else PRIORITY_HIGH
+            result = self._wait_request(
+                command,
+                timeout=3.0,
+                retries=retries,
+                priority=priority,
+            )
+            evidence.append(result)
+            if command == "PARA" and not result.get("ok"):
+                break
+
+        report = self.maintenance_report(
+            evidence=evidence,
+            report_id=report_id,
+            started_at=started_at,
+        )
+        self.save_maintenance_report(report)
+        self._event(
+            "self_test_finished",
+            report_id=report_id,
+            overall=report["overall"],
+            checks_ok=report["checks_ok"],
+        )
+        return report
+
     def diagnose(self):
         snap = self.state.snapshot()
         issues = []
@@ -811,6 +956,30 @@ class Handler(BaseHTTPRequestHandler):
             self._json(200, {"ok": True, "history": list(GATEWAY.history)[-limit:]})
         elif self.path == "/v2/diagnostics":
             self._json(200, {"ok": True, "diagnostics": GATEWAY.diagnose()})
+        elif self.path == "/v2/maintenance/latest":
+            report = GATEWAY.load_maintenance_report("latest")
+            if report is None:
+                self._json(404, {"ok": False, "error": "maintenance report not found"})
+            else:
+                self._json(200, {"ok": True, "report": report})
+        elif self.path.startswith("/v2/maintenance/reports"):
+            limit = 20
+            if "?" in self.path:
+                try:
+                    query = self.path.split("?", 1)[1]
+                    for item in query.split("&"):
+                        if item.startswith("limit="):
+                            limit = int(item.split("=", 1)[1])
+                except ValueError:
+                    limit = 20
+            self._json(200, {"ok": True, "reports": GATEWAY.list_maintenance_reports(limit)})
+        elif self.path.startswith("/v2/maintenance/report/"):
+            report_id = self.path.rsplit("/", 1)[1]
+            report = GATEWAY.load_maintenance_report(report_id)
+            if report is None:
+                self._json(404, {"ok": False, "error": "maintenance report not found"})
+            else:
+                self._json(200, {"ok": True, "report": report})
         elif self.path.startswith("/v2/events"):
             limit = 50
             if "?" in self.path:
@@ -835,6 +1004,12 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         try:
+            if self.path == "/v2/self-test":
+                report = GATEWAY.run_self_test()
+                status = 200 if report["checks_ok"] else 503
+                self._json(status, {"ok": bool(report["checks_ok"]), "report": report})
+                return
+
             if self.path in {"/v1/command", "/v2/command"}:
                 payload = self._read_json()
                 req = GATEWAY.submit(
