@@ -38,7 +38,7 @@ ANGLE_PREFIXES = (
 EXACT_COMMANDS = {
     "RE", "PARA", "FRENTE", "GESQ", "GDIR", "CLS", "GPS", "ACEL",
     "ULTRA", "ULTRA1", "ULTRA2", "GAS", "CORR", "MAN", "VER", "TESTE",
-    "LCDCLEAR", "PING", "SAFETY"
+    "LCDCLEAR", "PING", "SAFETY", "IDENTIFY", "CAPABILITIES"
 }
 MCAB_EXACT = {
     "DIST", "GETPOS", "CENTER", "LASERON", "LASEROFF", "SCANNING",
@@ -125,6 +125,19 @@ class RobotState:
                     }
                     if name in mapping:
                         self.data["head"][mapping[name]] = state
+            elif line.startswith("RBT:IDENTIFY:"):
+                parts = line.split(":")
+                if len(parts) >= 5:
+                    self.data["device"] = {
+                        "role": parts[2],
+                        "board": parts[3],
+                        "version": parts[4],
+                    }
+            elif line.startswith("RBT:CAP:"):
+                capability = line.split(":", 2)[2]
+                caps = self.data.setdefault("capabilities", [])
+                if capability not in caps:
+                    caps.append(capability)
             elif line.startswith("SAFETY:STOP:"):
                 reason = line.split(":", 2)[2]
                 self.data["motion"]["stopped"] = True
