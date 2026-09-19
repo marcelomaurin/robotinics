@@ -119,5 +119,38 @@ class DiagnosticsTests(unittest.TestCase):
         self.assertTrue(any(i["code"] == "front_obstacle" for i in result["issues"]))
 
 
+class MaintenanceReportTests(unittest.TestCase):
+    def setUp(self):
+        gateway.STATE_DIR = Path(tempfile.mkdtemp(prefix="robotinics-maintenance-"))
+        gateway.STATE_FILE = gateway.STATE_DIR / "gateway-state.json"
+        gateway.HISTORY_FILE = gateway.STATE_DIR / "gateway-history.jsonl"
+        gateway.MAINTENANCE_DIR = gateway.STATE_DIR / "maintenance-reports"
+        self.g = gateway.Gateway()
+
+    def test_report_persistence(self):
+        self.g.state.set_connection(gateway.CONNECTION_CONNECTED, "test")
+        self.g.state.parse_line("RBT:HEALTH:BODY:OK")
+        self.g.state.parse_line("MCAB:HEALTH:HEAD:OK")
+        evidence = [{"command": "PING", "ok": True}]
+        report = self.g.maintenance_report(evidence=evidence, report_id="test-report")
+        path = self.g.save_maintenance_report(report)
+        self.assertTrue(path.exists())
+        loaded = self.g.load_maintenance_report("test-report")
+        self.assertEqual(loaded["report_id"], "test-report")
+        self.assertTrue(loaded["checks_ok"])
+
+    def test_report_index(self):
+        self.g.state.set_connection(gateway.CONNECTION_CONNECTED, "test")
+        self.g.state.parse_line("RBT:HEALTH:BODY:OK")
+        self.g.state.parse_line("MCAB:HEALTH:HEAD:OK")
+        report = self.g.maintenance_report(
+            evidence=[{"command": "PING", "ok": True}],
+            report_id="indexed-report",
+        )
+        self.g.save_maintenance_report(report)
+        items = self.g.list_maintenance_reports()
+        self.assertTrue(any(item["report_id"] == "indexed-report" for item in items))
+
+
 if __name__ == "__main__":
     unittest.main()
