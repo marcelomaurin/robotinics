@@ -78,5 +78,46 @@ class GatewayV2ModelTests(unittest.TestCase):
         self.assertIn("cancelled", result)
 
 
+class DiagnosticsTests(unittest.TestCase):
+    def setUp(self):
+        gateway.STATE_DIR = Path(tempfile.mkdtemp(prefix="robotinics-diagnostics-"))
+        gateway.STATE_FILE = gateway.STATE_DIR / "gateway-state.json"
+        gateway.HISTORY_FILE = gateway.STATE_DIR / "gateway-history.jsonl"
+        self.g = gateway.Gateway()
+
+    def test_health_lines_update_state(self):
+        self.g.state.parse_line("RBT:HEALTH:BODY:OK")
+        self.g.state.parse_line("RBT:HEALTH:SAFETY:IDLE")
+        self.g.state.parse_line("MCAB:HEALTH:HEAD:OK")
+        self.g.state.parse_line("RBT:TELEM:ULTRA_FRONT_CM:35.5")
+        snap = self.g.state.snapshot()
+        self.assertEqual(snap["health"]["body"], "OK")
+        self.assertEqual(snap["health"]["head"], "OK")
+        self.assertEqual(snap["health"]["safety"], "IDLE")
+        self.assertEqual(snap["telemetry"]["ultra_front_cm"], 35.5)
+
+    def test_diagnostics_ok(self):
+        self.g.state.set_connection(gateway.CONNECTION_CONNECTED, "test")
+        self.g.state.parse_line("RBT:HEALTH:BODY:OK")
+        self.g.state.parse_line("MCAB:HEALTH:HEAD:OK")
+        result = self.g.diagnose()
+        self.assertEqual(result["overall"], "OK")
+        self.assertEqual(result["issues"], [])
+
+    def test_diagnostics_connection_error(self):
+        result = self.g.diagnose()
+        self.assertEqual(result["overall"], "ERROR")
+        self.assertTrue(any(i["code"] == "connection" for i in result["issues"]))
+
+    def test_diagnostics_obstacle_warning(self):
+        self.g.state.set_connection(gateway.CONNECTION_CONNECTED, "test")
+        self.g.state.parse_line("RBT:HEALTH:BODY:OK")
+        self.g.state.parse_line("MCAB:HEALTH:HEAD:OK")
+        self.g.state.parse_line("Cent: 10.0, Pol. : 3.94", active_command="ULTRA1")
+        result = self.g.diagnose()
+        self.assertEqual(result["overall"], "WARN")
+        self.assertTrue(any(i["code"] == "front_obstacle" for i in result["issues"]))
+
+
 if __name__ == "__main__":
     unittest.main()
