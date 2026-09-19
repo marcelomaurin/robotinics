@@ -1,14 +1,5 @@
 // Seguranca ---------------------------------------------------------------
 
-enum RobotSafetyStopReason {
-  SAFETY_STOP_NONE = 0,
-  SAFETY_STOP_COMMAND,
-  SAFETY_STOP_FRONT_OBSTACLE,
-  SAFETY_STOP_REAR_OBSTACLE,
-  SAFETY_STOP_MOTION_TIMEOUT,
-  SAFETY_STOP_CONTROL_WATCHDOG
-};
-
 static unsigned long safetyLastControlActivityMs = 0;
 static unsigned long safetyMotionStartedMs = 0;
 static bool safetyMotionActive = false;
