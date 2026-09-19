@@ -17,6 +17,7 @@ type
     function State: string;
     function Catalog: string;
     function History(ALimit: Integer = 20): string;
+    function Diagnostics: string;
     function Command(const ACommand: string; ATimeout: Double = 5.0): string;
   end;
 
@@ -55,6 +56,11 @@ end;
 function TGatewayClient.History(ALimit: Integer): string;
 begin
   Result := HTTPGet('/v1/history?limit=' + IntToStr(ALimit));
+end;
+
+function TGatewayClient.Diagnostics: string;
+begin
+  Result := HTTPGet('/v2/diagnostics');
 end;
 
 function JsonEscape(const S: string): string;
