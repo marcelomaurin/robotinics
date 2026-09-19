@@ -102,6 +102,25 @@ begin
   until False;
 end;
 
+function CountWordsSimple(const S: string): Integer;
+var
+  I: Integer;
+  InWord: Boolean;
+begin
+  Result := 0;
+  InWord := False;
+  for I := 1 to Length(S) do
+  begin
+    if S[I] in [' ', #9, #10, #13] then
+      InWord := False
+    else if not InWord then
+    begin
+      InWord := True;
+      Inc(Result);
+    end;
+  end;
+end;
+
 function ExtractTitle(const Path, Text: string): string;
 var
   Lines: TStringList;
@@ -166,7 +185,7 @@ begin
           D.Text := S.Text;
           D.Title := ExtractTitle(Path, D.Text);
           D.Tokens := Tokenize(D.Text);
-          D.TokenCount := Max(1, WordCount(D.Text, [' ', #9, #10, #13]));
+          D.TokenCount := Max(1, CountWordsSimple(D.Text));
           Docs.Add(D);
         except
         end;
