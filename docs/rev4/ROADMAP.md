@@ -21,18 +21,18 @@ Este roadmap transforma a proposta da Rev. 4 em entregas verificáveis.
 ## Fase 2 — Firmware Mega
 
 ### Atividades
-- [ ] extrair pinagem para arquivo dedicado;
-- [ ] separar motores;
-- [ ] separar servos;
-- [ ] separar sensores;
-- [ ] separar display;
-- [ ] separar GPS/RF/comunicações auxiliares;
-- [ ] extrair parser de comandos;
-- [ ] reduzir uso de `String`;
+- [x] extrair pinagem para arquivo dedicado;
+- [x] separar motores;
+- [x] separar servos;
+- [x] separar sensores;
+- [x] separar display;
+- [x] separar GPS/RF/comunicações auxiliares;
+- [x] extrair parser de comandos;
+- [~] reduzir uso de `String` — buffers de recepção já migrados; mensagens e compatibilidade ainda usam `String`;
 - [ ] eliminar código morto;
-- [ ] corrigir bugs sem alterar protocolo;
+- [~] corrigir bugs sem alterar protocolo — corrente, ultrassom, buffers e inicialização RF corrigidos; validação em hardware pendente;
 - [ ] criar camada de telemetria;
-- [ ] criar SafetyController.
+- [~] criar SafetyController — margem de colisão isolada em `60_safety.ino`; watchdog e timeout ainda pendentes.
 
 ### Compatibilidade obrigatória
 Os comandos legados devem continuar aceitos durante esta fase.
