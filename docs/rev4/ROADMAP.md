@@ -151,10 +151,10 @@ Push e pull request já compilam Mega e MCabeca e executam validações básicas
 ### Atividades
 - [x] modelo de estado unificado;
 - [x] health por módulo;
-- [~] autoteste — HEALTH estruturado implementado em Body/Head; sequência ativa de ensaio ainda pendente;
+- [x] autoteste — sequência segura implementada no Gateway, iniciando por `PARA` e sem comandos de movimento;
 - [x] diagnóstico guiado;
-- [~] histórico — comandos/eventos persistidos; histórico dedicado de telemetria ainda pendente;
-- [ ] relatório de manutenção.
+- [~] histórico — comandos/eventos e relatórios de manutenção persistidos; replay/histórico dedicado de telemetria ainda pendente;
+- [x] relatório de manutenção JSON persistente com evidências, diagnóstico, health, sensores, falhas e métricas.
 
 ---
 
