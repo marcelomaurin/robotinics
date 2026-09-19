@@ -177,10 +177,10 @@ Push e pull request já compilam Mega e MCabeca e executam validações básicas
 
 ### Atividades
 - [x] busca lexical melhorada;
-- [~] BM25/FTS — ranking BM25-like em memória implementado; índice FTS persistente ainda pendente;
+- [~] BM25/FTS — ranking BM25-like e índice JSON persistente implementados; FTS/SQLite dedicado ainda pendente;
 - [x] metadata;
-- [ ] embeddings opcionais;
-- [~] busca híbrida — ranking lexical + boosts por título/caminho implementado; camada semântica por embeddings ainda pendente;
+- [x] embeddings opcionais — endpoint compatível com OpenAI configurável por ambiente;
+- [x] busca híbrida — score lexical normalizado combinado com similaridade cosseno de embeddings;
 - [x] ferramentas tipadas;
 - [x] política de ações;
 - [x] confirmação humana para operações físicas relevantes.
