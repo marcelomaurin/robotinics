@@ -94,6 +94,7 @@ void Help()
   Println("SAFETY - Exibe estado basico de seguranca");
   Println("IDENTIFY - Identifica controlador e versao");
   Println("CAPABILITIES - Lista recursos do controlador");
+  Println("HEALTH - Estado estruturado dos modulos");
 }
 
 static bool startsWith(const String &value, const char *prefix)
@@ -164,6 +165,19 @@ void ExecCMD(String pBuffer)
     Print("RBT:IDENTIFY:BODY:MEGA2560:");
     Println(String(FVersao));
     flgRodou = true;
+  } else if (pBuffer == "HEALTH") {
+    Println("RBT:HEALTH:BODY:OK");
+    Print("RBT:HEALTH:SAFETY:");
+    Println(SafetyMotionActive() ? "ACTIVE" : "IDLE");
+    Print("RBT:HEALTH:MOTION:");
+    Println(SafetyMotionActive() ? "MOVING" : "STOPPED");
+    Print("RBT:TELEM:ULTRA_RE_CM:");
+    Println(String(cmRe));
+    Print("RBT:TELEM:ULTRA_FRONT_CM:");
+    Println(String(cmCorpo));
+    Print("RBT:TELEM:ULTRA_HEAD_CM:");
+    Println(String(cmCabeca));
+    flgRodou = true;
   } else if (pBuffer == "CAPABILITIES") {
     Println("RBT:CAP:MOTION");
     Println("RBT:CAP:SERVOS");
@@ -173,6 +187,7 @@ void ExecCMD(String pBuffer)
     Println("RBT:CAP:LCD");
     Println("RBT:CAP:MCABECA_BRIDGE");
     Println("RBT:CAP:SAFETY_WATCHDOG");
+    Println("RBT:CAP:HEALTH");
     flgRodou = true;
   }
 
