@@ -66,4 +66,16 @@ static const uint8_t Arduino2RX = 37;
 // Seguranca
 static const int ROBOTINICS_COLLISION_MARGIN_CM = 20;
 
+// Timeout deterministico de tracao.
+// Qualquer comando FRENTE/RE/GESQ/GDIR precisa ser renovado antes deste prazo
+// para manter o movimento continuo.
+static const unsigned long ROBOTINICS_MOTION_TIMEOUT_MS = 5000UL;
+
+// Watchdog de atividade do controlador externo enquanto ha tracao ativa.
+// Protege contra perda do Raspberry, USB ou cliente Bluetooth.
+static const unsigned long ROBOTINICS_CONTROL_WATCHDOG_MS = 7000UL;
+
+// Permite desligar temporariamente os timeouts em bancada sem alterar o codigo.
+static const bool ROBOTINICS_SAFETY_TIMEOUTS_ENABLED = true;
+
 #endif
