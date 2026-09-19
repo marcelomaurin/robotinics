@@ -146,6 +146,11 @@ class RobotinicsSimulator:
                 setattr(self.head, attr, enabled)
                 return [f"MCAB:OK:{prefix[:-1]}={'ON' if enabled else 'OFF'}"]
 
+        if inner == "HEALTH":
+            return [
+                "MCAB:HEALTH:HEAD:OK",
+                f"MCAB:POS:{self.head.x},{self.head.y}",
+            ]
         if inner == "VER":
             return ["MCAB:VERSION:1.2"]
         if inner in {"MAN", "TESTE", "SCANNING"}:
