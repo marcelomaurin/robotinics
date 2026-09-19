@@ -81,6 +81,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install Python dependencies
+        run: |
+          python -m pip install pyserial
+
       - name: Syntax check
         run: |
           python -m py_compile Software/raspberry/Gateway/robotinics_gateway.py
@@ -112,3 +116,7 @@ jobs:
 
           print("Gateway protocol catalog OK")
           PY
+
+      - name: Protocol unit tests
+        run: |
+          python -m unittest discover -s Software/raspberry/Gateway/tests -p "test_*.py" -v
