@@ -23,12 +23,14 @@ void Liga()
 
 void Para()
 {
+  // ENA/ENB sao desligados primeiro para priorizar a parada fisica.
   digitalWrite(PINO_ENA, LOW);
   digitalWrite(PINO_ENB, LOW);
   digitalWrite(PINO_IN1, LOW);
   digitalWrite(PINO_IN2, LOW);
   digitalWrite(PINO_IN3, LOW);
   digitalWrite(PINO_IN4, LOW);
+  SafetyDisarmMotion();
 }
 
 bool Is_FRENTE()
@@ -55,6 +57,7 @@ bool Is_RE()
 
 void Frente()
 {
+  SafetyArmMotion();
   digitalWrite(PINO_IN1, LOW);
   digitalWrite(PINO_IN2, HIGH);
   digitalWrite(PINO_IN3, LOW);
@@ -65,6 +68,7 @@ void Frente()
 
 void Re()
 {
+  SafetyArmMotion();
   digitalWrite(PINO_IN1, HIGH);
   digitalWrite(PINO_IN2, LOW);
   digitalWrite(PINO_IN3, HIGH);
@@ -75,6 +79,7 @@ void Re()
 
 void GiraDir(int Angulo)
 {
+  SafetyArmMotion();
   (void)Angulo; // parametro mantido por compatibilidade
   digitalWrite(PINO_IN1, HIGH);
   digitalWrite(PINO_IN2, LOW);
@@ -86,6 +91,7 @@ void GiraDir(int Angulo)
 
 void GiraEsq(int Angulo)
 {
+  SafetyArmMotion();
   (void)Angulo; // parametro mantido por compatibilidade
   digitalWrite(PINO_IN1, LOW);
   digitalWrite(PINO_IN2, HIGH);
