@@ -196,6 +196,43 @@ control_watchdog
 
 Essas linhas são eventos observáveis e podem ocorrer fora da resposta de um comando normal.
 
+## Health e autoteste
+
+### HEALTH
+
+Entrada:
+
+```text
+HEALTH
+```
+
+O Body Controller retorna linhas estruturadas:
+
+```text
+RBT:HEALTH:BODY:OK
+RBT:HEALTH:SAFETY:IDLE
+RBT:HEALTH:MOTION:STOPPED
+RBT:TELEM:ULTRA_RE_CM:<valor>
+RBT:TELEM:ULTRA_FRONT_CM:<valor>
+RBT:TELEM:ULTRA_HEAD_CM:<valor>
+$>
+```
+
+O Head Controller aceita:
+
+```text
+MCAB:HEALTH
+```
+
+e responde por meio da bridge com:
+
+```text
+MCAB:HEALTH:HEAD:OK
+MCAB:POS:<x>,<y>
+```
+
+O Gateway 2.0 usa esses comandos em um autoteste não motor. A sequência inicia obrigatoriamente com `PARA` e não executa `FRENTE`, `RE`, `GESQ`, `GDIR` nem testes mecânicos.
+
 ## Identificação
 
 ### IDENTIFY
