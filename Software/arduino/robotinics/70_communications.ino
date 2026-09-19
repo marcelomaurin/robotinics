@@ -92,6 +92,8 @@ void Help()
   Println("MCAB:<comando> - Envia comando ao modulo MCabeca");
   Println("PING - Renova watchdog de controle");
   Println("SAFETY - Exibe estado basico de seguranca");
+  Println("IDENTIFY - Identifica controlador e versao");
+  Println("CAPABILITIES - Lista recursos do controlador");
 }
 
 static bool startsWith(const String &value, const char *prefix)
@@ -157,6 +159,20 @@ void ExecCMD(String pBuffer)
     Println(SafetyMotionActive() ? "ACTIVE" : "STOPPED");
     Print("SAFETY:LAST_STOP:");
     Println(String(SafetyLastStopReason()));
+    flgRodou = true;
+  } else if (pBuffer == "IDENTIFY") {
+    Print("RBT:IDENTIFY:BODY:MEGA2560:");
+    Println(String(FVersao));
+    flgRodou = true;
+  } else if (pBuffer == "CAPABILITIES") {
+    Println("RBT:CAP:MOTION");
+    Println("RBT:CAP:SERVOS");
+    Println("RBT:CAP:ULTRASONIC");
+    Println("RBT:CAP:ANALOG_SENSORS");
+    Println("RBT:CAP:GPS");
+    Println("RBT:CAP:LCD");
+    Println("RBT:CAP:MCABECA_BRIDGE");
+    Println("RBT:CAP:SAFETY_WATCHDOG");
     flgRodou = true;
   }
 
