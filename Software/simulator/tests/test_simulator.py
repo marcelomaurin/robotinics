@@ -55,6 +55,12 @@ class SimulatorProtocolTests(unittest.TestCase):
         events = self.sim.tick()
         self.assertIn("SAFETY:STOP:motion_timeout", events)
 
+    def test_health(self):
+        response = self.sim.command("HEALTH")
+        self.assertIn("RBT:HEALTH:BODY:OK", response)
+        self.assertIn("MCAB:HEALTH:HEAD:OK", response)
+        self.assertTrue(any(line.startswith("RBT:TELEM:ULTRA_FRONT_CM:") for line in response))
+
     def test_head_bridge(self):
         response = self.sim.command("MCAB:POINT:100,50")
         self.assertIn("MCAB:POS:100,50", response)
