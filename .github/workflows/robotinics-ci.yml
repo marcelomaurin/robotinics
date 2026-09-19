@@ -120,3 +120,11 @@ jobs:
       - name: Protocol unit tests
         run: |
           python -m unittest discover -s Software/raspberry/Gateway/tests -p "test_*.py" -v
+
+      - name: Simulator unit tests
+        run: |
+          python -m unittest discover -s Software/simulator/tests -p "test_simulator.py" -v
+
+      - name: Gateway + simulator integration
+        run: |
+          python -m unittest discover -s Software/simulator/tests -p "test_gateway_integration.py" -v
