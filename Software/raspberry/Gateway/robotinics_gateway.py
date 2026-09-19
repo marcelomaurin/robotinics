@@ -28,6 +28,8 @@ LISTEN_HOST = os.getenv("ROBOTINICS_GATEWAY_HOST", "127.0.0.1")
 LISTEN_PORT = int(os.getenv("ROBOTINICS_GATEWAY_PORT", "8765"))
 DEFAULT_TIMEOUT = float(os.getenv("ROBOTINICS_COMMAND_TIMEOUT", "5"))
 HISTORY_SIZE = int(os.getenv("ROBOTINICS_HISTORY_SIZE", "200"))
+HEARTBEAT_INTERVAL = float(os.getenv("ROBOTINICS_HEARTBEAT_INTERVAL", "1.0"))
+HEARTBEAT_TIMEOUT = float(os.getenv("ROBOTINICS_HEARTBEAT_TIMEOUT", "2.0"))
 
 ANGLE_PREFIXES = (
     "GCABECAESQ=", "GPPUNHOESQ=", "GPPUNHODIR=", "GCABECADIR=",
@@ -36,7 +38,7 @@ ANGLE_PREFIXES = (
 EXACT_COMMANDS = {
     "RE", "PARA", "FRENTE", "GESQ", "GDIR", "CLS", "GPS", "ACEL",
     "ULTRA", "ULTRA1", "ULTRA2", "GAS", "CORR", "MAN", "VER", "TESTE",
-    "LCDCLEAR"
+    "LCDCLEAR", "PING", "SAFETY"
 }
 MCAB_EXACT = {
     "DIST", "GETPOS", "CENTER", "LASERON", "LASEROFF", "SCANNING",
@@ -75,7 +77,12 @@ class RobotState:
                 "gas": None,
                 "current": None,
             },
-            "motion": {"last_command": None, "stopped": None},
+            "motion": {
+                "last_command": None,
+                "stopped": None,
+                "safety_stop_reason": None,
+                "last_heartbeat": None,
+            },
             "faults": [],
             "last_error": None,
         }
@@ -118,6 +125,15 @@ class RobotState:
                     }
                     if name in mapping:
                         self.data["head"][mapping[name]] = state
+            elif line.startswith("SAFETY:STOP:"):
+                reason = line.split(":", 2)[2]
+                self.data["motion"]["stopped"] = True
+                self.data["motion"]["safety_stop_reason"] = reason
+                self._fault("safety_stop", line)
+            elif line.startswith("SAFETY:MOTION:"):
+                self.data["motion"]["stopped"] = line.endswith(":STOPPED")
+            elif line.startswith("SAFETY:LAST_STOP:"):
+                self.data["motion"]["safety_stop_reason"] = line.split(":", 2)[2]
             elif "Colisao eminente" in line:
                 self._fault("collision_warning", line)
             elif line.lower().startswith("erro") or "ERR:" in line:
@@ -131,7 +147,10 @@ class RobotState:
                 self.data["motion"]["stopped"] = True
             elif command in {"FRENTE", "RE", "GESQ", "GDIR"}:
                 self.data["motion"]["stopped"] = False
-            self.data["motion"]["last_command"] = command
+            if command == "PING":
+                self.data["motion"]["last_heartbeat"] = time.time()
+            elif command != "SAFETY":
+                self.data["motion"]["last_command"] = command
             self._save()
 
     def _fault(self, code, detail):
@@ -151,7 +170,7 @@ class RobotState:
 
 
 class Request:
-    def __init__(self, command, timeout):
+    def __init__(self, command, timeout, internal=False):
         self.id = str(uuid.uuid4())
         self.command = command
         self.timeout = timeout
@@ -162,6 +181,7 @@ class Request:
         self.ok = False
         self.error = None
         self.done = threading.Event()
+        self.internal = internal
 
     def result(self):
         return {
@@ -249,12 +269,15 @@ class Gateway:
         self.active_lock = threading.RLock()
         self.reader_thread = None
         self.worker_thread = None
+        self.heartbeat_thread = None
 
     def start(self):
         self.reader_thread = threading.Thread(target=self._serial_loop, name="serial-reader", daemon=True)
         self.worker_thread = threading.Thread(target=self._command_loop, name="command-worker", daemon=True)
+        self.heartbeat_thread = threading.Thread(target=self._heartbeat_loop, name="safety-heartbeat", daemon=True)
         self.reader_thread.start()
         self.worker_thread.start()
+        self.heartbeat_thread.start()
 
     def stop(self):
         RUN.clear()
@@ -266,9 +289,9 @@ class Gateway:
                     pass
                 self.serial_obj = None
 
-    def submit(self, command, timeout=None):
+    def submit(self, command, timeout=None, internal=False):
         command = validate_command(command)
-        req = Request(command, float(timeout or DEFAULT_TIMEOUT))
+        req = Request(command, float(timeout or DEFAULT_TIMEOUT), internal=internal)
         try:
             self.command_queue.put(req, timeout=1)
         except queue.Full:
@@ -324,6 +347,30 @@ class Gateway:
                 self.state.update(last_error=str(exc))
                 time.sleep(1)
 
+    def _heartbeat_loop(self):
+        while RUN.is_set():
+            time.sleep(max(0.2, HEARTBEAT_INTERVAL))
+            if not RUN.is_set():
+                break
+
+            snapshot = self.state.snapshot()
+            moving = snapshot.get("motion", {}).get("stopped") is False
+            connected = snapshot.get("connected") is True
+
+            if not moving or not connected:
+                continue
+
+            # Nao interfere em uma requisicao em andamento nem acumula heartbeat.
+            with self.active_lock:
+                busy = self.active is not None
+            if busy or not self.command_queue.empty():
+                continue
+
+            try:
+                self.submit("PING", HEARTBEAT_TIMEOUT, internal=True)
+            except Exception as exc:
+                LOG.warning("heartbeat submit failed: %s", exc)
+
     def _command_loop(self):
         while RUN.is_set():
             try:
@@ -361,8 +408,9 @@ class Gateway:
                         self.active = None
                         self.state.update(active_request_id=None)
                 result = req.result()
-                self.history.append(result)
-                self._append_history(result)
+                if not req.internal:
+                    self.history.append(result)
+                    self._append_history(result)
                 self.command_queue.task_done()
 
     def _append_history(self, item):
@@ -377,6 +425,7 @@ class Gateway:
                 "serial_baud": BAUD,
                 "listen": f"http://{LISTEN_HOST}:{LISTEN_PORT}",
                 "queue_size": self.command_queue.qsize(),
+                "heartbeat_interval": HEARTBEAT_INTERVAL,
             },
             "state": self.state.snapshot(),
         }
