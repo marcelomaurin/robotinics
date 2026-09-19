@@ -32,7 +32,7 @@ Este roadmap transforma a proposta da Rev. 4 em entregas verificáveis.
 - [ ] eliminar código morto;
 - [~] corrigir bugs sem alterar protocolo — corrente, ultrassom, buffers e inicialização RF corrigidos; validação em hardware pendente;
 - [ ] criar camada de telemetria;
-- [~] criar SafetyController — margem de colisão isolada em `60_safety.ino`; watchdog e timeout ainda pendentes.
+- [x] criar SafetyController — margem de colisão, STOP prioritário, watchdog lógico e timeout de movimento implementados; validação em hardware pendente.
 
 ### Compatibilidade obrigatória
 Os comandos legados devem continuar aceitos durante esta fase.
@@ -80,14 +80,14 @@ Um software pode implementar um cliente Robotinics sem ler o firmware.
 ## Fase 5 — Safety Layer
 
 ### Atividades
-- [ ] STOP prioritário;
-- [ ] watchdog;
-- [ ] timeout para movimento contínuo;
-- [ ] estado seguro na perda de comunicação;
+- [x] STOP prioritário;
+- [x] watchdog lógico de comunicação;
+- [x] timeout para movimento contínuo;
+- [x] estado seguro na perda de comunicação;
 - [ ] limites dos servos;
-- [ ] catálogo de comandos permitido;
+- [x] catálogo de comandos permitido no Gateway;
 - [ ] política para ações vindas de agente;
-- [ ] registro de falhas.
+- [~] registro de falhas — Gateway registra `SAFETY:STOP:*`; persistência consolidada ainda pendente;
 
 ### Critério de conclusão
 Falha no Raspberry, LLM ou aplicação de usuário não pode manter movimento indefinido.
@@ -98,7 +98,7 @@ Falha no Raspberry, LLM ou aplicação de usuário não pode manter movimento in
 
 ### Atividades
 - [ ] estados de conexão explícitos;
-- [ ] heartbeat;
+- [x] heartbeat durante movimento;
 - [ ] fila com prioridade;
 - [ ] cancelamento;
 - [ ] retry configurável;
