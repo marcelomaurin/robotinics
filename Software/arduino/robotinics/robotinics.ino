@@ -53,6 +53,7 @@ RCSwitch mySwitch = RCSwitch();
 // Estado compartilhado
 int cmRe = 0;
 int cmCorpo = 0;
+int cmCabeca = 0;
 int Margem = ROBOTINICS_COLLISION_MARGIN_CM;
 
 int xValue = 0, xLastValue = 0;
