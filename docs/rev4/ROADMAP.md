@@ -132,9 +132,9 @@ Gateway e AI Runtime podem ser testados sem o robô físico.
 ## Fase 8 — CI
 
 ### Pipeline
-- [ ] compile Mega;
-- [ ] compile MCabeca;
-- [ ] lint/test Gateway;
+- [x] compile Mega;
+- [x] compile MCabeca;
+- [x] syntax/smoke test Gateway;
 - [ ] protocol tests;
 - [ ] compile Free Pascal AI Runtime;
 - [ ] smoke test do simulador;
@@ -142,7 +142,7 @@ Gateway e AI Runtime podem ser testados sem o robô físico.
 - [ ] validação Yocto.
 
 ### Critério de conclusão
-Push e pull request informam automaticamente regressões conhecidas.
+Push e pull request já compilam Mega e MCabeca e executam validações básicas do Gateway; os demais checks continuam incrementais.
 
 ---
 
