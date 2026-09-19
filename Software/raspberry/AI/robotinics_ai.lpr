@@ -5,7 +5,7 @@ program robotinics_ai;
 uses
   Classes, SysUtils,
   chatgpt,
-  gatewayclient, internetservice, doclookup, hybridrag, taskengine, actionpolicy, toolrunner;
+  gatewayclient, internetservice, doclookup, hybridrag, ftsrag, taskengine, actionpolicy, toolrunner;
 
 function Env(const AName, ADefault: string): string;
 begin
@@ -96,9 +96,10 @@ var
   Chat: TCHATGPT;
   Task: TRobotTask;
   StateJSON, CatalogJSON, HistoryJSON, DocsContext, InternetContext, ToolCatalog: string;
-  Prompt, StatePath, DocsPath, SearchURL, RagIndexPath, EmbedURL, EmbedToken, EmbedModel: string;
+  Prompt, StatePath, DocsPath, SearchURL, RagIndexPath, FTSDBPath, EmbedURL, EmbedToken, EmbedModel: string;
   TaskFile: string;
   STUnderstand, STTelemetry, STDocs, STInternet, STReason: string;
+  FTSStats: TFTSSyncStats;
 begin
   Result := 1;
   StatePath := Env('ROBOTINICS_STATE_PATH', '/var/lib/robotinics');
@@ -106,6 +107,8 @@ begin
   SearchURL := Env('ROBOTINICS_SEARCH_URL', '');
   RagIndexPath := Env('ROBOTINICS_RAG_INDEX',
     IncludeTrailingPathDelimiter(StatePath) + 'rag/index.json');
+  FTSDBPath := Env('ROBOTINICS_RAG_FTS_DB',
+    IncludeTrailingPathDelimiter(StatePath) + 'rag/index.sqlite');
   EmbedURL := Env('ROBOTINICS_EMBEDDING_URL', '');
   EmbedToken := Env('ROBOTINICS_EMBEDDING_TOKEN', '');
   EmbedModel := Env('ROBOTINICS_EMBEDDING_MODEL', 'text-embedding-3-small');
@@ -155,13 +158,23 @@ begin
 
     Task.StartSubTask(STDocs, 'Consultando documentacao local.');
     try
-      if (not FileExists(RagIndexPath)) or EnvBool('ROBOTINICS_RAG_REBUILD', False) then
+      if Trim(EmbedURL) = '' then
       begin
-        BuildHybridIndex(DocsPath, RagIndexPath, EmbedURL, EmbedToken, EmbedModel);
-        Task.AddEvidence('rag', 'index', RagIndexPath);
+        FTSStats := SyncFTSIndex(DocsPath, FTSDBPath);
+        Task.AddEvidence('rag', 'fts_sync', SyncStatsJSON(FTSStats));
+        DocsContext := FTSContext(FTSDBPath, Question, 8, 24000);
+      end
+      else
+      begin
+        if (not FileExists(RagIndexPath)) or EnvBool('ROBOTINICS_RAG_REBUILD', False) then
+        begin
+          BuildHybridIndex(DocsPath, RagIndexPath, EmbedURL, EmbedToken, EmbedModel);
+          Task.AddEvidence('rag', 'index', RagIndexPath);
+        end;
+        DocsContext := HybridContext(RagIndexPath, Question, EmbedURL, EmbedToken,
+          EmbedModel, 8, 24000, 0.65);
       end;
-      DocsContext := HybridContext(RagIndexPath, Question, EmbedURL, EmbedToken,
-        EmbedModel, 8, 24000, 0.65);
+
       if DocsContext = '' then
         DocsContext := LookupDocumentation(DocsPath, Question, 8, 24000);
     except
