@@ -265,17 +265,79 @@ begin
   end;
 end;
 
+function RunToolMode: Integer;
+var
+  Gateway: TGatewayClient;
+  Task: TRobotTask;
+  R: TToolExecution;
+  ToolName, Command, StatePath, TaskFile, STTool: string;
+  Confirmed: Boolean;
+begin
+  Result := 2;
+  if ParamCount < 3 then Exit;
+
+  ToolName := ParamStr(2);
+  Command := ParamStr(3);
+  Confirmed := (ParamCount >= 4) and SameText(ParamStr(4), '--confirm');
+  StatePath := Env('ROBOTINICS_STATE_PATH', '/var/lib/robotinics');
+
+  Task := TRobotTask.Create('tool:' + ToolName + ':' + Command);
+  Gateway := TGatewayClient.Create(
+    Env('ROBOTINICS_GATEWAY_URL', 'http://127.0.0.1:8765'));
+  try
+    STTool := Task.AddSubTask('Executar ferramenta', 'tool', '');
+    Task.StartSubTask(STTool, 'Aplicando ActionPolicy.');
+    Task.AddEvidence('operator', 'confirmation', BoolToStr(Confirmed, True));
+
+    R := ExecuteTool(Gateway, Task, ToolName, Command, Confirmed);
+    Writeln(ToolExecutionJSON(R));
+
+    if R.OK then
+    begin
+      Task.SetResult(R.Response);
+      Task.CompleteSubTask(STTool, 'Ferramenta executada.');
+      Task.SetStatus('DONE');
+      Result := 0;
+    end
+    else if R.NeedsConfirmation then
+    begin
+      Task.AddEvidence('toolrunner', 'blocked', 'Confirmacao humana pendente.');
+      Task.CancelSubTask(STTool, 'Confirmacao humana obrigatoria.');
+      Task.SetStatus('WAITING_CONFIRMATION');
+      Result := 3;
+    end
+    else
+    begin
+      Task.FailSubTask(STTool, R.Error);
+      Task.SetStatus('ERROR');
+      Result := 4;
+    end;
+
+    TaskFile := Task.Save(StatePath);
+    Writeln(StdErr, '[task] ', TaskFile);
+  finally
+    Gateway.Free;
+    Task.Free;
+  end;
+end;
+
 procedure Usage;
 begin
   Writeln('Robotinics AI');
   Writeln('uso: robotinics-ai "pergunta"');
   Writeln('     robotinics-ai --interactive');
+  Writeln('     robotinics-ai --tool <gateway.read|gateway.diagnostic|gateway.command> <comando> [--confirm]');
 end;
 
 var
   Question: string;
   Code: Integer;
 begin
+  if (ParamCount >= 1) and SameText(ParamStr(1), '--tool') then
+  begin
+    Halt(RunToolMode);
+  end;
+
   if (ParamCount = 1) and (ParamStr(1) = '--interactive') then
   begin
     while True do
