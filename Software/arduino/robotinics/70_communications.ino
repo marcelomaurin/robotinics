@@ -27,17 +27,17 @@ void ImprimeCursor()
 
 void StartSerial()
 {
-  Serial.begin(115200);
+  Serial.begin(ROBOTINICS_USB_BAUD);
 }
 
 void StartBluetooth()
 {
-  Serial1.begin(9600);
+  Serial1.begin(ROBOTINICS_BLUETOOTH_BAUD);
 }
 
 void StartArduino()
 {
-  mySerial.begin(9600);
+  mySerial.begin(ROBOTINICS_HEAD_BAUD);
 }
 
 void StartRC()
