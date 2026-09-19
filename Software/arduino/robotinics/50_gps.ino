@@ -7,7 +7,7 @@ int indices[13];
 
 void Start_GPS()
 {
-  Serial3.begin(4800);
+  Serial3.begin(ROBOTINICS_GPS_BAUD);
 }
 
 void Le_GPS()
