@@ -119,8 +119,8 @@ void Le_Ultrasom2(int Imprime)
   const float cmMsec = leituraUltrassomCM(ultrasonic2, microsec);
   const float inMsec = ultrasonic2.convert(microsec, Ultrasonic::IN);
 
-  // Mantem a variavel usada pelo firmware legado.
-  cmCorpo = (int)cmMsec;
+  // Mantem leitura independente do sensor da cabeca.
+  cmCabeca = (int)cmMsec;
 
   if (Imprime != 0) {
     Print("Cent: ");
