@@ -44,7 +44,7 @@ PRIORITY_LOW = 90
 
 MOTION_COMMANDS = {"FRENTE", "RE", "GESQ", "GDIR"}
 RETRY_SAFE_COMMANDS = {
-    "PING", "SAFETY", "IDENTIFY", "CAPABILITIES", "ULTRA", "ULTRA1",
+    "PING", "SAFETY", "IDENTIFY", "CAPABILITIES", "HEALTH", "ULTRA", "ULTRA1",
     "ULTRA2", "GAS", "CORR", "GPS", "ACEL", "VER"
 }
 
@@ -55,7 +55,7 @@ ANGLE_PREFIXES = (
 EXACT_COMMANDS = {
     "RE", "PARA", "FRENTE", "GESQ", "GDIR", "CLS", "GPS", "ACEL",
     "ULTRA", "ULTRA1", "ULTRA2", "GAS", "CORR", "MAN", "VER", "TESTE",
-    "LCDCLEAR", "PING", "SAFETY", "IDENTIFY", "CAPABILITIES"
+    "LCDCLEAR", "PING", "SAFETY", "IDENTIFY", "CAPABILITIES", "HEALTH"
 }
 MCAB_EXACT = {
     "DIST", "GETPOS", "CENTER", "LASERON", "LASEROFF", "SCANNING",
@@ -117,6 +117,14 @@ class RobotState:
                 "safety_stop_reason": None,
                 "last_heartbeat": None,
             },
+            "health": {
+                "body": "UNKNOWN",
+                "head": "UNKNOWN",
+                "safety": "UNKNOWN",
+                "motion": "UNKNOWN",
+                "updated_at": None,
+            },
+            "telemetry": {},
             "faults": [],
             "last_error": None,
         }
@@ -173,6 +181,27 @@ class RobotState:
                     }
                     if name in mapping:
                         self.data["head"][mapping[name]] = enabled
+            elif line.startswith("RBT:HEALTH:"):
+                parts = line.split(":", 3)
+                if len(parts) == 4:
+                    module = parts[2].lower()
+                    self.data["health"][module] = parts[3]
+                    self.data["health"]["updated_at"] = now
+            elif line.startswith("MCAB:HEALTH:"):
+                parts = line.split(":", 3)
+                if len(parts) == 4:
+                    self.data["health"]["head"] = parts[3]
+                    self.data["health"]["updated_at"] = now
+            elif line.startswith("RBT:TELEM:"):
+                parts = line.split(":", 3)
+                if len(parts) == 4:
+                    key = parts[2].lower()
+                    raw = parts[3]
+                    try:
+                        value = float(raw)
+                    except ValueError:
+                        value = raw
+                    self.data["telemetry"][key] = value
             elif line.startswith("RBT:IDENTIFY:"):
                 parts = line.split(":")
                 if len(parts) >= 5:
@@ -645,6 +674,64 @@ class Gateway:
         with HISTORY_FILE.open("a", encoding="utf-8") as fp:
             fp.write(json.dumps(item, ensure_ascii=False) + "\n")
 
+    def diagnose(self):
+        snap = self.state.snapshot()
+        issues = []
+        severity = "OK"
+
+        conn = snap.get("connection", {}).get("state")
+        if conn != CONNECTION_CONNECTED:
+            issues.append({"code": "connection", "severity": "ERROR", "message": "Body Controller sem conexao ativa."})
+            severity = "ERROR"
+
+        health = snap.get("health", {})
+        if health.get("body") not in {"OK"}:
+            issues.append({"code": "body_health", "severity": "WARN", "message": "Health do Body Controller nao confirmado."})
+            if severity == "OK":
+                severity = "WARN"
+        if health.get("head") not in {"OK"}:
+            issues.append({"code": "head_health", "severity": "WARN", "message": "Health do Head Controller nao confirmado."})
+            if severity == "OK":
+                severity = "WARN"
+
+        sensors = snap.get("sensors", {})
+        front = sensors.get("ultra1_cm")
+        rear = sensors.get("ultra_cm")
+        if front is not None and front < 20:
+            issues.append({"code": "front_obstacle", "severity": "WARN", "message": "Obstaculo proximo ao sensor frontal."})
+            if severity == "OK":
+                severity = "WARN"
+        if rear is not None and rear < 20:
+            issues.append({"code": "rear_obstacle", "severity": "WARN", "message": "Obstaculo proximo ao sensor traseiro."})
+            if severity == "OK":
+                severity = "WARN"
+
+        faults = snap.get("faults", [])
+        if faults:
+            issues.append({"code": "fault_history", "severity": "WARN", "message": f"{len(faults)} falha(s) recente(s) registrada(s)."})
+            if severity == "OK":
+                severity = "WARN"
+
+        recommendations = []
+        for issue in issues:
+            if issue["code"] == "connection":
+                recommendations.append("Verificar USB/serial, alimentacao do Mega e permissao da porta.")
+            elif issue["code"] == "head_health":
+                recommendations.append("Verificar enlace Mega-MCabeca e alimentacao do Nano.")
+            elif issue["code"] in {"front_obstacle", "rear_obstacle"}:
+                recommendations.append("Remover obstaculo ou validar leitura do ultrassom antes de movimentar.")
+            elif issue["code"] == "fault_history":
+                recommendations.append("Consultar /v2/events e /v2/history para correlacionar a falha.")
+
+        return {
+            "overall": severity,
+            "issues": issues,
+            "recommendations": list(dict.fromkeys(recommendations)),
+            "health": health,
+            "connection": snap.get("connection"),
+            "motion": snap.get("motion"),
+        }
+
     def status(self):
         with self.metrics_lock:
             metrics = dict(self.metrics)
@@ -722,6 +809,8 @@ class Handler(BaseHTTPRequestHandler):
                     limit = 20
             limit = max(1, min(limit, HISTORY_SIZE))
             self._json(200, {"ok": True, "history": list(GATEWAY.history)[-limit:]})
+        elif self.path == "/v2/diagnostics":
+            self._json(200, {"ok": True, "diagnostics": GATEWAY.diagnose()})
         elif self.path.startswith("/v2/events"):
             limit = 50
             if "?" in self.path:
