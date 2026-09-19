@@ -23,6 +23,8 @@ type
     FCancelled: Boolean;
     FCancelReason: string;
     function FindSubTaskIndex(const AID: string): Integer;
+    function SubTaskStatus(const AID: string): string;
+    function DependenciesResolved(const AID: string): Boolean;
     procedure Touch;
     procedure UpdateSubTask(const AID, AStatus, ADetail: string;
       AIncrementAttempt: Boolean);
@@ -191,6 +193,74 @@ begin
   end;
 end;
 
+function TRobotTask.SubTaskStatus(const AID: string): string;
+var
+  I: Integer;
+  D: TJSONData;
+  O: TJSONObject;
+begin
+  Result := '';
+  I := FindSubTaskIndex(AID);
+  if I < 0 then Exit;
+
+  D := GetJSON(FSubTasks[I]);
+  try
+    if D.JSONType = jtObject then
+    begin
+      O := TJSONObject(D);
+      Result := O.Get('status', '');
+    end;
+  finally
+    D.Free;
+  end;
+end;
+
+function TRobotTask.DependenciesResolved(const AID: string): Boolean;
+var
+  I, P: Integer;
+  D: TJSONData;
+  O: TJSONObject;
+  Deps, DepID, Status: string;
+begin
+  Result := False;
+  I := FindSubTaskIndex(AID);
+  if I < 0 then Exit;
+
+  D := GetJSON(FSubTasks[I]);
+  try
+    if D.JSONType <> jtObject then Exit;
+    O := TJSONObject(D);
+    Deps := Trim(O.Get('depends_on', ''));
+  finally
+    D.Free;
+  end;
+
+  if Deps = '' then Exit(True);
+
+  repeat
+    P := Pos(',', Deps);
+    if P > 0 then
+    begin
+      DepID := Trim(Copy(Deps, 1, P - 1));
+      Delete(Deps, 1, P);
+    end
+    else
+    begin
+      DepID := Trim(Deps);
+      Deps := '';
+    end;
+
+    if DepID <> '' then
+    begin
+      Status := SubTaskStatus(DepID);
+      if (Status = '') or (Status = 'PENDING') or (Status = 'RUNNING') then
+        Exit(False);
+    end;
+  until Deps = '';
+
+  Result := True;
+end;
+
 procedure TRobotTask.UpdateSubTask(const AID, AStatus, ADetail: string;
   AIncrementAttempt: Boolean);
 var
@@ -229,6 +299,8 @@ end;
 
 procedure TRobotTask.StartSubTask(const AID, ADetail: string);
 begin
+  if not DependenciesResolved(AID) then
+    raise Exception.Create('Dependencias ainda nao concluidas para subtarefa: ' + AID);
   UpdateSubTask(AID, 'RUNNING', ADetail, True);
 end;
 
