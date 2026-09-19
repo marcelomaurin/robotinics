@@ -150,9 +150,13 @@ jobs:
           fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_taskengine.pas
           fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_rag.pas
           fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_actionpolicy.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_hybridrag.pas
+          fpc -FuSoftware/raspberry/AI -FU/tmp/robotinics-fpc -FE/tmp/robotinics-fpc Software/raspberry/AI/tests/test_toolrunner.pas
 
       - name: Run AI core tests
         run: |
           /tmp/robotinics-fpc/test_taskengine
           /tmp/robotinics-fpc/test_rag
           /tmp/robotinics-fpc/test_actionpolicy
+          /tmp/robotinics-fpc/test_hybridrag
+          /tmp/robotinics-fpc/test_toolrunner
