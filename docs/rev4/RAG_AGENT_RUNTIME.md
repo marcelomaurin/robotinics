@@ -119,3 +119,53 @@ robotinics-ai --tool gateway.command FRENTE --confirm
 Sem `--confirm`, comandos classificados como `PHYSICAL_HIGH` ficam em `WAITING_CONFIRMATION` e não chegam ao Gateway.
 
 Cada execução cria uma tarefa, registra confirmação, decisão da policy, resultado/erro e persiste auditoria.
+
+
+## SQLite FTS5 incremental
+
+Quando embeddings não estão configurados, o runtime utiliza um índice SQLite FTS5 persistente.
+
+Variável:
+
+```text
+ROBOTINICS_RAG_FTS_DB
+```
+
+Padrão:
+
+```text
+<ROBOTINICS_STATE_PATH>/rag/index.sqlite
+```
+
+A sincronização compara cada documento por:
+
+- caminho;
+- tamanho;
+- timestamp de modificação.
+
+Com isso:
+
+- arquivo novo -> inserido;
+- arquivo alterado -> reindexado;
+- arquivo inalterado -> preservado;
+- arquivo removido -> removido do índice.
+
+A tabela FTS5 utiliza BM25 nativo do SQLite para ranking.
+
+O runtime usa esta estratégia:
+
+```text
+sem embeddings:
+  SQLite FTS5 incremental
+       |
+       v
+  fallback lexical simples
+
+com embeddings:
+  índice híbrido JSON
+       |
+       +--> lexical
+       +--> embeddings/cosseno
+```
+
+Assim o modo local não precisa reconstruir todo o corpus a cada consulta.
