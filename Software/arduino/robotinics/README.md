@@ -85,6 +85,26 @@ Quando o robô se move para frente ou para trás e o sensor correspondente indic
 
 Essa lógica é deliberadamente mantida próxima ao controlador físico.
 
+Na Rev. 4, a segurança de tração também inclui:
+
+- `PARA` tratado com prioridade no parser;
+- watchdog lógico de comunicação;
+- heartbeat `PING` enviado pelo Gateway enquanto há movimento;
+- parada automática se o controlador externo deixar de renovar o heartbeat;
+- timeout máximo de uma ordem de movimento;
+- motivo da parada exposto como `SAFETY:STOP:<reason>`;
+- consulta local por `SAFETY`.
+
+Configuração atual proposta para validação:
+
+```text
+heartbeat Gateway: 1 s
+watchdog Mega:      3 s
+timeout movimento: 30 s
+```
+
+Esses tempos são centralizados em `robotinics_config.h` e devem ser confirmados em ensaio físico antes de serem considerados parâmetros finais.
+
 ## Protocolo
 
 A comunicação usa comandos de texto.
