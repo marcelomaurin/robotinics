@@ -69,3 +69,53 @@ A política já está implementada como unidade tipada e integrada ao prompt do 
 - executor de ferramentas;
 - confirmação humana persistida na tarefa;
 - correlação de evidências entre tool call, Gateway e resultado observado.
+
+
+## Índice persistente e embeddings
+
+O runtime agora pode criar um índice persistente em JSON.
+
+Variáveis:
+
+```text
+ROBOTINICS_RAG_INDEX
+ROBOTINICS_RAG_REBUILD
+ROBOTINICS_EMBEDDING_URL
+ROBOTINICS_EMBEDDING_TOKEN
+ROBOTINICS_EMBEDDING_MODEL
+```
+
+Sem `ROBOTINICS_EMBEDDING_URL`, o índice funciona em modo lexical.
+
+Quando configurado, cada documento recebe um embedding obtido de endpoint compatível com:
+
+```http
+POST /v1/embeddings
+```
+
+A busca combina:
+
+```text
+final_score =
+  lexical_weight * lexical_score_normalizado +
+  semantic_weight * cosine_similarity
+```
+
+O peso lexical padrão é 0,65.
+
+## Executor de ferramentas
+
+`toolrunner.pas` aplica a `ActionPolicy` antes de qualquer chamada ao Gateway.
+
+O runtime também oferece um modo explícito:
+
+```text
+robotinics-ai --tool gateway.read state
+robotinics-ai --tool gateway.diagnostic diagnostics
+robotinics-ai --tool gateway.command ULTRA1
+robotinics-ai --tool gateway.command FRENTE --confirm
+```
+
+Sem `--confirm`, comandos classificados como `PHYSICAL_HIGH` ficam em `WAITING_CONFIRMATION` e não chegam ao Gateway.
+
+Cada execução cria uma tarefa, registra confirmação, decisão da policy, resultado/erro e persiste auditoria.
